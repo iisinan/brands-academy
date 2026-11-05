@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ApplicationAcceptedMail;
 use App\Mail\CertificateIssuedMail;
 use App\Models\Certificate;
+use App\Models\InstitutionalInquiry;
 use App\Models\Member;
 use App\Models\User;
 use App\Models\Workshop;
@@ -26,6 +27,8 @@ class PortalFeatureTest extends TestCase
     {
         $this->get('/')->assertStatus(200);
         $this->get('/about')->assertStatus(200);
+        $this->get('/faculty')->assertStatus(200);
+        $this->get('/partnerships')->assertStatus(200);
         $this->get('/workshops')->assertStatus(200);
         $this->get('/membership/register')->assertStatus(200);
         $this->get('/verify')->assertStatus(200);
@@ -437,5 +440,58 @@ class PortalFeatureTest extends TestCase
         $certExport = $this->actingAs($admin)->get('/admin/certificates/export');
         $certExport->assertStatus(200);
         $certExport->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+    }
+
+    /**
+     * Test institutional inquiry submission and admin management.
+     */
+    public function test_institutional_inquiry_submission_and_admin_workflow(): void
+    {
+        $response = $this->post('/partnerships', [
+            'organization_name' => 'Ahmadu Bello University Brand Lab',
+            'contact_person' => 'Dr. Ibrahim Aliyu',
+            'email' => 'dr.aliyu@abu.edu.ng',
+            'phone' => '+234 803 999 8877',
+            'organization_type' => 'higher_education',
+            'solution_interest' => 'curriculum_licensing',
+            'estimated_cohort_size' => 120,
+            'target_timeline' => 'Q3 Academic Session',
+            'message' => 'We wish to license the CBA brand identity curriculum for undergraduate mass communications students.',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('institutional_inquiries', [
+            'organization_name' => 'Ahmadu Bello University Brand Lab',
+            'email' => 'dr.aliyu@abu.edu.ng',
+            'organization_type' => 'higher_education',
+            'status' => 'new',
+        ]);
+
+        $admin = User::create([
+            'name' => 'Partnership Director',
+            'email' => 'director@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => 'admin',
+        ]);
+
+        // Admin can list inquiries
+        $this->actingAs($admin)->get('/admin/inquiries')->assertStatus(200);
+
+        $inquiry = InstitutionalInquiry::where('email', 'dr.aliyu@abu.edu.ng')->first();
+
+        // Admin updates status
+        $updateResp = $this->actingAs($admin)->post("/admin/inquiries/{$inquiry->id}/status", [
+            'status' => 'in_discussion',
+            'admin_notes' => 'Introductory meeting scheduled with Dean of Arts.',
+        ]);
+
+        $updateResp->assertSessionHas('success');
+
+        $this->assertDatabaseHas('institutional_inquiries', [
+            'id' => $inquiry->id,
+            'status' => 'in_discussion',
+            'admin_notes' => 'Introductory meeting scheduled with Dean of Arts.',
+        ]);
     }
 }

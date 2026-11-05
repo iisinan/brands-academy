@@ -71,15 +71,21 @@
                         Home
                     </a>
                     <a href="{{ route('about') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('about') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors">
-                        About & Manifesto
+                        About
+                    </a>
+                    <a href="{{ route('faculty') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('faculty') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors">
+                        Faculty & Trustees
                     </a>
                     <a href="{{ route('workshops.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('workshops.*') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors flex items-center gap-1.5">
-                        Workshops & Cohorts
+                        Workshops
                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Live</span>
                     </a>
                     <a href="{{ route('membership.register') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('membership.register') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors flex items-center gap-1.5">
                         Membership
                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">24/7 Open</span>
+                    </a>
+                    <a href="{{ route('partnerships') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('partnerships') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors">
+                        Partnerships
                     </a>
                     <a href="{{ route('verify.certificate') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('verify.*') ? 'text-amber-600 bg-amber-50 font-semibold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-50' }} transition-colors">
                         Verify Credential
@@ -196,7 +202,7 @@
                         <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Tier 2: CBS (Strategist)</a></li>
                         <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Tier 3: CBE (Executive)</a></li>
                         <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Community Free-Access Track</a></li>
-                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Institutional Licensing</a></li>
+                        <li><a href="{{ route('partnerships') }}" class="hover:text-amber-400 transition-colors">Institutional Licensing</a></li>
                     </ul>
                 </div>
 
@@ -207,8 +213,9 @@
                         <li><a href="{{ route('membership.register') }}" class="hover:text-amber-400 transition-colors">Ongoing Membership (24/7)</a></li>
                         <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Cohort Application Windows</a></li>
                         <li><a href="{{ route('verify.certificate') }}" class="hover:text-amber-400 transition-colors">Digital Credential Verification</a></li>
+                        <li><a href="{{ route('faculty') }}" class="hover:text-amber-400 transition-colors">Faculty & Trustees</a></li>
+                        <li><a href="{{ route('partnerships') }}" class="hover:text-amber-400 transition-colors">Institutional Partnerships</a></li>
                         <li><a href="{{ route('about') }}" class="hover:text-amber-400 transition-colors">Our Manifesto & Core Values</a></li>
-                        <li><a href="{{ route('login') }}" class="hover:text-amber-400 transition-colors">Portal Sign In</a></li>
                     </ul>
                 </div>
 

@@ -37,6 +37,14 @@
                 <a href="{{ route('admin.certificates') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors">
                     Certificates Issued
                 </a>
+                <a href="{{ route('admin.inquiries') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1">
+                    Inquiries
+                    @if($stats['pending_inquiries'] > 0)
+                        <span class="px-1.5 py-0.2 rounded-full text-[9px] bg-rose-500 text-white font-bold">
+                            {{ $stats['pending_inquiries'] }}
+                        </span>
+                    @endif
+                </a>
             </div>
         </div>
     </div>
@@ -44,7 +52,7 @@
 
 <!-- Stats Grid -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Ongoing Members</span>
@@ -75,6 +83,14 @@
             <div class="text-3xl font-extrabold text-emerald-600 font-serif-title">{{ $stats['total_certificates'] }}</div>
             <a href="{{ route('admin.certificates') }}" class="text-xs font-bold text-amber-600 hover:underline mt-2 inline-block">
                 View Credentials &rarr;
+            </a>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Partnership Inquiries</span>
+            <div class="text-3xl font-extrabold text-blue-600 font-serif-title">{{ $stats['total_inquiries'] }}</div>
+            <a href="{{ route('admin.inquiries') }}" class="text-xs font-bold text-blue-600 hover:underline mt-2 inline-block">
+                Manage Proposals &rarr;
             </a>
         </div>
 

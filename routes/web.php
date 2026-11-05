@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 // Public Institutional Pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/partnerships', [PartnershipController::class, 'index'])->name('partnerships');
+Route::post('/partnerships', [PartnershipController::class, 'store'])->name('partnerships.store');
+Route::get('/faculty', [PartnershipController::class, 'faculty'])->name('faculty');
 
 // Workshops & Cohorts (Time-Bound Windows)
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');
@@ -66,4 +70,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/certificates', [AdminController::class, 'certificates'])->name('certificates');
     Route::get('/certificates/export', [AdminController::class, 'exportCertificates'])->name('certificates.export');
     Route::post('/certificates/{token}/email', [CertificateController::class, 'email'])->name('certificates.email');
+
+    // Institutional Partnerships & Inquiries
+    Route::get('/inquiries', [AdminController::class, 'inquiries'])->name('inquiries');
+    Route::post('/inquiries/{id}/status', [AdminController::class, 'updateInquiryStatus'])->name('inquiries.status');
 });

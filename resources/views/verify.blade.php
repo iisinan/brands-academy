@@ -78,14 +78,39 @@
                     <div>RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>
                 </div>
 
-                <div class="pt-4 flex flex-wrap items-center gap-4">
-                    <a href="{{ route('certificates.download', $certificate->verification_token) }}" class="px-6 py-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center gap-2">
+                <!-- Professional Credential Actions -->
+                <div class="pt-4 flex flex-wrap items-center gap-3">
+                    <a href="{{ route('certificates.download', $certificate->verification_token) }}" class="px-5 py-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download Official PDF Certificate
+                        Download PDF Certificate
                     </a>
-                    <a href="{{ route('certificates.preview', $certificate->verification_token) }}" target="_blank" class="px-5 py-3 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    
+                    <a href="{{ route('certificates.preview', $certificate->verification_token) }}" target="_blank" class="px-4 py-3 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
                         Preview in Browser
                     </a>
+
+                    <!-- LinkedIn Add to Profile -->
+                    @php
+                        $linkedInUrl = 'https://www.linkedin.com/profile/add?' . http_build_query([
+                            'startTask' => 'CERTIFICATION_NAME',
+                            'name' => $certificate->course_title . ' (' . $certificate->track_tier . ')',
+                            'organizationName' => 'Brands Academy Nigeria Foundation',
+                            'issueYear' => $certificate->issued_at->format('Y'),
+                            'issueMonth' => $certificate->issued_at->format('n'),
+                            'certUrl' => route('verify.certificate', $certificate->verification_token),
+                            'certId' => $certificate->certificate_number,
+                        ]);
+                    @endphp
+                    <a href="{{ $linkedInUrl }}" target="_blank" rel="noopener noreferrer" class="px-4 py-3 rounded-xl text-xs font-bold bg-[#0A66C2] hover:bg-[#004182] text-white shadow-sm transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        Add to LinkedIn
+                    </a>
+
+                    <!-- Copy Shareable Link -->
+                    <button type="button" onclick="navigator.clipboard.writeText('{{ route('verify.certificate', $certificate->verification_token) }}'); alert('Verification URL copied to clipboard!');" class="px-4 py-3 rounded-xl text-xs font-bold border border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        Copy Shareable Link
+                    </button>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ApplicationAcceptedMail;
 use App\Models\Certificate;
+use App\Models\InstitutionalInquiry;
 use App\Models\Member;
 use App\Models\PortfolioSubmission;
 use App\Models\Workshop;
@@ -30,6 +31,8 @@ class AdminController extends Controller
             'pending_applications' => WorkshopApplication::where('status', 'pending')->count(),
             'total_certificates' => Certificate::count(),
             'pending_submissions' => PortfolioSubmission::where('status', 'submitted')->count(),
+            'pending_inquiries' => InstitutionalInquiry::where('status', 'new')->count(),
+            'total_inquiries' => InstitutionalInquiry::count(),
         ];
 
         $recentApplications = WorkshopApplication::with(['workshop', 'member'])
@@ -385,5 +388,47 @@ class AdminController extends Controller
             }
             fclose($handle);
         }, 200, $headers);
+    }
+
+    /**
+     * Institutional Inquiries list.
+     */
+    public function inquiries(Request $request): View
+    {
+        $query = InstitutionalInquiry::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->query('status'));
+        }
+
+        if ($request->filled('q')) {
+            $q = $request->query('q');
+            $query->where(function ($sub) use ($q): void {
+                $sub->where('organization_name', 'like', "%{$q}%")
+                    ->orWhere('contact_person', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            });
+        }
+
+        $inquiries = $query->latest()->paginate(15);
+
+        return view('admin.inquiries.index', compact('inquiries'));
+    }
+
+    /**
+     * Update institutional inquiry status and notes.
+     */
+    public function updateInquiryStatus(Request $request, int $id): RedirectResponse
+    {
+        $inquiry = InstitutionalInquiry::findOrFail($id);
+
+        $validated = $request->validate([
+            'status' => ['required', 'in:new,contacted,in_discussion,partnered,closed'],
+            'admin_notes' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $inquiry->update($validated);
+
+        return back()->with('success', "Inquiry from {$inquiry->organization_name} updated successfully.");
     }
 }
