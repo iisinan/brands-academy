@@ -37,6 +37,12 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Password Reset
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 // Member Protected Portal
 Route::middleware('auth')->group(function (): void {
     Route::get('/member/dashboard', [MembershipController::class, 'dashboard'])->name('member.dashboard');
@@ -55,6 +61,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/workshops', [AdminController::class, 'workshops'])->name('workshops');
     Route::get('/workshops/create', [AdminController::class, 'createWorkshop'])->name('workshops.create');
     Route::post('/workshops', [AdminController::class, 'storeWorkshop'])->name('workshops.store');
+    Route::get('/workshops/{id}/edit', [AdminController::class, 'editWorkshop'])->name('workshops.edit');
+    Route::put('/workshops/{id}', [AdminController::class, 'updateWorkshop'])->name('workshops.update');
     Route::post('/workshops/{id}/bulk-issue-certificates', [AdminController::class, 'bulkIssueCertificates'])->name('workshops.bulk-issue-certificates');
 
     // Admissions & Applications Review

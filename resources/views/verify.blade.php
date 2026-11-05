@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Verify Credential - Brands Academy Nigeria Foundation')
+@if(isset($certificate) && $certificate)
+    @section('title', 'Verified Credential: ' . $certificate->recipient_name . ' — ' . $certificate->course_title)
+    @section('meta_description', 'Official verifiable credential #' . $certificate->certificate_number . ' awarded to ' . $certificate->recipient_name . ' for completing ' . $certificate->course_title . ' by Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+@elseif(isset($member) && $member)
+    @section('title', 'Verified Member: ' . $member->full_name . ' (' . $member->member_number . ')')
+    @section('meta_description', 'Official active member credential for ' . $member->full_name . ' (' . $member->category_label . ') with Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+@else
+    @section('title', 'Verify Credential — Brands Academy Nigeria Foundation')
+    @section('meta_description', 'Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+@endif
 
 @section('content')
 

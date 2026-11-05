@@ -176,6 +176,69 @@ class AdminController extends Controller
     }
 
     /**
+     * Show form to edit workshop cohort.
+     */
+    public function editWorkshop(int $id): View
+    {
+        $workshop = Workshop::findOrFail($id);
+
+        return view('admin.workshops.edit', compact('workshop'));
+    }
+
+    /**
+     * Update an existing workshop cohort.
+     */
+    public function updateWorkshop(Request $request, int $id): RedirectResponse
+    {
+        $workshop = Workshop::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:200'],
+            'track_type' => ['required', 'in:cba,cbs,cbe,community,executive,workshop'],
+            'tagline' => ['nullable', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'curriculum_topics' => ['nullable', 'string'],
+            'delivery_mode' => ['required', 'in:online,in_person,hybrid'],
+            'venue' => ['nullable', 'string', 'max:200'],
+            'fee_type' => ['required', 'in:free,subsidized,paid'],
+            'fee_amount' => ['nullable', 'numeric', 'min:0'],
+            'capacity' => ['nullable', 'integer', 'min:1'],
+            'application_starts_at' => ['required', 'date'],
+            'application_deadline' => ['required', 'date', 'after:application_starts_at'],
+            'starts_at' => ['required', 'date'],
+            'ends_at' => ['required', 'date', 'after:starts_at'],
+            'instructor_name' => ['nullable', 'string', 'max:150'],
+            'status' => ['required', 'in:published,draft,archived'],
+        ]);
+
+        $topicsArray = [];
+        if (! empty($validated['curriculum_topics'])) {
+            $topicsArray = array_values(array_filter(array_map('trim', explode("\n", $validated['curriculum_topics']))));
+        }
+
+        $workshop->update([
+            'title' => $validated['title'],
+            'track_type' => $validated['track_type'],
+            'tagline' => $validated['tagline'] ?? null,
+            'description' => $validated['description'],
+            'curriculum_topics' => $topicsArray,
+            'delivery_mode' => $validated['delivery_mode'],
+            'venue' => $validated['venue'] ?? null,
+            'fee_type' => $validated['fee_type'],
+            'fee_amount' => $validated['fee_amount'] ?? 0,
+            'capacity' => $validated['capacity'] ?? null,
+            'application_starts_at' => Carbon::parse($validated['application_starts_at']),
+            'application_deadline' => Carbon::parse($validated['application_deadline']),
+            'starts_at' => Carbon::parse($validated['starts_at']),
+            'ends_at' => Carbon::parse($validated['ends_at']),
+            'instructor_name' => $validated['instructor_name'] ?? null,
+            'status' => $validated['status'],
+        ]);
+
+        return redirect()->route('admin.workshops')->with('success', "Workshop cohort '{$workshop->title}' updated successfully!");
+    }
+
+    /**
      * Applications management.
      */
     public function applications(Request $request): View

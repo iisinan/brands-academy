@@ -68,6 +68,9 @@
                                 </a>
                             </td>
                             <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{{ route('admin.workshops.edit', $workshop->id) }}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[10px] inline-block">
+                                    Edit Cohort
+                                </a>
                                 <form action="{{ route('admin.workshops.bulk-issue-certificates', $workshop->id) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" onclick="return confirm('Generate and email certificates to all eligible participants in {{ $workshop->title }}?')" class="px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[10px] shadow-xs">

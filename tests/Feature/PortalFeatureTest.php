@@ -494,4 +494,131 @@ class PortalFeatureTest extends TestCase
             'admin_notes' => 'Introductory meeting scheduled with Dean of Arts.',
         ]);
     }
+
+    /**
+     * Test admin can view edit page and update workshop cohort.
+     */
+    public function test_admin_can_edit_and_update_workshop(): void
+    {
+        $admin = User::create([
+            'name' => 'Workshop Dean',
+            'email' => 'dean@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Original Cohort Title',
+            'slug' => 'original-cohort-title',
+            'track_type' => 'cba',
+            'description' => 'Original description.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'fee_amount' => 0,
+            'application_starts_at' => Carbon::now()->subDays(5),
+            'application_deadline' => Carbon::now()->addDays(5),
+            'starts_at' => Carbon::now()->addDays(10),
+            'ends_at' => Carbon::now()->addDays(30),
+            'status' => 'published',
+        ]);
+
+        $this->actingAs($admin)->get("/admin/workshops/{$workshop->id}/edit")->assertStatus(200);
+
+        $response = $this->actingAs($admin)->put("/admin/workshops/{$workshop->id}", [
+            'title' => 'Updated CBA Masterclass Title',
+            'track_type' => 'cba',
+            'tagline' => 'Updated tagline',
+            'description' => 'Expanded curriculum and mentoring hours.',
+            'curriculum_topics' => "Topic One\nTopic Two",
+            'delivery_mode' => 'hybrid',
+            'fee_type' => 'subsidized',
+            'fee_amount' => 12000,
+            'capacity' => 50,
+            'application_starts_at' => Carbon::now()->subDays(5)->toDateTimeString(),
+            'application_deadline' => Carbon::now()->addDays(20)->toDateTimeString(), // extended deadline
+            'starts_at' => Carbon::now()->addDays(25)->toDateTimeString(),
+            'ends_at' => Carbon::now()->addDays(60)->toDateTimeString(),
+            'status' => 'published',
+        ]);
+
+        $response->assertRedirect('/admin/workshops');
+
+        $this->assertDatabaseHas('workshops', [
+            'id' => $workshop->id,
+            'title' => 'Updated CBA Masterclass Title',
+            'fee_amount' => 12000,
+            'capacity' => 50,
+        ]);
+    }
+
+    /**
+     * Test password reset request page and reset link submission.
+     */
+    public function test_password_reset_flow_and_request_link(): void
+    {
+        $user = User::create([
+            'name' => 'Password Test User',
+            'email' => 'resetuser@example.com',
+            'password' => Hash::make('secret123'),
+            'role' => 'member',
+        ]);
+
+        $this->get('/forgot-password')->assertStatus(200);
+
+        $response = $this->post('/forgot-password', [
+            'email' => 'resetuser@example.com',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('password_reset_tokens', [
+            'email' => 'resetuser@example.com',
+        ]);
+    }
+
+    /**
+     * Test admin can resend certificate email.
+     */
+    public function test_admin_can_resend_certificate_email(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Dispatch Admin',
+            'email' => 'dispatch@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Certified Brand Associate Cohort',
+            'slug' => 'cba-cohort-test-cert',
+            'track_type' => 'cba',
+            'description' => 'Test workshop description.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(10),
+            'application_deadline' => Carbon::now()->subDays(5),
+            'starts_at' => Carbon::now()->subDays(3),
+            'ends_at' => Carbon::now()->subDay(),
+            'status' => 'published',
+        ]);
+
+        $cert = Certificate::create([
+            'certificate_number' => 'BANF-CERT-TEST-999',
+            'verification_token' => 'test-token-uuid-999',
+            'workshop_id' => $workshop->id,
+            'recipient_name' => 'Zainab Ahmed',
+            'recipient_email' => 'zainab@example.com',
+            'course_title' => 'Certified Brand Associate',
+            'track_tier' => 'Tier 1: CBA',
+            'issued_at' => now()->toDateString(),
+            'email_status' => 'sent',
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/certificates/{$cert->verification_token}/email");
+
+        $response->assertSessionHas('success');
+        Mail::assertSent(CertificateIssuedMail::class);
+    }
 }
