@@ -1,0 +1,166 @@
+@extends('layouts.app')
+
+@section('title', 'Verify Credential - Brands Academy Nigeria Foundation')
+
+@section('content')
+
+<!-- Header -->
+<section class="bg-slate-900 text-white py-16 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-3">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                Institutional Public Registry
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold font-serif-title mb-4">
+                Verify Digital Credentials
+            </h1>
+            <p class="text-slate-300 text-sm leading-relaxed font-light mb-8">
+                Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (CAC IT No. 7344471).
+            </p>
+
+            <!-- Search Form -->
+            <form action="{{ route('verify.certificate') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
+                <input type="text" name="q" value="{{ $searchQuery }}" required placeholder="Enter Certificate # or Member ID (e.g. BANF-CERT-2024-00108)" class="flex-1 bg-white/10 text-white placeholder-slate-400 px-4 py-3.5 rounded-xl border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm">
+                <button type="submit" class="px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-colors whitespace-nowrap shadow-md">
+                    Verify Credential
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Result Section -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    @if($certificate)
+        <!-- Case 1: Certificate Found -->
+        <div class="bg-white rounded-3xl border-2 border-emerald-500 shadow-2xl p-6 sm:p-10 relative overflow-hidden">
+            <div class="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-900 mb-8">
+                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-sm sm:text-base">Authentic Certificate Verified</h3>
+                    <p class="text-xs text-emerald-700">This record is authentic and officially ratified by the Brands Academy Nigeria Foundation Board of Trustees.</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-wider block mb-1">Awarded To</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-serif-title">
+                        {{ $certificate->recipient_name }}
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Programme / Workshop</span>
+                        <span class="font-bold text-slate-900">{{ $certificate->course_title }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Credential Track</span>
+                        <span class="font-bold text-amber-700">{{ $certificate->track_tier }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Certificate Number</span>
+                        <span class="font-mono font-bold text-slate-900">{{ $certificate->certificate_number }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Date of Issuance</span>
+                        <span class="font-bold text-slate-900">{{ $certificate->issued_at->format('F d, Y') }}</span>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900 text-slate-300 text-xs space-y-1">
+                    <div class="font-bold text-white uppercase tracking-wider text-[10px]">Issuing Authority</div>
+                    <div>Brands Academy Nigeria Foundation &bull; Incorporated Trustee (CAMA CAP C20 LFN 2004)</div>
+                    <div>RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>
+                </div>
+
+                <div class="pt-4 flex flex-wrap items-center gap-4">
+                    <a href="{{ route('certificates.download', $certificate->verification_token) }}" class="px-6 py-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download Official PDF Certificate
+                    </a>
+                    <a href="{{ route('certificates.preview', $certificate->verification_token) }}" target="_blank" class="px-5 py-3 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                        Preview in Browser
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    @elseif($member)
+        <!-- Case 2: Member Credential Found -->
+        <div class="bg-white rounded-3xl border-2 border-emerald-500 shadow-2xl p-6 sm:p-10 relative overflow-hidden">
+            <div class="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-900 mb-8">
+                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-sm sm:text-base">Active Member Verified</h3>
+                    <p class="text-xs text-emerald-700">Official member in good standing with Brands Academy Nigeria Foundation.</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-wider block mb-1">Member Profile</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-serif-title">
+                        {{ $member->full_name }}
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Member ID Number</span>
+                        <span class="font-mono font-bold text-amber-700">{{ $member->member_number }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Category</span>
+                        <span class="font-bold text-slate-900">{{ $member->category_label }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Affiliation / Organization</span>
+                        <span class="font-bold text-slate-900">{{ $member->institution_or_company ?? 'Individual Practitioner' }}</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Member Since</span>
+                        <span class="font-bold text-slate-900">{{ $member->joined_at->format('F d, Y') }}</span>
+                    </div>
+                </div>
+
+                <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors">
+                    View Digital ID Card
+                </a>
+            </div>
+        </div>
+
+    @elseif($hasSearched)
+        <!-- Case 3: Searched But Not Found -->
+        <div class="bg-white rounded-3xl border border-rose-200 shadow-xl p-8 text-center max-w-lg mx-auto">
+            <div class="w-14 h-14 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Record Not Found</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-6">
+                No active certificate or membership credential matches the query <strong>"{{ $searchQuery }}"</strong>. Please verify the code or contact the Foundation registry.
+            </p>
+            <a href="mailto:thebrandsacademy@gmail.com" class="text-xs font-bold text-amber-600 hover:underline">
+                Contact Registry: thebrandsacademy@gmail.com &rarr;
+            </a>
+        </div>
+
+    @else
+        <!-- Case 4: Default Initial State -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-8 text-center max-w-lg mx-auto text-slate-500 text-sm">
+            <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <p class="font-semibold text-slate-700 mb-1">Enter a credential number above</p>
+            <p class="text-xs text-slate-400">
+                You can enter certificate numbers (e.g. <span class="font-mono text-slate-600">BANF-CERT-2024-00108</span>) or scan the QR code printed on the credential.
+            </p>
+        </div>
+    @endif
+</section>
+
+@endsection
