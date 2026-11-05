@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Certificate;
+use App\Models\InstitutionalInquiry;
 use App\Models\Member;
 use App\Models\PortfolioSubmission;
 use App\Models\User;
@@ -235,6 +236,38 @@ class DatabaseSeeder extends Seeder
                     'Logo Suite & Color Harmony System',
                 ],
                 'status' => 'submitted',
+            ]
+        );
+
+        // 7. Create Sample Institutional Inquiries
+        InstitutionalInquiry::firstOrCreate(
+            ['email' => 'partnerships@kadunastategov.ng'],
+            [
+                'organization_name' => 'Kaduna State Ministry of Business & Innovation',
+                'contact_person' => 'Mallam Danjuma Sani',
+                'phone' => '+234 802 333 4455',
+                'organization_type' => 'government',
+                'solution_interest' => 'staff_training',
+                'estimated_cohort_size' => 75,
+                'target_timeline' => 'Next Quarter',
+                'message' => 'We are seeking an executive capacity-building workshop on public sector brand perception, citizen communication channels, and place branding for state investment officers.',
+                'status' => 'new',
+            ]
+        );
+
+        InstitutionalInquiry::firstOrCreate(
+            ['email' => 'registrar@abu.edu.ng'],
+            [
+                'organization_name' => 'Ahmadu Bello University (Faculty of Arts)',
+                'contact_person' => 'Prof. Fatima Danladi',
+                'phone' => '+234 803 555 7788',
+                'organization_type' => 'higher_education',
+                'solution_interest' => 'curriculum_licensing',
+                'estimated_cohort_size' => 150,
+                'target_timeline' => '2025/2026 Academic Session',
+                'message' => 'Requesting formal licensing framework to integrate Brands Academy CBA modules into the Department of Mass Communication practical branding studio.',
+                'status' => 'in_discussion',
+                'admin_notes' => 'MOU draft shared with Academic Planning Committee on 15 Oct.',
             ]
         );
     }
