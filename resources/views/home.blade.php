@@ -5,85 +5,291 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden py-20 lg:py-28 border-b border-slate-800">
-    <!-- Subtle Background Elements -->
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:24px_24px]"></div>
-    <div class="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<section class="relative bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white overflow-hidden py-16 lg:py-24 border-b border-slate-800/80">
+    <!-- Subtle Architectural Grid Background -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-6">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                Federal Republic of Nigeria &bull; CAC IT No. 7344471
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            <!-- Left Column: Editorial & Institutional Mission (7 Columns) -->
+            <div class="lg:col-span-7">
+                
+                <!-- Official Accreditation Kicker -->
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900/90 text-amber-300 border border-amber-500/30 shadow-xs mb-6 backdrop-blur-sm">
+                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-xs">🏛</span>
+                    <span class="tracking-wide">Federal Republic of Nigeria &bull; Incorporated Trustees CAC / IT No. 7344471</span>
+                </div>
+
+                <!-- Primary Headline -->
+                <h1 class="text-3xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-white leading-[1.15] font-serif-title mb-6">
+                    The National Standard for <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">Brand Governance, Strategy</span> & Professional Leadership.
+                </h1>
+
+                <!-- Body Narrative -->
+                <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal mb-8 max-w-2xl">
+                    Brands Academy Nigeria Foundation is a chartered educational foundation bridging academic theory and executive industry practice. Governed by distinguished academics and marketing fellows, the academy provides continuous professional membership, scheduled certification cohorts, and the nation’s tamper-proof registry of verified credentials.
+                </p>
+
+                <!-- Board & Credibility Strip -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 pt-4 border-t border-slate-800/90">
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white">Prof. Samaila Mande</div>
+                            <div class="text-[11px] text-slate-400">Chairman of Trustees, fnimn</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white">3 Chartered Tiers</div>
+                            <div class="text-[11px] text-slate-400">CBA &bull; CBS &bull; CBE Pathway</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white">Cryptographic QR</div>
+                            <div class="text-[11px] text-slate-400">Instant Vector Verification</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary CTA Row -->
+                <div class="flex flex-wrap items-center gap-3.5">
+                    <a href="{{ route('membership.register') }}" class="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20 transition-all hover:-translate-y-0.5 flex items-center gap-2 group whitespace-nowrap">
+                        <span>Join Foundation Membership</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-slate-950 text-amber-400">24/7/365</span>
+                        <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="{{ route('workshops.index') }}" class="px-5 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700/80 transition-all flex items-center gap-2 whitespace-nowrap">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>View Training Cohorts ({{ $openWorkshops->count() }} Open)</span>
+                    </a>
+                    <a href="{{ route('verify.certificate') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-amber-300 transition-colors py-2 px-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <span>Verify Credential</span>
+                    </a>
+                </div>
+
             </div>
 
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-serif-title mb-6">
-                Advancing branding, marketing & professional education.
-            </h1>
+            <!-- Right Column: Tangible Credential & Verification Specimen (5 Columns) -->
+            <div class="lg:col-span-5">
+                <div class="relative max-w-md mx-auto lg:max-w-none">
+                    
+                    <!-- Decorative subtle warm ambient back-glow -->
+                    <div class="absolute -inset-1.5 bg-gradient-to-tr from-amber-500/20 via-amber-400/5 to-slate-800/40 rounded-3xl blur-xl opacity-70"></div>
 
-            <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-light mb-8">
-                A not-for-profit, non-political educational foundation committed to closing the gap between academic theory and industry practice across Nigeria and the wider West African region.
-            </p>
+                    <!-- Master Credential Showcase Container -->
+                    <div class="relative bg-slate-900/95 rounded-2xl border border-amber-500/30 p-5 shadow-2xl backdrop-blur-md">
+                        
+                        <!-- Top Registry Status Bar -->
+                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-800 text-[11px]">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span class="font-bold text-slate-200 uppercase tracking-wider text-[10px]">National Credential Registry</span>
+                            </div>
+                            <span class="text-amber-400 font-mono text-[10px] font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                Specimen &bull; BANF-CERT-2024-00108
+                            </span>
+                        </div>
 
-            <blockquote class="border-l-2 border-amber-500 pl-4 py-1 mb-10 text-sm sm:text-base italic text-amber-200/90 font-serif-title">
-                &ldquo;Branding is not decoration — it is strategy, trust and identity made visible.&rdquo;
-                <footer class="text-xs text-amber-400/80 not-italic font-sans mt-1">— Foundation Manifesto</footer>
-            </blockquote>
+                        <!-- Certificate Specimen Card -->
+                        <div class="bg-gradient-to-b from-[#FAF8F5] to-[#F4EFE6] text-slate-900 rounded-xl p-5 border-2 border-amber-400/60 shadow-inner relative overflow-hidden">
+                            <!-- Delicate Guilloche Corner Borders -->
+                            <div class="absolute top-1 left-1 w-6 h-6 border-t-2 border-l-2 border-amber-700/40 pointer-events-none"></div>
+                            <div class="absolute top-1 right-1 w-6 h-6 border-t-2 border-r-2 border-amber-700/40 pointer-events-none"></div>
+                            <div class="absolute bottom-1 left-1 w-6 h-6 border-b-2 border-l-2 border-amber-700/40 pointer-events-none"></div>
+                            <div class="absolute bottom-1 right-1 w-6 h-6 border-b-2 border-r-2 border-amber-700/40 pointer-events-none"></div>
 
-            <div class="flex flex-wrap items-center gap-4">
-                <a href="{{ route('membership.register') }}" class="px-6 py-3.5 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20 transition-all hover:scale-105 flex items-center gap-2">
-                    Join Foundation Membership (24/7)
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-                <a href="{{ route('workshops.index') }}" class="px-6 py-3.5 rounded-xl text-sm font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-all flex items-center gap-2">
-                    View Training Cohorts
-                </a>
+                            <!-- Certificate Header -->
+                            <div class="text-center mb-3">
+                                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-950 text-amber-400 font-serif-title font-bold text-sm shadow-xs mb-1">
+                                    B
+                                </div>
+                                <div class="font-serif-title font-extrabold text-[13px] tracking-tight text-slate-950 uppercase leading-none">
+                                    Brands Academy Nigeria Foundation
+                                </div>
+                                <div class="text-[8.5px] font-bold text-amber-800 tracking-wider uppercase mt-0.5">
+                                    Incorporated Trustees &bull; CAC IT No. 7344471
+                                </div>
+                                <div class="h-px w-24 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mt-1.5"></div>
+                            </div>
+
+                            <!-- Certificate Conferment Statement -->
+                            <div class="text-center my-3">
+                                <div class="text-[9px] uppercase tracking-widest text-slate-500 font-semibold">
+                                    Official Certificate of Professional Competence
+                                </div>
+                                <div class="text-[10px] italic text-slate-600 mt-0.5 font-serif-title">
+                                    This is to certify that
+                                </div>
+                                <div class="font-serif-title font-extrabold text-base text-slate-950 tracking-tight my-0.5 border-b border-dashed border-slate-300 pb-0.5 inline-block px-3">
+                                    Chidi Okafor
+                                </div>
+                                <div class="text-[10px] font-bold text-amber-900 mt-1">
+                                    Certified Brand Associate (CBA) &bull; Distinction
+                                </div>
+                                <div class="text-[8.5px] text-slate-500">
+                                    Having satisfied all syllabus defenses and capstone portfolio criteria
+                                </div>
+                            </div>
+
+                            <!-- Dual Signature & Gold Seal Row -->
+                            <div class="flex items-end justify-between pt-3 mt-2 border-t border-slate-200/90 text-[8.5px]">
+                                <div class="text-center">
+                                    <div class="font-serif-title italic text-slate-800 text-[10px] font-semibold -mb-0.5">Prof. Samaila Mande</div>
+                                    <div class="w-20 h-px bg-slate-400 mx-auto my-0.5"></div>
+                                    <div class="font-bold text-slate-600">Chairman, Trustees</div>
+                                </div>
+
+                                <!-- Embossed Gold Seal Emblem -->
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 p-0.5 shadow-md flex items-center justify-center shrink-0">
+                                    <div class="w-full h-full rounded-full border border-amber-200/80 flex flex-col items-center justify-center text-slate-950 text-center leading-none">
+                                        <span class="text-[6px] font-extrabold uppercase tracking-tighter">OFFICIAL</span>
+                                        <span class="text-[8px] font-black">SEAL</span>
+                                        <span class="text-[5.5px] font-bold">CAC 7344471</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <div class="font-serif-title italic text-slate-800 text-[10px] font-semibold -mb-0.5">Titus Eveshoyan</div>
+                                    <div class="w-20 h-px bg-slate-400 mx-auto my-0.5"></div>
+                                    <div class="font-bold text-slate-600">Secretary to Board</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Interactive In-Hero Verification Lookup Box -->
+                        <div class="mt-4 pt-3.5 border-t border-slate-800">
+                            <form action="{{ route('verify.certificate') }}" method="GET" class="space-y-2">
+                                <label for="hero-token-input" class="block text-[11px] font-semibold text-slate-300 flex items-center justify-between">
+                                    <span>Verify Any Issued Credential</span>
+                                    <span class="text-[10px] text-amber-400 font-mono">1-Click Live Test</span>
+                                </label>
+                                <div class="flex gap-2">
+                                    <input 
+                                        type="text" 
+                                        id="hero-token-input"
+                                        name="q" 
+                                        value="BANF-CERT-2024-00108"
+                                        placeholder="Enter Certificate # or Token" 
+                                        class="flex-1 bg-slate-950/80 text-white font-mono text-xs px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400 placeholder-slate-500"
+                                    >
+                                    <button 
+                                        type="submit" 
+                                        class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors whitespace-nowrap shadow-xs"
+                                    >
+                                        Verify Specimen
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="flex items-center justify-between text-[10px] text-slate-400 mt-2">
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    Publicly Auditable
+                                </span>
+                                <span>Secured under CAMA 2004 Charter</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Institutional Governance & Metrics Strip -->
+<section class="bg-slate-950 border-b border-slate-800 text-slate-300 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+            <div class="border-l-2 border-amber-500/50 pl-3">
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">CAC IT No. 7344471</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Federal Incorporated Trustees</div>
+            </div>
+            <div class="border-l-2 border-amber-500/50 pl-3">
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Postgraduate Dean Chair</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Academic Board Oversight</div>
+            </div>
+            <div class="border-l-2 border-amber-500/50 pl-3">
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">3 Certified Pathways</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">CBA &bull; CBS &bull; CBE Accreditations</div>
+            </div>
+            <div class="border-l-2 border-amber-500/50 pl-3">
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Cryptographic Ledger</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Tamper-Proof Verification Registry</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- The Two Pillars Architecture Banner -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- The Two Pillars Architecture Section -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+        <div class="text-xs font-extrabold uppercase tracking-widest text-amber-600 mb-1">Institutional Operating Framework</div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-950 font-serif-title">
+            The Two Foundation Pillars
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">
+            Structured in strict accordance with the Foundation’s charter to provide continuous membership while maintaining rigorous, time-bound certification cohorts.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         <!-- Pillar 1: Ongoing Membership -->
-        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200/80 relative overflow-hidden group hover:border-amber-400 transition-all">
-            <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 font-extrabold text-[10px] tracking-wider uppercase px-3 py-1 rounded-bl-xl">
-                Always Open &bull; 24/7
+        <div class="bg-white rounded-2xl p-7 sm:p-8 shadow-sm border border-slate-200 relative overflow-hidden group hover:border-amber-400 hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center font-serif-title font-bold text-lg">
+                    01
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                    <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                    Continuous &bull; Always Open (24/7)
+                </span>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center mb-5">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Ongoing Foundation Membership</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                Open year-round for students, professionals, and institutions. Receive your official <strong>Member ID</strong>, digital credential card, and access to the academy's practitioner community.
+            <h3 class="text-xl font-bold text-slate-950 mb-2">Evergreen Professional Membership</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                Open 365 days a year for students, practitioners, educators, and institutions. Registration generates your official <strong class="text-slate-900">BANF-MBR-YYYY-XXXX</strong> credential, digital ID card with cryptographic QR code, and access to the national practitioner registry.
             </p>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-                <span class="text-xs font-semibold text-slate-500">Student, Professional & Fellow Tracks</span>
-                <a href="{{ route('membership.register') }}" class="text-sm font-bold text-amber-600 group-hover:text-amber-700 flex items-center gap-1">
-                    Register Now &rarr;
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-semibold text-slate-500">Student &bull; Professional &bull; Fellow</span>
+                <a href="{{ route('membership.register') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 group-hover:translate-x-1 transition-all">
+                    Register for Membership &rarr;
                 </a>
             </div>
         </div>
 
         <!-- Pillar 2: Scheduled Cohorts & Application Windows -->
-        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200/80 relative overflow-hidden group hover:border-blue-400 transition-all">
-            <div class="absolute top-0 right-0 bg-emerald-600 text-white font-extrabold text-[10px] tracking-wider uppercase px-3 py-1 rounded-bl-xl">
-                Time-Bound Cohorts
+        <div class="bg-white rounded-2xl p-7 sm:p-8 shadow-sm border border-slate-200 relative overflow-hidden group hover:border-blue-400 hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 flex items-center justify-center font-serif-title font-bold text-lg">
+                    02
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                    Scheduled Application Windows
+                </span>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mb-5">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Workshops & Cohort Windows</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                Intensive certification tracks (CBA, CBS, CBE) and vocational masterclasses open for applications during scheduled enrollment windows with automated certificate delivery.
+            <h3 class="text-xl font-bold text-slate-950 mb-2">Masterclasses & Certification Cohorts</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                Structured certification programmes that open exclusively during designated application windows. Enrolled candidates undergo rigorous syllabus defense and capstone portfolio evaluation, concluding with automated vector certificate issuance.
             </p>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-                <span class="text-xs font-semibold text-slate-500">Includes 100% Free Community Tracks</span>
-                <a href="{{ route('workshops.index') }}" class="text-sm font-bold text-blue-600 group-hover:text-blue-700 flex items-center gap-1">
-                    Browse Cohorts &rarr;
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-semibold text-slate-500">Includes Tuition-Free Community Tracks</span>
+                <a href="{{ route('workshops.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-800 group-hover:translate-x-1 transition-all">
+                    Explore Active Cohorts &rarr;
                 </a>
             </div>
         </div>
@@ -219,26 +425,32 @@
     </div>
 </section>
 
-<!-- Quick Credential Verification Banner -->
+<!-- Institutional Accreditation & Licensing Banner -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="bg-gradient-to-r from-slate-900 to-blue-950 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
-        <div class="max-w-2xl">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 mb-4">
-                Tamper-Proof Verification Engine
+    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-xl relative overflow-hidden">
+        <!-- Subtle Gold Accent Glow -->
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative max-w-3xl">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-4">
+                Corporate Governance & Higher Education
             </span>
             <h2 class="text-2xl sm:text-3xl font-extrabold font-serif-title mb-4">
-                Verify Any Issued Certificate or Member ID
+                License the Foundation Curriculum or Commission an Executive Retreat
             </h2>
-            <p class="text-slate-300 text-sm leading-relaxed mb-8">
-                All certificates generated by Brands Academy Nigeria Foundation feature unique cryptographic tokens and QR codes. Employers and institutions can verify authentic records instantly.
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
+                From federal ministries to top African universities, Brands Academy Nigeria Foundation licenses accredited brand management syllabi, certifies communications teams, and establishes institutional branding chairs.
             </p>
 
-            <form action="{{ route('verify.certificate') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
-                <input type="text" name="q" placeholder="Enter Certificate # or Verification Token (e.g. BANF-CERT-2024-00108)" class="flex-1 bg-white/10 text-white placeholder-slate-400 px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm">
-                <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-colors whitespace-nowrap">
-                    Verify Credential
-                </button>
-            </form>
+            <div class="flex flex-wrap items-center gap-4">
+                <a href="{{ route('partnerships') }}" class="px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs sm:text-sm transition-all shadow-md shadow-amber-500/20 flex items-center gap-2">
+                    <span>Submit Institutional Inquiry</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                <a href="{{ route('faculty') }}" class="px-5 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl text-xs sm:text-sm border border-slate-700 transition-colors">
+                    Meet the Trustees & Faculty
+                </a>
+            </div>
         </div>
     </div>
 </section>
