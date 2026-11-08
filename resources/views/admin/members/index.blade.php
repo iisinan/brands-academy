@@ -16,6 +16,10 @@
                 <p class="text-slate-300 text-xs mt-1">Manage practitioners, students, and corporate fellows in good standing.</p>
             </div>
             <div class="flex items-center gap-2">
+                <a href="{{ route('admin.users') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    Users &amp; RBAC
+                </a>
                 <a href="{{ route('admin.members.export') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                     Export CSV
@@ -63,6 +67,7 @@
                     <tr>
                         <th class="px-6 py-4">Member Name & ID</th>
                         <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4">Portal Role</th>
                         <th class="px-6 py-4">Contact Info</th>
                         <th class="px-6 py-4">Affiliation & State</th>
                         <th class="px-6 py-4">Member Since</th>
@@ -80,6 +85,21 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-200">
                                     {{ $member->category_label }}
                                 </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if($member->user)
+                                    @if($member->user->isAdmin())
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900 text-amber-400">
+                                            Admin
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                                            Member
+                                        </span>
+                                    @endif
+                                @else
+                                    <span class="text-slate-400 text-[10px] italic">No Account</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-slate-800 font-medium">{{ $member->email }}</div>
@@ -100,7 +120,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="p-8 text-center text-slate-500">No members found matching your search.</td>
+                            <td colspan="7" class="p-8 text-center text-slate-500">No members found matching your search.</td>
                         </tr>
                     @endforelse
                 </tbody>

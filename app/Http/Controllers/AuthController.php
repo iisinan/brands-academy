@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
+use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,18 +22,17 @@ class AuthController extends Controller
     public function showLoginForm(): View|RedirectResponse
     {
         if (Auth::check()) {
-            if (Auth::user()->isAdmin()) {
-                return redirect()->route('admin.dashboard');
-            }
+            /** @var User $user */
+            $user = Auth::user();
 
-            return redirect()->route('member.dashboard');
+            return redirect()->route($user->getDashboardRoute());
         }
 
         return view('auth.login');
     }
 
     /**
-     * Authenticate user credentials.
+     * Authenticate user credentials with smart RBAC role detection.
      */
     public function login(Request $request): RedirectResponse
     {
@@ -44,16 +46,55 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            if (Auth::user()->isAdmin()) {
-                return redirect()->intended(route('admin.dashboard'))->with('success', 'Welcome back to the Administration Control Panel.');
+            /** @var User $user */
+            $user = Auth::user();
+
+            // Smart RBAC: Resolve destination based on detected role
+            $targetRoute = $user->getDashboardRoute();
+
+            // Prevent non-admins from hitting stored admin URLs (avoids 403)
+            $intendedUrl = session()->get('url.intended');
+            if ($intendedUrl && ! $user->isAdmin() && str_contains($intendedUrl, '/admin')) {
+                session()->forget('url.intended');
+                $intendedUrl = null;
             }
 
-            return redirect()->intended(route('member.dashboard'))->with('success', 'Welcome back to your Member Portal.');
+            $welcomeMsg = $user->isAdmin()
+                ? "Welcome back, {$user->name}! Authenticated as Administrator."
+                : "Welcome back, {$user->name}! Authenticated as Member.";
+
+            return redirect()->intended(route($targetRoute))->with('success', $welcomeMsg);
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
+    }
+
+    /**
+     * Smart real-time detection of user role by email for the login interface.
+     */
+    public function detectRole(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email'],
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (! $user) {
+            return response()->json([
+                'detected' => false,
+            ]);
+        }
+
+        return response()->json([
+            'detected' => true,
+            'role' => $user->role instanceof UserRole ? $user->role->value : (string) $user->role,
+            'role_label' => $user->role_label,
+            'is_admin' => $user->isAdmin(),
+            'badge_classes' => $user->role_badge_classes,
+        ]);
     }
 
     /**

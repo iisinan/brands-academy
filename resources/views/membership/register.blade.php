@@ -204,7 +204,7 @@
                                     <span>Verified</span>
                                 </span>
                             </div>
-                            <input type="text" name="name" x-model="name" @input="touch('name')" @blur="touch('name')" required
+                            <input type="text" name="name" x-model="name" @input="touch('name')" @blur="formatName()" required
                                 class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
                                 :class="isFieldVerified('name') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['name'] && !name.trim() ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
                                 placeholder="e.g. Umar Suleiman">
@@ -258,12 +258,18 @@
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                                         Phone Number <span class="text-rose-500">*</span>
                                     </label>
-                                    <span x-show="isFieldVerified('phone')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <div class="flex items-center gap-1.5">
+                                        <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            <span x-text="phoneCarrier"></span>
                                         </span>
-                                        <span>Valid Number</span>
-                                    </span>
+                                        <span x-show="isFieldVerified('phone')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                                <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                            </span>
+                                            <span>Valid</span>
+                                        </span>
+                                    </div>
                                 </div>
                                 <input type="text" name="phone" x-model="phone" @input="touch('phone')" @blur="touch('phone')" required
                                     class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
@@ -400,10 +406,49 @@
                                         <span>State Set</span>
                                     </span>
                                 </div>
-                                <input type="text" name="state" x-model="state" @input="touch('state')" @blur="touch('state')" required
+                                <input type="text" name="state" x-model="state" list="nigerian-states" @input="touch('state')" @blur="touch('state')" required
                                     class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
                                     :class="isFieldVerified('state') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['state'] && !isFieldVerified('state') ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
-                                    placeholder="e.g. Kaduna, Lagos, Abuja">
+                                    placeholder="e.g. Kaduna, Lagos, Abuja FCT">
+                                <datalist id="nigerian-states">
+                                    <option value="Abia">
+                                    <option value="Adamawa">
+                                    <option value="Akwa Ibom">
+                                    <option value="Anambra">
+                                    <option value="Bauchi">
+                                    <option value="Bayelsa">
+                                    <option value="Benue">
+                                    <option value="Borno">
+                                    <option value="Cross River">
+                                    <option value="Delta">
+                                    <option value="Ebonyi">
+                                    <option value="Edo">
+                                    <option value="Ekiti">
+                                    <option value="Enugu">
+                                    <option value="FCT Abuja">
+                                    <option value="Gombe">
+                                    <option value="Imo">
+                                    <option value="Jigawa">
+                                    <option value="Kaduna">
+                                    <option value="Kano">
+                                    <option value="Katsina">
+                                    <option value="Kebbi">
+                                    <option value="Kogi">
+                                    <option value="Kwara">
+                                    <option value="Lagos">
+                                    <option value="Nasarawa">
+                                    <option value="Niger">
+                                    <option value="Ogun">
+                                    <option value="Ondo">
+                                    <option value="Osun">
+                                    <option value="Oyo">
+                                    <option value="Plateau">
+                                    <option value="Rivers">
+                                    <option value="Sokoto">
+                                    <option value="Taraba">
+                                    <option value="Yobe">
+                                    <option value="Zamfara">
+                                </datalist>
                             </div>
 
                             <div>
@@ -450,7 +495,10 @@
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                                         Password <span class="text-rose-500">*</span>
                                     </label>
-                                    <span x-show="isFieldVerified('password')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                    <span x-show="capsLockOn" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                                        <span>⚠️</span> Caps Lock is ON
+                                    </span>
+                                    <span x-show="isFieldVerified('password') && !capsLockOn" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
                                         <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                             <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         </span>
@@ -458,7 +506,12 @@
                                     </span>
                                 </div>
                                 <div class="relative">
-                                    <input :type="showPass ? 'text' : 'password'" name="password" x-model="password" @input="touch('password')" @blur="touch('password')" required
+                                    <input :type="showPass ? 'text' : 'password'" name="password" x-model="password" 
+                                        @input="touch('password')" 
+                                        @blur="touch('password')" 
+                                        @keydown="checkCapsLock($event)"
+                                        @keyup="checkCapsLock($event)"
+                                        required
                                         class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 pr-11 field-interactive placeholder-slate-400 focus:outline-none"
                                         :class="isFieldVerified('password') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['password'] && !isFieldVerified('password') ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
                                         placeholder="Minimum 8 characters">
@@ -508,7 +561,12 @@
                                     </span>
                                 </div>
                                 <div class="relative">
-                                    <input :type="showConfirm ? 'text' : 'password'" name="password_confirmation" x-model="passwordConfirmation" @input="touch('password_confirmation')" @blur="touch('password_confirmation')" required
+                                    <input :type="showConfirm ? 'text' : 'password'" name="password_confirmation" x-model="passwordConfirmation" 
+                                        @input="touch('password_confirmation')" 
+                                        @blur="touch('password_confirmation')" 
+                                        @keydown="checkCapsLock($event)"
+                                        @keyup="checkCapsLock($event)"
+                                        required
                                         class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 pr-11 field-interactive placeholder-slate-400 focus:outline-none"
                                         :class="isFieldVerified('password_confirmation') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (passwordConfirmation && password !== passwordConfirmation ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
                                         placeholder="Re-enter password">
@@ -702,6 +760,7 @@
             passwordConfirmation: '',
             showPass: false,
             showConfirm: false,
+            capsLockOn: false,
             touched: {},
 
             emailTypoSuggestion: '',
@@ -709,6 +768,43 @@
 
             touch(field) {
                 this.touched[field] = true;
+            },
+
+            checkCapsLock(e) {
+                if (e.getModifierState) {
+                    this.capsLockOn = e.getModifierState('CapsLock');
+                }
+            },
+
+            formatName() {
+                this.touch('name');
+                if (this.name) {
+                    this.name = this.name
+                        .trim()
+                        .split(/\s+/)
+                        .filter(Boolean)
+                        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+                        .join(' ');
+                }
+            },
+
+            get phoneCarrier() {
+                const raw = (this.phone || '').replace(/[^0-9]/g, '');
+                let prefix = '';
+                if (raw.startsWith('234') && raw.length >= 6) {
+                    prefix = '0' + raw.substring(3, 6);
+                } else if (raw.startsWith('0') && raw.length >= 4) {
+                    prefix = raw.substring(0, 4);
+                }
+                const mtn = ['0803', '0806', '0703', '0706', '0813', '0816', '0810', '0814', '0903', '0906', '0913', '0916'];
+                const airtel = ['0802', '0808', '0708', '0812', '0701', '0902', '0901', '0904', '0907', '0912'];
+                const glo = ['0805', '0807', '0705', '0815', '0811', '0905', '0915'];
+                const nineMobile = ['0809', '0817', '0818', '0909', '0908'];
+                if (mtn.includes(prefix)) return 'MTN Nigeria';
+                if (airtel.includes(prefix)) return 'Airtel Nigeria';
+                if (glo.includes(prefix)) return 'Glo Mobile';
+                if (nineMobile.includes(prefix)) return '9mobile';
+                return null;
             },
 
             onEmailInput() {

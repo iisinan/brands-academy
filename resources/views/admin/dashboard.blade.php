@@ -45,6 +45,10 @@
                         </span>
                     @endif
                 </a>
+                <a href="{{ route('admin.users') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    Users &amp; RBAC
+                </a>
             </div>
         </div>
     </div>
@@ -52,8 +56,17 @@
 
 <!-- Stats Grid -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Users &amp; RBAC</span>
+            <div class="text-3xl font-extrabold text-slate-900 font-serif-title">{{ $stats['total_users'] }}</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">{{ $stats['admin_users'] }} Admins &bull; {{ $stats['member_users'] }} Members</div>
+            <a href="{{ route('admin.users') }}" class="text-xs font-bold text-amber-600 hover:underline mt-2 inline-block">
+                Manage Roles &rarr;
+            </a>
+        </div>
+
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Ongoing Members</span>
             <div class="text-3xl font-extrabold text-slate-900 font-serif-title">{{ $stats['total_members'] }}</div>
@@ -87,7 +100,7 @@
         </div>
 
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Partnership Inquiries</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Inquiries</span>
             <div class="text-3xl font-extrabold text-blue-600 font-serif-title">{{ $stats['total_inquiries'] }}</div>
             <a href="{{ route('admin.inquiries') }}" class="text-xs font-bold text-blue-600 hover:underline mt-2 inline-block">
                 Manage Proposals &rarr;

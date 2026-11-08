@@ -35,6 +35,7 @@ Route::get('/certificates/{token}/preview', [CertificateController::class, 'prev
 // Authentication
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login/detect-role', [AuthController::class, 'detectRole'])->name('login.detect-role');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Password Reset
@@ -44,7 +45,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Member Protected Portal
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'role:member,admin'])->group(function (): void {
     Route::get('/member/dashboard', [MembershipController::class, 'dashboard'])->name('member.dashboard');
     Route::post('/member/profile', [MembershipController::class, 'updateProfile'])->name('member.profile.update');
     Route::get('/member/applications/{id}/submit-portfolio', [MembershipController::class, 'submitPortfolio'])->name('member.portfolio.create');
@@ -54,6 +55,10 @@ Route::middleware('auth')->group(function (): void {
 // Admin Protected Area
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+    Route::post('/users/{id}/role', [AdminController::class, 'updateUserRole'])->name('users.role');
+    Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/members', [AdminController::class, 'members'])->name('members');
     Route::get('/members/export', [AdminController::class, 'exportMembers'])->name('members.export');
 

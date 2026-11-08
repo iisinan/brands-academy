@@ -7,12 +7,15 @@ use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
 use App\Models\Member;
 use App\Models\PortfolioSubmission;
+use App\Models\User;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -33,6 +36,9 @@ class AdminController extends Controller
             'pending_submissions' => PortfolioSubmission::where('status', 'submitted')->count(),
             'pending_inquiries' => InstitutionalInquiry::where('status', 'new')->count(),
             'total_inquiries' => InstitutionalInquiry::count(),
+            'total_users' => User::count(),
+            'admin_users' => User::where('role', 'admin')->count(),
+            'member_users' => User::where('role', 'member')->count(),
         ];
 
         $recentApplications = WorkshopApplication::with(['workshop', 'member'])
@@ -69,6 +75,122 @@ class AdminController extends Controller
         $members = $query->latest()->paginate(15);
 
         return view('admin.members.index', compact('members'));
+    }
+
+    /**
+     * Manage Portal Users and RBAC roles.
+     */
+    public function users(Request $request): View
+    {
+        $query = User::query()->with('member');
+
+        if ($request->filled('q')) {
+            $q = (string) $request->query('q');
+            $query->where(function ($sub) use ($q): void {
+                $sub->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->query('role'));
+        }
+
+        $users = $query->latest()->paginate(15)->withQueryString();
+
+        $roleCounts = [
+            'total' => User::count(),
+            'admin' => User::where('role', 'admin')->count(),
+            'member' => User::where('role', 'member')->count(),
+        ];
+
+        return view('admin.users.index', compact('users', 'roleCounts'));
+    }
+
+    /**
+     * Update user RBAC role.
+     */
+    public function updateUserRole(Request $request, int $id): RedirectResponse
+    {
+        $validated = $request->validate([
+            'role' => ['required', 'string', 'in:admin,member'],
+        ]);
+
+        $user = User::findOrFail($id);
+
+        // Security check: Prevent self-demotion
+        if ($user->id === Auth::id() && $validated['role'] !== 'admin') {
+            return back()->with('error', 'For security, you cannot remove administrator privileges from your own active account.');
+        }
+
+        $oldRole = $user->role_label;
+        $user->role = $validated['role'];
+        $user->save();
+
+        return back()->with('success', "Role for {$user->name} has been updated from {$oldRole} to {$user->role_label} successfully.");
+    }
+
+    /**
+     * Provision a new portal user account with designated RBAC role.
+     */
+    public function storeUser(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:200'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+            'role' => ['required', 'string', 'in:admin,member'],
+        ]);
+
+        $user = User::create([
+            'name' => trim($validated['name']),
+            'email' => trim($validated['email']),
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
+        ]);
+
+        // If provisioned as a member, ensure an initial Member profile exists
+        if ($user->isMember()) {
+            $nameParts = preg_split('/\s+/', $user->name, 2);
+            Member::create([
+                'user_id' => $user->id,
+                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'first_name' => $nameParts[0] ?? 'Member',
+                'last_name' => $nameParts[1] ?? 'User',
+                'email' => $user->email,
+                'phone' => '+234 800 000 0000',
+                'category' => 'professional',
+                'state' => 'Kaduna',
+                'country' => 'Nigeria',
+                'status' => 'active',
+                'qr_code_token' => (string) Str::uuid(),
+                'joined_at' => now()->toDateString(),
+            ]);
+        }
+
+        return back()->with('success', "Account for {$user->name} has been provisioned successfully with {$user->role_label} privileges.");
+    }
+
+    /**
+     * Remove a user account.
+     */
+    public function destroyUser(int $id): RedirectResponse
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'For safety, you cannot delete your own active administrator account.');
+        }
+
+        if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
+            return back()->with('error', 'Cannot delete the only remaining system administrator.');
+        }
+
+        $userName = $user->name;
+        $userRole = $user->role_label;
+        $user->delete();
+
+        return back()->with('success', "Account {$userName} ({$userRole}) was deleted successfully.");
     }
 
     /**

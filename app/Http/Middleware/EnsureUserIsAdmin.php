@@ -15,12 +15,19 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()) {
-            return redirect()->route('login');
+        $user = $request->user();
+
+        if (! $user) {
+            return redirect()->guest(route('login'));
         }
 
-        if (! $request->user()->isAdmin()) {
-            abort(403, 'Unauthorized access. Administrator privileges required.');
+        if (! $user->isAdmin()) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                abort(403, 'Unauthorized access. Administrator privileges required.');
+            }
+
+            return redirect()->route($user->getDashboardRoute())
+                ->with('error', 'Unauthorized access. Administrator privileges required.');
         }
 
         return $next($request);
