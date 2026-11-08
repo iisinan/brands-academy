@@ -316,9 +316,16 @@
                 <div>
                     <!-- Status & Track Badges -->
                     <div class="flex items-center justify-between gap-2 mb-4">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
-                            {{ $window['label'] }}
-                        </span>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
+                                {{ $window['label'] }}
+                            </span>
+                            @if($workshop->is_featured)
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                                    <span>&#11088; Featured</span>
+                                </span>
+                            @endif
+                        </div>
                         <span class="text-xs font-semibold text-slate-500">
                             {{ $workshop->delivery_mode == 'hybrid' ? 'Hybrid' : ($workshop->delivery_mode == 'online' ? 'Online' : 'In Person') }}
                         </span>

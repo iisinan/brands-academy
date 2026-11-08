@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.member')
 
 @section('title', 'Member Dashboard - ' . $member->full_name)
+@section('page_title', 'Member Dashboard')
 
 @push('styles')
 <style>
@@ -40,15 +41,17 @@
     initialBio: @js($member->bio ?? ''),
     memberNumber: @js($member->member_number),
     verificationUrl: @js(route('verify.certificate', $member->qr_code_token))
-})">
+})"
+@open-card-modal.window="showCardModal = true"
+class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <!-- Member Top Profile Banner -->
-    <section id="overview" class="scroll-mt-20 bg-slate-900 text-white py-12 border-b border-slate-800 relative overflow-hidden">
+    <!-- Member Executive Welcome Card -->
+    <div id="overview" class="scroll-mt-20 relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
         <!-- Ambient decorative glow -->
         <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="relative z-10">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-bold text-2xl sm:text-3xl flex items-center justify-center shadow-lg font-serif-title ring-4 ring-amber-500/20 shrink-0">
@@ -63,13 +66,13 @@
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                 Active Member in Good Standing
                             </span>
-                            @if(auth()->user()->isAdmin())
+                            @if(auth()->user()?->isAdmin())
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950">
                                     Administrator View
                                 </span>
                             @endif
                         </div>
-                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-serif-title tracking-tight">
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-serif-title tracking-tight text-white">
                             {{ $member->full_name }}
                         </h1>
                         <p class="text-xs sm:text-sm text-slate-400 mt-1 flex flex-wrap items-center gap-2">
@@ -84,7 +87,7 @@
 
                 <!-- Member ID Pill & Quick Actions -->
                 <div class="flex flex-wrap items-center gap-3">
-                    @if(auth()->user()->isAdmin())
+                    @if(auth()->user()?->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-2.5 rounded-2xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors flex items-center gap-1.5 whitespace-nowrap shadow-xs">
                             &larr; Admin Control Panel
                         </a>
@@ -101,7 +104,7 @@
                                 <span class="hidden sm:inline">Certificate PDF</span>
                             </a>
                             <!-- Quick View Modal Trigger -->
-                            <button type="button" @click="showCardModal = true" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm">
+                            <button type="button" @click="showCardModal = true" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 <span>Quick Credential</span>
                             </button>
@@ -134,71 +137,20 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Dashboard Main Content Grid with Responsive Member Sidebar -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-
-        <!-- Mobile Horizontal Sticky Sub-Nav / Drawer Trigger (< lg) -->
-        <div class="lg:hidden mb-6 space-y-3">
-            <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
-                <div class="flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-bold text-slate-800 font-mono">{{ $member->member_number }}</span>
-                    <span class="text-[10px] text-slate-500">&bull; {{ $member->category_label }}</span>
-                </div>
-                <button type="button" @click="mobileSidebarOpen = true" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs">
-                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    <span>Member Menu</span>
-                </button>
+    <!-- 1. Currently Open Cohorts Fast-Apply Section -->
+    <div id="cohorts" class="scroll-mt-28">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Cohorts Open for Applications</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Apply during active windows with your verified Member ID.</p>
             </div>
-
-            <!-- Horizontal Scroll Pills for Instant Section Jump -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-                <button type="button" @click="scrollTo('cohorts')"
-                        :class="activeSection === 'cohorts' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
-                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
-                    Cohorts ({{ $openWorkshops->count() }})
-                </button>
-                <button type="button" @click="scrollTo('certificates')"
-                        :class="activeSection === 'certificates' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
-                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
-                    Certificates ({{ $certificates->count() }})
-                </button>
-                <button type="button" @click="scrollTo('applications')"
-                        :class="activeSection === 'applications' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
-                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
-                    Applications ({{ $applications->count() }})
-                </button>
-                <button type="button" @click="scrollTo('profile')"
-                        :class="activeSection === 'profile' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
-                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
-                    Profile &amp; Settings
-                </button>
-                <button type="button" @click="showCardModal = true"
-                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap bg-amber-50 text-amber-900 border border-amber-300 font-bold shadow-2xs cursor-pointer">
-                    Digital ID QR
-                </button>
-            </div>
+            <a href="{{ route('workshops.index') }}" class="text-xs sm:text-sm font-bold text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-1">
+                <span>View all cohorts</span>
+                <span>&rarr;</span>
+            </a>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-            <!-- Desktop Sticky Sidebar (lg:col-span-4 xl:col-span-3) -->
-            <aside class="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-24 space-y-5">
-                <x-member-sidebar
-                    :member="$member"
-                    :open-workshops="$openWorkshops"
-                    :certificates="$certificates"
-                    :applications="$applications" />
-            </aside>
-
-            <!-- Main Content Area (lg:col-span-8 xl:col-span-9) -->
-            <main class="lg:col-span-8 xl:col-span-9 space-y-10 min-w-0">
-
-                <!-- 1. Currently Open Cohorts Fast-Apply Section -->
-                <div id="cohorts" class="scroll-mt-28">
-                <div class="flex items-center justify-between mb-4">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Cohorts Open for Applications</h2>
                         <p class="text-xs sm:text-sm text-slate-500">Apply during active windows with your verified Member ID.</p>
@@ -568,50 +520,6 @@
                     </div>
                 </form>
             </div>
-
-            </main>
-        </div>
-    </section>
-
-    <!-- Mobile Sidebar Drawer (< lg) -->
-    <div x-show="mobileSidebarOpen" x-cloak
-         class="fixed inset-0 z-50 lg:hidden overflow-hidden"
-         role="dialog" aria-modal="true">
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
-             x-show="mobileSidebarOpen"
-             x-transition:enter="ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             @click="mobileSidebarOpen = false"></div>
-
-        <!-- Sliding Panel -->
-        <div class="fixed inset-y-0 left-0 max-w-xs w-full bg-slate-50 shadow-2xl flex flex-col z-10 overflow-y-auto p-5"
-             x-show="mobileSidebarOpen"
-             x-transition:enter="ease-out duration-300 transform"
-             x-transition:enter-start="-translate-x-full"
-             x-transition:enter-end="translate-x-0"
-             x-transition:leave="ease-in duration-200 transform"
-             x-transition:leave-start="translate-x-0"
-             x-transition:leave-end="-translate-x-full">
-
-            <div class="flex items-center justify-between pb-4 mb-3 border-b border-slate-200">
-                <span class="font-serif-title font-bold text-slate-900 text-sm">Member Navigation</span>
-                <button type="button" @click="mobileSidebarOpen = false" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <x-member-sidebar
-                :member="$member"
-                :open-workshops="$openWorkshops"
-                :certificates="$certificates"
-                :applications="$applications" />
-        </div>
-    </div>
 
     <!-- Digital Credential Modal -->
     <div x-show="showCardModal" x-cloak

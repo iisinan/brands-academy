@@ -1,24 +1,31 @@
 @extends('layouts.admin')
 
 @section('title', 'Finance & Payment Monitoring - Brands Academy')
-@section('page_title', 'Finance & Payment Monitor')
+@section('page_title', '4. Finance & Payment Monitor')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" x-data="{ reviewModalOpen: false, activePayment: null }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" x-data="{ reviewModalOpen: false, activePayment: null, recordModalOpen: false }">
 
     <!-- Header Section with Quick Stats -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
         <div>
-            <h2 class="text-2xl font-bold font-serif-title text-slate-900">
-                Treasury &amp; Collections Ledger
-            </h2>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-serif-title">
+                    Treasury &amp; Collections Ledger
+                </h1>
+            </div>
             <p class="text-xs text-slate-500 mt-1">
                 Real-time monitoring of all membership dues, workshop cohort fees, and institutional grants across Paystack, SquadCo, and Direct Bank Transfers.
             </p>
         </div>
 
-        <div class="flex items-center gap-2">
-            <a href="{{ route('admin.finance.export') }}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm">
+        <div class="flex flex-wrap items-center gap-2.5">
+            <button type="button" @click="recordModalOpen = true" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all flex items-center gap-1.5 shadow-md shadow-amber-500/20 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                <span>+ Record Bank Receipt</span>
+            </button>
+            <a href="{{ route('admin.finance.export') }}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors flex items-center gap-1.5 shadow-xs">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 <span>Export Ledger (CSV)</span>
             </a>
@@ -99,11 +106,20 @@
     </div>
 
     <!-- Search & Filter Controls -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-        <form action="{{ route('admin.finance') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+    <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs">
+        <form action="{{ route('admin.finance') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
             
             <input type="text" name="q" value="{{ request('q') }}" placeholder="Search reference, payer name, or email..."
                    class="lg:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+
+            <!-- Item / Category -->
+            <select name="category" class="px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+                <option value="">All Categories</option>
+                <option value="membership_dues" {{ request('category') == 'membership_dues' ? 'selected' : '' }}>Membership Dues</option>
+                <option value="workshop_tuition" {{ request('category') == 'workshop_tuition' ? 'selected' : '' }}>Workshop Tuition</option>
+                <option value="institutional_grant" {{ request('category') == 'institutional_grant' ? 'selected' : '' }}>Institutional Grant</option>
+                <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other / Offline</option>
+            </select>
 
             <!-- Gateway -->
             <select name="gateway" class="px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
@@ -139,7 +155,7 @@
     </div>
 
     <!-- Financial Transactions Table -->
-    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div class="p-5 border-b border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <h3 class="font-bold text-sm text-slate-900 font-serif-title">Payment Transactions &amp; Receipts</h3>
@@ -191,7 +207,7 @@
                             <!-- Item / Category -->
                             <td class="px-6 py-4">
                                 <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                                    {{ ucfirst($payment->category) }} Dues
+                                    {{ ucfirst(str_replace('_', ' ', $payment->category)) }}
                                 </span>
                             </td>
 
@@ -264,7 +280,7 @@
                                         <form action="{{ route('admin.finance.verify', $payment->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Approve payment {{ $payment->reference }} and activate member?');">
                                             @csrf
                                             <input type="hidden" name="status" value="successful">
-                                            <button type="submit" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors">
+                                            <button type="submit" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors cursor-pointer">
                                                 Approve
                                             </button>
                                         </form>
@@ -293,6 +309,107 @@
                 {{ $payments->links() }}
             </div>
         @endif
+    </div>
+
+    <!-- Alpine.js Modal for Recording Offline Bank Deposit -->
+    <div x-show="recordModalOpen"
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+
+        <div @click.away="recordModalOpen = false"
+             x-show="recordModalOpen"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-sm shadow-xs">
+                        ₦
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold font-serif-title text-slate-900">Record Offline Bank Deposit</h2>
+                        <p class="text-xs text-slate-500">Record direct cash/cheque teller deposit and activate member account.</p>
+                    </div>
+                </div>
+
+                <button @click="recordModalOpen = false" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form action="{{ route('admin.finance.manual') }}" method="POST" class="p-6 space-y-4">
+                @csrf
+
+                <!-- Member Selection -->
+                <div>
+                    <label class="block text-[11px] uppercase font-bold text-slate-700 mb-1">Select Member Account *</label>
+                    <select name="member_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+                        <option value="">Select registered member...</option>
+                        @foreach($allMembers as $m)
+                            <option value="{{ $m->id }}">
+                                {{ $m->full_name }} ({{ $m->member_number ?: 'Pending ID' }} &bull; {{ $m->email }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Category -->
+                    <div>
+                        <label class="block text-[11px] uppercase font-bold text-slate-700 mb-1">Payment Category *</label>
+                        <select name="category" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+                            <option value="membership_dues">Membership Dues</option>
+                            <option value="workshop_tuition">Workshop Tuition</option>
+                            <option value="institutional_grant">Institutional Grant</option>
+                            <option value="other">Other / Offline Deposit</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount -->
+                    <div>
+                        <label class="block text-[11px] uppercase font-bold text-slate-700 mb-1">Amount (NGN) *</label>
+                        <input type="number" name="amount" step="0.01" min="100" placeholder="e.g. 10000" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+
+                <!-- Bank Teller / Transaction Reference -->
+                <div>
+                    <label class="block text-[11px] uppercase font-bold text-slate-700 mb-1">Bank Reference / Teller Slip #</label>
+                    <input type="text" name="gateway_reference" placeholder="e.g. GTB-DEP-849202 or STANBIC-TRF-9921" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label class="block text-[11px] uppercase font-bold text-slate-700 mb-1">Payment Notes / Narration</label>
+                    <textarea name="notes" rows="2" placeholder="e.g. Paid at GTBank branch in Kaduna; validated with bank statement." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <button type="button" @click="recordModalOpen = false" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md shadow-amber-500/20">
+                        Record &amp; Activate Member
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
     </div>
 
 </div>

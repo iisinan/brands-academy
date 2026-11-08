@@ -23,6 +23,7 @@ class HomeController extends Controller
 
         $allWorkshops = Workshop::query()
             ->where('status', 'published')
+            ->orderByDesc('is_featured')
             ->orderBy('application_starts_at', 'asc')
             ->take(6)
             ->get();
