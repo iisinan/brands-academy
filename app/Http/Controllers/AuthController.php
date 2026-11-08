@@ -243,6 +243,6 @@ class AuthController extends Controller
 
         $user->sendEmailVerificationNotification();
 
-        return back()->with('success', "A fresh verification link has been sent to your email address: {$user->email}.");
+        return back()->with('success', "A fresh verification link has been sent to your email address: {$user->email}. Please check your inbox and your spam or junk folder.");
     }
 }

@@ -92,7 +92,7 @@ class MembershipController extends Controller
         // 4. Log user into portal session
         Auth::login($user);
 
-        return redirect()->route('verification.notice')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your account has been created with Member ID {$member->member_number}. We have sent a verification email to {$user->email}. Please verify your email to unlock access to your Member Portal.");
+        return redirect()->route('verification.notice')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your account has been created with Member ID {$member->member_number}. We have sent a verification email to {$user->email}. Please check your inbox (and spam or junk folder) and verify your email to unlock access to your Member Portal.");
     }
 
     /**

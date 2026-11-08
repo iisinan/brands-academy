@@ -59,6 +59,9 @@
                 <div>
                     <span class="font-bold block">Verification Email Dispatched</span>
                     <span>{{ session('success') }}</span>
+                    <span class="block mt-1.5 font-semibold text-emerald-900 text-[11px] flex items-center gap-1">
+                        <span>&#128233;</span> Tip: If it does not appear in your primary inbox, please check your <strong>Spam</strong> or <strong>Junk</strong> folder.
+                    </span>
                 </div>
             </div>
         @endif
@@ -75,7 +78,7 @@
             </div>
         @endif
 
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 mb-6 text-xs text-slate-600 space-y-2.5 leading-relaxed">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 mb-6 text-xs text-slate-600 space-y-3 leading-relaxed">
             <p>
                 Thanks for registering! Before accessing your <strong>Member Dashboard</strong>, workshop cohort materials, and credential services, please confirm your email address by clicking the verification link we just emailed to:
             </p>
@@ -85,8 +88,19 @@
                     Pending
                 </span>
             </div>
+
+            <!-- Prominent Spam / Junk Alert Callout -->
+            <div class="bg-amber-50/90 border border-amber-200/90 rounded-xl p-3 text-[11.5px] text-amber-950 flex items-start gap-2.5 shadow-xs">
+                <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                    <span class="font-bold">Can't find the email in your inbox?</span> Please check your <strong>Spam</strong>, <strong>Junk</strong>, or <strong>Promotions</strong> folder as automated verification emails may occasionally land there. If found, mark it as <em>"Not Spam"</em> so you receive all cohort and certificate notices.
+                </div>
+            </div>
+
             <p class="text-[11px] text-slate-500">
-                If you did not receive the email within a couple of minutes, please check your spam or promotions folder, or click the button below to request a fresh link.
+                If you still have not received the verification email after a few minutes, click the button below to request a fresh link.
             </p>
         </div>
 
