@@ -206,6 +206,30 @@
 
                 <!-- Window Case 2: Window IS OPEN FOR APPLICATIONS -->
                 @elseif($workshop->isOpenForApplications())
+                    @if(session('error'))
+                        <div class="mb-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs anim-check-pop flex items-start gap-2">
+                            <svg class="w-4 h-4 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                                <span class="font-bold block">Application Notice</span>
+                                <span>{{ session('error') }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="mb-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs anim-check-pop">
+                            <div class="font-bold flex items-center gap-1.5 mb-1 text-rose-900">
+                                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                <span>Please correct the following:</span>
+                            </div>
+                            <ul class="list-disc list-inside space-y-0.5 text-[11px] text-rose-700">
+                                @foreach($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     @php 
                         $isAuthMember = auth()->check() && auth()->user()->member;
                         $currentMember = $isAuthMember ? auth()->user()->member : null;
@@ -213,7 +237,7 @@
 
                     @if($isAuthMember)
                         <!-- STREAMLINED 1-CLICK MEMBER APPLICATION FORM (NO RE-REGISTRATION NEEDED) -->
-                        <div x-data="{ isSubmitting: false }">
+                        <div x-data="{ isSubmitting: false, statement: @js(old('statement_of_purpose', '')) }">
                             <h3 class="text-lg font-bold text-slate-900 mb-1 font-serif-title">Submit Member Application</h3>
                             <p class="text-xs text-slate-500 mb-4">Fast-track admission for registered Foundation members.</p>
 
@@ -256,13 +280,25 @@
                                 <input type="hidden" name="applicant_organization" value="{{ $currentMember->institution_or_company }}">
 
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Statement of Purpose / Learning Goals *</label>
-                                    <textarea name="statement_of_purpose" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">Statement of Purpose / Learning Goals *</label>
+                                        <span class="text-[10px] text-slate-400" x-text="(statement || '').length + ' characters'"></span>
+                                    </div>
+                                    <textarea name="statement_of_purpose" x-model="statement" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border @error('statement_of_purpose') border-rose-400 ring-2 ring-rose-400/20 bg-rose-50/10 @else border-slate-300 @enderror text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                    @error('statement_of_purpose')
+                                        <p class="text-xs text-rose-600 font-semibold mt-1 flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Portfolio or Profile URL (Optional)</label>
-                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border @error('portfolio_link') border-rose-400 @else border-slate-300 @enderror text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    @error('portfolio_link')
+                                        <p class="text-xs text-rose-600 font-semibold mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 @if($workshop->fee_type !== 'free')
@@ -285,7 +321,8 @@
                         <div x-data="workshopApplicationForm({
                             initialName: @js(old('applicant_name', '')),
                             initialEmail: @js(old('applicant_email', '')),
-                            initialPhone: @js(old('applicant_phone', ''))
+                            initialPhone: @js(old('applicant_phone', '')),
+                            initialStatement: @js(old('statement_of_purpose', ''))
                         })">
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="text-lg font-bold text-slate-900 font-serif-title">Submit Application</h3>
@@ -361,13 +398,25 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Statement of Purpose / Goals *</label>
-                                    <textarea name="statement_of_purpose" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">Statement of Purpose / Goals *</label>
+                                        <span class="text-[10px] text-slate-400" x-text="(statement || '').length + ' characters'"></span>
+                                    </div>
+                                    <textarea name="statement_of_purpose" x-model="statement" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border @error('statement_of_purpose') border-rose-400 ring-2 ring-rose-400/20 bg-rose-50/10 @else border-slate-300 @enderror text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                    @error('statement_of_purpose')
+                                        <p class="text-xs text-rose-600 font-semibold mt-1 flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Portfolio or Profile URL (Optional)</label>
-                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border @error('portfolio_link') border-rose-400 @else border-slate-300 @enderror text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    @error('portfolio_link')
+                                        <p class="text-xs text-rose-600 font-semibold mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 @if($workshop->fee_type !== 'free')
@@ -434,6 +483,7 @@
             name: config.initialName || '',
             email: config.initialEmail || '',
             phone: config.initialPhone || '',
+            statement: config.initialStatement || '',
             isSubmitting: false,
 
             get isNameValid() {

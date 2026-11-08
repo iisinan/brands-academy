@@ -98,10 +98,14 @@ class WorkshopController extends Controller
             'applicant_email' => ['required', 'string', 'email', 'max:255'],
             'applicant_phone' => ['required', 'string', 'max:25'],
             'applicant_organization' => ['nullable', 'string', 'max:200'],
-            'statement_of_purpose' => ['required', 'string', 'min:30', 'max:2000'],
+            'statement_of_purpose' => ['required', 'string', 'min:3', 'max:2000'],
             'portfolio_link' => ['nullable', 'url', 'max:255'],
             'scholarship_requested' => ['nullable', 'boolean'],
             'scholarship_reason' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'statement_of_purpose.required' => 'Please provide a statement of purpose or your learning goals.',
+            'statement_of_purpose.min' => 'Please provide at least 3 characters for your statement of purpose.',
+            'portfolio_link.url' => 'The portfolio link must be a valid URL (e.g. https://behance.net/yourprofile).',
         ]);
 
         // Prevent duplicate application
