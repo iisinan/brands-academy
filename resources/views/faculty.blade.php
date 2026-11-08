@@ -115,9 +115,7 @@
             </div>
 
             <div class="lg:col-span-6 bg-gradient-to-br from-slate-950 to-slate-900 rounded-3xl p-8 text-white shadow-xl">
-                <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 font-bold text-xl flex items-center justify-center font-serif-title mb-6">
-                    B
-                </div>
+                <x-brand-logo class="w-14 h-14 mb-6 drop-shadow-md" />
                 <h3 class="text-xl font-bold font-serif-title mb-2">Join as a Mentor or Fellow</h3>
                 <p class="text-xs text-slate-300 leading-relaxed mb-6 font-light">
                     Are you a senior brand director, strategist, or marketing executive passionate about nurturing the next generation of African brand practitioners?

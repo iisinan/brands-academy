@@ -12,18 +12,22 @@
     <meta property="og:title" content="@yield('title', 'Brands Academy Nigeria Foundation | Institutional Portal')">
     <meta property="og:description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
     <meta name="twitter:card" content="summary_large_image">
-    <meta property="og:image" content="{{ asset('images/logo/bran-logo.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <meta property="og:image" content="{{ asset('images/logo/bran-logo-3d.png') }}?v=3">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=3">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <style>
+        [x-cloak] { display: none !important; }
         body {
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         }
@@ -31,6 +35,7 @@
             font-family: 'Playfair Display', Georgia, serif;
         }
     </style>
+    @stack('styles')
 </head>
 <body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
@@ -316,5 +321,6 @@
             });
         }
     </script>
+    @stack('scripts')
 </body>
 </html>
