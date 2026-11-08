@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\UserRole;
 use App\Models\Member;
+use App\Models\MemberPayment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -252,5 +253,77 @@ class MembershipPaymentGateTest extends TestCase
         // Confirmed direct dashboard access
         $dashResponse = $this->actingAs($user)->get('/member/dashboard');
         $dashResponse->assertStatus(200);
+    }
+
+    /**
+     * Test Paystack webhook successfully activates member on charge.success.
+     */
+    public function test_paystack_webhook_marks_member_as_paid_with_valid_hmac(): void
+    {
+        config(['membership.paystack.secret_key' => 'sk_test_mocksecretkey12345']);
+
+        $user = User::create([
+            'name' => 'Webhook Payer',
+            'email' => 'webhook@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => UserRole::Member,
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-WH-01',
+            'first_name' => 'Webhook',
+            'last_name' => 'Payer',
+            'email' => 'webhook@example.com',
+            'phone' => '+234 801 000 0007',
+            'category' => 'student',
+            'state' => 'Ogun',
+            'payment_status' => 'pending',
+        ]);
+
+        $payment = MemberPayment::create([
+            'user_id' => $user->id,
+            'member_id' => $member->id,
+            'reference' => 'BANF-PAY-TEST-WH-001',
+            'category' => 'student',
+            'amount' => 10000.00,
+            'currency' => 'NGN',
+            'payment_gateway' => 'paystack',
+            'status' => 'pending',
+        ]);
+
+        $payload = json_encode([
+            'event' => 'charge.success',
+            'data' => [
+                'id' => 99887766,
+                'reference' => 'BANF-PAY-TEST-WH-001',
+                'amount' => 1000000, // 10,000 NGN in Kobo
+                'status' => 'success',
+            ],
+        ]);
+
+        $signature = hash_hmac('sha512', $payload, 'sk_test_mocksecretkey12345');
+
+        $response = $this->call(
+            'POST',
+            '/membership/payment/webhook',
+            [],
+            [],
+            [],
+            [
+                'HTTP_X_PAYSTACK_SIGNATURE' => $signature,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            $payload
+        );
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'success']);
+
+        $member->refresh();
+        $this->assertTrue($member->isPaid());
+        $this->assertEquals('paid', $member->payment_status);
+        $this->assertEquals(10000.00, (float) $member->paid_amount);
     }
 }
