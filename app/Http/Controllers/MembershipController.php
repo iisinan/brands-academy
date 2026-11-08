@@ -22,8 +22,23 @@ class MembershipController extends Controller
     /**
      * Show the ongoing membership registration form.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        $user = Auth::user();
+
+        // If applicant is already registered and logged in, bypass re-registration
+        if ($user) {
+            $member = $user->member;
+
+            if ($member && $member->isPaid()) {
+                return redirect()->route('member.dashboard')
+                    ->with('info', 'The system already has your details! You are already an active registered member.');
+            }
+
+            return redirect()->route('membership.payment')
+                ->with('info', 'The system already has your registration details. You do not need to register again; simply pay your annual dues to activate your portal.');
+        }
+
         return view('membership.register');
     }
 
@@ -32,6 +47,31 @@ class MembershipController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Check if an account already exists for this email
+        $inputEmail = trim((string) $request->input('email'));
+        $existingUser = ! empty($inputEmail) ? User::where('email', $inputEmail)->first() : null;
+
+        if ($existingUser) {
+            // If already authenticated or password matches, log in and send to payment/dashboard
+            if (Auth::id() === $existingUser->id || Hash::check((string) $request->input('password'), $existingUser->password)) {
+                if (! Auth::check()) {
+                    Auth::login($existingUser);
+                }
+
+                $member = $existingUser->member;
+                if ($member && $member->isPaid()) {
+                    return redirect()->route('member.dashboard')
+                        ->with('info', 'The system already has your details! You are already an active registered member.');
+                }
+
+                return redirect()->route('membership.payment')
+                    ->with('info', 'The system already has your registration details. You do not need to register again; please complete your annual membership dues.');
+            }
+
+            return redirect()->route('login', ['email' => $inputEmail])
+                ->with('info', 'An account already exists for this email. The system already has your details; please sign in to pay your dues instead of registering again.');
+        }
+
         if ($request->filled('name') && (! $request->filled('first_name') || ! $request->filled('last_name'))) {
             $parts = preg_split('/\s+/', trim((string) $request->input('name')), 2);
             $firstName = $parts[0] ?? 'Member';

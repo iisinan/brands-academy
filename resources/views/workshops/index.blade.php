@@ -89,10 +89,22 @@
 
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
                     <div>
-                        <span class="block text-[10px] uppercase font-bold text-slate-400">Tuition</span>
-                        <span class="font-extrabold text-sm {{ $workshop->fee_type == 'free' ? 'text-emerald-700' : 'text-slate-900' }}">
-                            {{ $workshop->fee_type == 'free' ? '100% Free Track' : 'NGN ' . number_format($workshop->fee_amount) }}
-                        </span>
+                        @if($workshop->fee_type == 'free')
+                            <span class="block text-[10px] uppercase font-bold text-slate-400">Tuition</span>
+                            <span class="font-extrabold text-sm text-emerald-700">100% Free Track</span>
+                        @elseif(auth()->check() && auth()->user()->member)
+                            <span class="block text-[10px] uppercase font-bold text-slate-400">Member Tuition (25% Off)</span>
+                            <div class="flex items-baseline gap-1.5">
+                                <span class="font-extrabold text-sm text-slate-900 font-mono">NGN {{ number_format($workshop->member_fee_amount) }}</span>
+                                <span class="text-[10px] text-slate-400 line-through">NGN {{ number_format($workshop->fee_amount) }}</span>
+                            </div>
+                        @else
+                            <span class="block text-[10px] uppercase font-bold text-slate-400">Tuition</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="font-extrabold text-sm text-slate-900 font-mono">NGN {{ number_format($workshop->fee_amount) }}</span>
+                                <span class="text-[9px] font-bold text-amber-800 bg-amber-100 px-1 rounded">25% off for Members</span>
+                            </div>
+                        @endif
                     </div>
 
                     <a href="{{ route('workshops.show', $workshop->slug) }}" class="inline-flex items-center px-4 py-2.5 rounded-xl text-xs font-bold {{ $window['state'] == 'open' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-xs' : 'bg-slate-900 hover:bg-slate-800 text-white' }} transition-colors">

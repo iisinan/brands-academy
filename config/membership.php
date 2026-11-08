@@ -51,6 +51,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Workshop / Cohort Member Tuition Discount
+    |--------------------------------------------------------------------------
+    |
+    | Registered members in good standing receive an exclusive tuition discount
+    | on all fee-based training workshops and certification cohorts.
+    |
+    */
+    'workshop_member_discount_percentage' => (int) env('WORKSHOP_MEMBER_DISCOUNT_PERCENTAGE', 25),
+
+    /*
+    |--------------------------------------------------------------------------
     | Paystack Payment Gateway Integration
     |--------------------------------------------------------------------------
     */

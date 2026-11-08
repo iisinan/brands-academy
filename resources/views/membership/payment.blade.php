@@ -63,6 +63,18 @@
         </div>
     @endif
 
+    @if (session('info'))
+        <div class="bg-blue-50 border border-blue-200 text-blue-950 px-5 py-4 rounded-2xl mb-8 text-sm font-medium anim-check-pop flex items-start gap-3 shadow-xs">
+            <svg class="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+                <span class="font-bold block">Account Recognized</span>
+                <span>{{ session('info') }}</span>
+            </div>
+        </div>
+    @endif
+
     @if (session('error'))
         <div class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-2xl mb-8 text-sm font-medium anim-check-pop flex items-start gap-3 shadow-xs">
             <svg class="w-5 h-5 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -74,6 +86,7 @@
             </div>
         </div>
     @endif
+
 
     <!-- Main Payment Container -->
     <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-10 relative overflow-hidden">

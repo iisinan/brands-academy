@@ -148,6 +148,45 @@
                             <span class="font-bold text-slate-900">{{ $workshop->starts_at->format('M d, Y') }}</span>
                         </div>
                     </div>
+
+                    <!-- Tuition & Member Discount Pricing Pill -->
+                    <div class="mt-4 p-3.5 rounded-xl border {{ $workshop->fee_type == 'free' ? 'bg-emerald-50/70 border-emerald-200' : 'bg-amber-50/40 border-amber-200' }}">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Cohort Tuition</span>
+                            @if($workshop->fee_type == 'free')
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">100% Free Track</span>
+                            @else
+                                <span class="text-[10px] font-extrabold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded-full border border-amber-300">
+                                    {{ $workshop->member_discount_percentage }}% Member Discount
+                                </span>
+                            @endif
+                        </div>
+
+                        @if($workshop->fee_type !== 'free')
+                            <div class="mt-2 flex items-baseline justify-between">
+                                @if(auth()->check() && auth()->user()->member)
+                                    <div>
+                                        <div class="flex items-baseline gap-2">
+                                            <span class="text-xl font-extrabold text-slate-900 font-mono">NGN {{ number_format($workshop->member_fee_amount) }}</span>
+                                            <span class="text-xs text-slate-400 line-through">NGN {{ number_format($workshop->fee_amount) }}</span>
+                                        </div>
+                                        <span class="text-[11px] font-semibold text-emerald-700 block mt-0.5">
+                                            ✓ 25% Member rate applied (Save NGN {{ number_format($workshop->member_discount_savings) }})
+                                        </span>
+                                    </div>
+                                @else
+                                    <div>
+                                        <div class="flex items-baseline gap-2">
+                                            <span class="text-xl font-extrabold text-slate-900 font-mono">NGN {{ number_format($workshop->fee_amount) }}</span>
+                                        </div>
+                                        <div class="text-[11px] text-amber-800 mt-0.5 font-medium">
+                                            Registered members pay <strong>NGN {{ number_format($workshop->member_fee_amount) }}</strong> (25% discount)
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
                 <!-- Window Case 1: Application Already Submitted -->
@@ -167,107 +206,187 @@
 
                 <!-- Window Case 2: Window IS OPEN FOR APPLICATIONS -->
                 @elseif($workshop->isOpenForApplications())
-                    <div x-data="workshopApplicationForm({
-                        initialName: @js(old('applicant_name', auth()->user()?->name ?? '')),
-                        initialEmail: @js(old('applicant_email', auth()->user()?->email ?? '')),
-                        initialPhone: @js(old('applicant_phone', auth()->user()?->member?->phone ?? ''))
-                    })">
-                        <h3 class="text-lg font-bold text-slate-900 mb-1 font-serif-title">Submit Your Application</h3>
-                        <p class="text-xs text-slate-500 mb-4">Complete this short form to apply for cohort admissions.</p>
+                    @php 
+                        $isAuthMember = auth()->check() && auth()->user()->member;
+                        $currentMember = $isAuthMember ? auth()->user()->member : null;
+                    @endphp
 
-                        @auth
-                            @if(auth()->user()->member)
-                                <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 mb-4 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    <span>Applying as Registered Member: <strong>{{ auth()->user()->member->member_number }}</strong></span>
-                                </div>
-                            @endif
-                        @endauth
+                    @if($isAuthMember)
+                        <!-- STREAMLINED 1-CLICK MEMBER APPLICATION FORM (NO RE-REGISTRATION NEEDED) -->
+                        <div x-data="{ isSubmitting: false }">
+                            <h3 class="text-lg font-bold text-slate-900 mb-1 font-serif-title">Submit Member Application</h3>
+                            <p class="text-xs text-slate-500 mb-4">Fast-track admission for registered Foundation members.</p>
 
-                        <form action="{{ route('workshops.apply', $workshop->slug) }}" method="POST" @submit="isSubmitting = true" class="space-y-4">
-                            @csrf
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <label class="block text-xs font-bold text-slate-700 uppercase">Full Name *</label>
-                                    <span x-show="isNameValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            <!-- Profile Recognition Card -->
+                            <div class="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 text-slate-900 mb-5">
+                                <div class="flex items-start justify-between gap-3 mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-7 h-7 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shrink-0">
+                                            ✓
                                         </span>
-                                        <span>Valid</span>
+                                        <div>
+                                            <span class="text-[10px] uppercase font-bold text-amber-800 block tracking-wider">Account Recognized &bull; Registered Member</span>
+                                            <span class="font-bold text-sm text-slate-900">{{ $currentMember->full_name }}</span>
+                                        </div>
+                                    </div>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold font-mono bg-white border border-amber-300 text-amber-900 shrink-0">
+                                        {{ $currentMember->member_number ?? 'Member' }}
                                     </span>
                                 </div>
-                                <input type="text" name="applicant_name" x-model="name" required
-                                       class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
-                                       :class="isNameValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                                    The system already has your details on file (<strong>{{ $currentMember->email }}</strong> &bull; <strong>{{ $currentMember->phone }}</strong>). You do not need to register again!
+                                </p>
+                                @if($workshop->fee_type !== 'free')
+                                    <div class="p-3 rounded-xl bg-white border border-amber-200 text-xs text-slate-800 flex items-center justify-between">
+                                        <span class="font-medium text-slate-600">Your Discounted Dues:</span>
+                                        <div class="text-right">
+                                            <span class="font-extrabold font-mono text-emerald-700 text-sm">NGN {{ number_format($workshop->member_fee_amount) }}</span>
+                                            <span class="text-[10px] text-slate-400 line-through ml-1.5">NGN {{ number_format($workshop->fee_amount) }}</span>
+                                            <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 ml-1">25% OFF</span>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <form action="{{ route('workshops.apply', $workshop->slug) }}" method="POST" @submit="isSubmitting = true" class="space-y-4">
+                                @csrf
+                                <input type="hidden" name="applicant_name" value="{{ $currentMember->full_name }}">
+                                <input type="hidden" name="applicant_email" value="{{ $currentMember->email }}">
+                                <input type="hidden" name="applicant_phone" value="{{ $currentMember->phone }}">
+                                <input type="hidden" name="applicant_organization" value="{{ $currentMember->institution_or_company }}">
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Statement of Purpose / Learning Goals *</label>
+                                    <textarea name="statement_of_purpose" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Portfolio or Profile URL (Optional)</label>
+                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+
+                                @if($workshop->fee_type !== 'free')
+                                    <div class="pt-2 border-t border-slate-100">
+                                        <label class="flex items-start gap-2 cursor-pointer text-xs text-slate-700">
+                                            <input type="checkbox" name="scholarship_requested" value="1" {{ old('scholarship_requested') ? 'checked' : '' }} class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
+                                            <span>Request Additional Educational Subsidy / Scholarship Consideration</span>
+                                        </label>
+                                    </div>
+                                @endif
+
+                                <button type="submit" :disabled="isSubmitting" class="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75">
+                                    <svg x-show="isSubmitting" class="w-4 h-4 animate-spin text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    <span>Submit Application (25% Discount Applied) &rarr;</span>
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <!-- STANDARD FORM FOR GUEST / PUBLIC APPLICANTS -->
+                        <div x-data="workshopApplicationForm({
+                            initialName: @js(old('applicant_name', '')),
+                            initialEmail: @js(old('applicant_email', '')),
+                            initialPhone: @js(old('applicant_phone', ''))
+                        })">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-lg font-bold text-slate-900 font-serif-title">Submit Application</h3>
+                            </div>
+
+                            <!-- Member Sign-In Callout -->
+                            <div class="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center justify-between gap-2">
+                                <span>Are you a Foundation Member?</span>
+                                <a href="{{ route('login') }}" class="font-bold underline hover:text-amber-700 whitespace-nowrap">
+                                    Sign In for 25% Discount &rarr;
+                                </a>
+                            </div>
+
+                            <p class="text-xs text-slate-500 mb-4">Complete this short form to apply for cohort admissions.</p>
+
+                            <form action="{{ route('workshops.apply', $workshop->slug) }}" method="POST" @submit="isSubmitting = true" class="space-y-4">
+                                @csrf
                                 <div>
                                     <div class="flex items-center justify-between mb-1">
-                                        <label class="block text-xs font-bold text-slate-700 uppercase">Email *</label>
-                                        <span x-show="isEmailValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">Full Name *</label>
+                                        <span x-show="isNameValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
                                             <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                                 <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                             </span>
                                             <span>Valid</span>
                                         </span>
                                     </div>
-                                    <input type="email" name="applicant_email" x-model="email" required
+                                    <input type="text" name="applicant_name" x-model="name" required
                                            class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
-                                           :class="isEmailValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                           :class="isNameValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
                                 </div>
-                                <div>
-                                    <div class="flex items-center justify-between mb-1">
-                                        <label class="block text-xs font-bold text-slate-700 uppercase">Phone *</label>
-                                        <div class="flex items-center gap-1.5">
-                                            <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[9px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
-                                                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
-                                                <span x-text="phoneCarrier"></span>
-                                            </span>
-                                            <span x-show="isPhoneValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <label class="block text-xs font-bold text-slate-700 uppercase">Email *</label>
+                                            <span x-show="isEmailValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
                                                 <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                                     <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                                 </span>
                                                 <span>Valid</span>
                                             </span>
                                         </div>
+                                        <input type="email" name="applicant_email" x-model="email" required
+                                               class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
+                                               :class="isEmailValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
                                     </div>
-                                    <input type="text" name="applicant_phone" x-model="phone" @blur="formatPhone()" required placeholder="+234..."
-                                           class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
-                                           :class="isPhoneValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <label class="block text-xs font-bold text-slate-700 uppercase">Phone *</label>
+                                            <div class="flex items-center gap-1.5">
+                                                <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[9px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                                                    <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                                                    <span x-text="phoneCarrier"></span>
+                                                </span>
+                                                <span x-show="isPhoneValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                                        <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                                    </span>
+                                                    <span>Valid</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <input type="text" name="applicant_phone" x-model="phone" @blur="formatPhone()" required placeholder="+234..."
+                                               class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
+                                               :class="isPhoneValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Organization / University</label>
-                                <input type="text" name="applicant_organization" value="{{ old('applicant_organization', auth()->user()?->member?->institution_or_company ?? '') }}" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Statement of Purpose / Goals *</label>
-                                <textarea name="statement_of_purpose" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Portfolio or Profile URL (Optional)</label>
-                                <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                            </div>
-
-                            @if($workshop->fee_type !== 'free')
-                                <div class="pt-2 border-t border-slate-100">
-                                    <label class="flex items-start gap-2 cursor-pointer text-xs text-slate-700">
-                                        <input type="checkbox" name="scholarship_requested" value="1" {{ old('scholarship_requested') ? 'checked' : '' }} class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
-                                        <span>Request Foundation Educational Subsidy / Scholarship Consideration</span>
-                                    </label>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Organization / University</label>
+                                    <input type="text" name="applicant_organization" value="{{ old('applicant_organization') }}" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                                 </div>
-                            @endif
 
-                            <button type="submit" :disabled="isSubmitting" class="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75">
-                                <svg x-show="isSubmitting" class="w-4 h-4 animate-spin text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                                <span>Submit Cohort Application</span>
-                            </button>
-                        </form>
-                    </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Statement of Purpose / Goals *</label>
+                                    <textarea name="statement_of_purpose" rows="3" required placeholder="Why do you wish to join this cohort and what are your learning goals?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">{{ old('statement_of_purpose') }}</textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Portfolio or Profile URL (Optional)</label>
+                                    <input type="url" name="portfolio_link" value="{{ old('portfolio_link') }}" placeholder="https://behance.net/yourprofile or LinkedIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+
+                                @if($workshop->fee_type !== 'free')
+                                    <div class="pt-2 border-t border-slate-100">
+                                        <label class="flex items-start gap-2 cursor-pointer text-xs text-slate-700">
+                                            <input type="checkbox" name="scholarship_requested" value="1" {{ old('scholarship_requested') ? 'checked' : '' }} class="mt-0.5 rounded text-amber-600 focus:ring-amber-500">
+                                            <span>Request Foundation Educational Subsidy / Scholarship Consideration</span>
+                                        </label>
+                                    </div>
+                                @endif
+
+                                <button type="submit" :disabled="isSubmitting" class="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75">
+                                    <svg x-show="isSubmitting" class="w-4 h-4 animate-spin text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    <span>Submit Cohort Application</span>
+                                </button>
+                            </form>
+                        </div>
+                    @endif
+
 
                 <!-- Window Case 3: UPCOMING (NOT YET OPEN) -->
                 @elseif($workshop->isUpcoming())

@@ -83,6 +83,16 @@ class WorkshopController extends Controller
         $user = Auth::user();
         $member = $user?->member;
 
+        // If applicant is an authenticated member, auto-populate details from their member profile
+        if ($user && $member) {
+            $request->merge([
+                'applicant_name' => $request->input('applicant_name', $member->full_name ?: $user->name),
+                'applicant_email' => $request->input('applicant_email', $member->email ?: $user->email),
+                'applicant_phone' => $request->input('applicant_phone', $member->phone ?? '+234 800 000 0000'),
+                'applicant_organization' => $request->input('applicant_organization', $member->institution_or_company),
+            ]);
+        }
+
         $validated = $request->validate([
             'applicant_name' => ['required', 'string', 'max:150'],
             'applicant_email' => ['required', 'string', 'email', 'max:255'],
@@ -95,12 +105,19 @@ class WorkshopController extends Controller
         ]);
 
         // Prevent duplicate application
-        $exists = WorkshopApplication::where('workshop_id', $workshop->id)
-            ->where('applicant_email', $validated['applicant_email'])
-            ->exists();
+        $existsQuery = WorkshopApplication::where('workshop_id', $workshop->id)
+            ->where(function ($q) use ($validated, $user, $member): void {
+                $q->where('applicant_email', $validated['applicant_email']);
+                if ($user) {
+                    $q->orWhere('user_id', $user->id);
+                }
+                if ($member) {
+                    $q->orWhere('member_id', $member->id);
+                }
+            });
 
-        if ($exists) {
-            return back()->with('error', 'An application has already been submitted for this email address and cohort.');
+        if ($existsQuery->exists()) {
+            return back()->with('error', 'An application has already been submitted for this cohort.');
         }
 
         $application = WorkshopApplication::create([
@@ -124,6 +141,11 @@ class WorkshopController extends Controller
             Log::warning("Could not dispatch application receipt email to {$application->applicant_email}: ".$e->getMessage());
         }
 
-        return redirect()->route('workshops.show', $workshop->slug)->with('success', "Your application for '{$workshop->title}' has been submitted successfully! A confirmation receipt has been sent to {$application->applicant_email}.");
+        $discountNotice = ($member && $workshop->fee_type !== 'free')
+            ? ' as a Registered Member with your 25% tuition discount applied (Tuition: ₦'.number_format($workshop->member_fee_amount).')'
+            : '';
+
+        return redirect()->route('workshops.show', $workshop->slug)
+            ->with('success', "Your application for '{$workshop->title}' has been submitted successfully{$discountNotice}! A confirmation receipt has been sent to {$application->applicant_email}.");
     }
 }

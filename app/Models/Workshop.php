@@ -179,4 +179,39 @@ class Workshop extends Model
             default => ucfirst($this->track_type),
         };
     }
+
+    /**
+     * Member discount percentage (e.g. 25%).
+     */
+    public function getMemberDiscountPercentageAttribute(): int
+    {
+        return (int) config('membership.workshop_member_discount_percentage', 25);
+    }
+
+    /**
+     * Discounted tuition fee for registered members.
+     */
+    public function getMemberFeeAmountAttribute(): float
+    {
+        if ($this->fee_type === 'free' || (float) $this->fee_amount <= 0) {
+            return 0.0;
+        }
+
+        $discountRate = $this->member_discount_percentage / 100;
+        $discounted = (float) $this->fee_amount * (1 - $discountRate);
+
+        return round(max(0, $discounted), 2);
+    }
+
+    /**
+     * Savings amount granted to registered members.
+     */
+    public function getMemberDiscountSavingsAttribute(): float
+    {
+        if ($this->fee_type === 'free' || (float) $this->fee_amount <= 0) {
+            return 0.0;
+        }
+
+        return round((float) $this->fee_amount - $this->member_fee_amount, 2);
+    }
 }

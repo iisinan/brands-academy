@@ -251,6 +251,26 @@
                                         Fix &rarr;
                                     </button>
                                 </div>
+
+                                <!-- Existing Account Recognition Alert -->
+                                <div x-show="existingAccountDetected" x-cloak class="mt-2.5 p-3.5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 text-slate-900 anim-check-pop shadow-xs">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs shrink-0">✓</span>
+                                            <div>
+                                                <span class="text-[10px] uppercase font-bold text-amber-800 block tracking-wider">Account Found</span>
+                                                <span class="font-bold text-xs text-slate-900">The system already has your details!</span>
+                                            </div>
+                                        </div>
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200" x-text="existingAccountRole"></span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mt-2 mb-3">
+                                        You do not need to register again. Simply sign in to complete your dues payment or access your portal.
+                                    </p>
+                                    <a :href="'{{ route('login') }}?email=' + encodeURIComponent(email)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-amber-400 font-bold text-xs hover:bg-slate-800 transition-colors shadow-xs">
+                                        <span>Sign In to Pay Dues &rarr;</span>
+                                    </a>
+                                </div>
                             </div>
 
                             <div>
@@ -794,6 +814,9 @@
 
             emailTypoSuggestion: '',
             suggestedDomain: '',
+            existingAccountDetected: false,
+            existingAccountRole: '',
+            checkAccountDebounce: null,
 
             nigerianStates: [
                 'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
@@ -912,6 +935,8 @@
                 this.touch('email');
                 this.emailTypoSuggestion = '';
                 this.suggestedDomain = '';
+                this.existingAccountDetected = false;
+                clearTimeout(this.checkAccountDebounce);
 
                 const trimmed = (this.email || '').trim();
                 const parts = trimmed.split('@');
@@ -934,6 +959,32 @@
                         this.suggestedDomain = typoMap[domain];
                         this.emailTypoSuggestion = user + '@' + typoMap[domain];
                     }
+                }
+
+                if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed) && !this.emailTypoSuggestion) {
+                    this.checkAccountDebounce = setTimeout(() => {
+                        fetch('{{ route('login.detect-role') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ email: trimmed })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.detected) {
+                                this.existingAccountDetected = true;
+                                this.existingAccountRole = data.role_label || 'Registered Member';
+                            } else {
+                                this.existingAccountDetected = false;
+                            }
+                        })
+                        .catch(() => {
+                            this.existingAccountDetected = false;
+                        });
+                    }, 350);
                 }
             },
 
