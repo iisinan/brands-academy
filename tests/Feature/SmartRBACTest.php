@@ -23,6 +23,7 @@ class SmartRBACTest extends TestCase
             'email' => 'amina@example.com',
             'password' => Hash::make('password123'),
             'role' => UserRole::Member,
+            'email_verified_at' => now(),
         ]);
 
         $response = $this->post('/login', [
@@ -67,6 +68,7 @@ class SmartRBACTest extends TestCase
             'email' => 'john@example.com',
             'password' => Hash::make('password123'),
             'role' => UserRole::Member,
+            'email_verified_at' => now(),
         ]);
 
         // Unauthenticated visit to admin page stores intended url
@@ -311,6 +313,7 @@ class SmartRBACTest extends TestCase
             'email' => 'preview@brandsacademy.org',
             'password' => Hash::make('secret'),
             'role' => UserRole::Admin,
+            'email_verified_at' => now(),
         ]);
 
         $response = $this->actingAs($admin)->get('/member/dashboard');

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Brands Academy Admin',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
+                'email_verified_at' => now(),
             ]
         );
 

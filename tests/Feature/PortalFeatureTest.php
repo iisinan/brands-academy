@@ -55,7 +55,7 @@ class PortalFeatureTest extends TestCase
             'password_confirmation' => 'secret1234',
         ]);
 
-        $response->assertRedirect('/member/dashboard');
+        $response->assertRedirect('/email/verify');
         $this->assertAuthenticated();
 
         $this->assertDatabaseHas('users', [
@@ -92,7 +92,7 @@ class PortalFeatureTest extends TestCase
             'password_confirmation' => 'secret1234',
         ]);
 
-        $response->assertRedirect('/member/dashboard');
+        $response->assertRedirect('/email/verify');
         $this->assertAuthenticated();
 
         $this->assertDatabaseHas('users', [
@@ -340,6 +340,7 @@ class PortalFeatureTest extends TestCase
             'email' => 'amina.student@example.com',
             'password' => Hash::make('secret'),
             'role' => 'member',
+            'email_verified_at' => now(),
         ]);
 
         $member = Member::create([
