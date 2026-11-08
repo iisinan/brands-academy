@@ -270,7 +270,7 @@
                             <td class="px-4 py-3.5 text-slate-600">
                                 {{ $workshop->starts_at->format('M d') }} &ndash; {{ $workshop->ends_at->format('M d, Y') }}
                             </td>
-                            <td class="px-4 py-3.5 text-right space-x-2">
+                            <td class="px-4 py-3.5 text-right space-x-1.5 whitespace-nowrap">
                                 <a href="{{ route('admin.workshops.edit', $workshop->id) }}" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[10px]">
                                     Edit
                                 </a>
@@ -278,6 +278,13 @@
                                     @csrf
                                     <button type="submit" onclick="return confirm('Generate and dispatch certificates to all participants in {{ $workshop->title }}?')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[10px]">
                                         Dispatch Certs
+                                    </button>
+                                </form>
+                                <form action="{{ route('admin.workshops.destroy', $workshop->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently delete \'{{ addslashes($workshop->title) }}\'? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-2 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-bold text-[10px]" title="Delete cohort">
+                                        Delete
                                     </button>
                                 </form>
                                 <a href="{{ route('workshops.show', $workshop->slug) }}" target="_blank" class="font-bold text-amber-600 hover:underline text-[11px]">

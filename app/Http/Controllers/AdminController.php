@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -132,6 +133,51 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', "Member {$member->member_number} payment status updated to {$status}.");
+    }
+
+    /**
+     * Update member profile dossier.
+     */
+    public function updateMember(Request $request, int $id): RedirectResponse
+    {
+        $member = Member::findOrFail($id);
+
+        $validated = $request->validate([
+            'category' => ['required', 'in:student,professional,corporate,fellow'],
+            'status' => ['required', 'in:active,inactive,pending'],
+            'institution_or_company' => ['nullable', 'string', 'max:255'],
+            'designation' => ['nullable', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:100'],
+            'country' => ['required', 'string', 'max:100'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'bio' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $member->update($validated);
+
+        return back()->with('success', "Member dossier for {$member->full_name} updated successfully.");
+    }
+
+    /**
+     * Resend official welcome email & digital credentials to member.
+     */
+    public function resendMemberWelcome(int $id): RedirectResponse
+    {
+        $member = Member::with('user')->findOrFail($id);
+
+        if ($member->user) {
+            try {
+                Mail::to($member->email)->send(new MemberWelcomeMail($member->user, $member));
+
+                return back()->with('success', "Welcome email with Member ID #{$member->member_number} and digital credentials re-dispatched to {$member->email}.");
+            } catch (\Throwable $e) {
+                Log::warning('Resend welcome email failed: '.$e->getMessage());
+
+                return back()->with('error', 'Unable to dispatch email: '.$e->getMessage());
+            }
+        }
+
+        return back()->with('error', 'Member does not have an active associated portal user account.');
     }
 
     /**
@@ -423,6 +469,23 @@ class AdminController extends Controller
     }
 
     /**
+     * Delete an existing workshop cohort.
+     */
+    public function destroyWorkshop(int $id): RedirectResponse
+    {
+        $workshop = Workshop::findOrFail($id);
+        $title = $workshop->title;
+
+        if ($workshop->banner_image && Storage::disk('public')->exists($workshop->banner_image)) {
+            Storage::disk('public')->delete($workshop->banner_image);
+        }
+
+        $workshop->delete();
+
+        return redirect()->route('admin.workshops')->with('success', "Workshop cohort '{$title}' was deleted successfully.");
+    }
+
+    /**
      * Applications management.
      */
     public function applications(Request $request): View
@@ -526,12 +589,22 @@ class AdminController extends Controller
             ->whereDoesntHave('certificate')
             ->get();
 
+        $certController = app(CertificateController::class);
+
         if ($applications->isEmpty()) {
-            return back()->with('error', 'No eligible candidates without certificates found in this cohort.');
+            $existingCertificates = Certificate::where('workshop_id', $workshopId)->get();
+            if ($existingCertificates->isNotEmpty()) {
+                foreach ($existingCertificates as $cert) {
+                    $certController->sendCertificateEmail($cert);
+                }
+
+                return back()->with('success', "All {$existingCertificates->count()} participants in '{$workshop->title}' already hold verified credentials. Official PDF certificates have been re-dispatched to their emails.");
+            }
+
+            return back()->with('error', 'No eligible candidates found in this cohort. Please accept candidates in Admissions first.');
         }
 
         $issuedCount = 0;
-        $certController = app(CertificateController::class);
 
         foreach ($applications as $app) {
             $certificate = Certificate::create([
@@ -674,7 +747,14 @@ class AdminController extends Controller
 
         $inquiries = $query->latest()->paginate(15);
 
-        return view('admin.inquiries.index', compact('inquiries'));
+        $stats = [
+            'total' => InstitutionalInquiry::count(),
+            'new' => InstitutionalInquiry::where('status', 'new')->count(),
+            'in_discussion' => InstitutionalInquiry::whereIn('status', ['contacted', 'in_discussion'])->count(),
+            'partnered' => InstitutionalInquiry::where('status', 'partnered')->count(),
+        ];
+
+        return view('admin.inquiries.index', compact('inquiries', 'stats'));
     }
 
     /**
@@ -784,7 +864,63 @@ class AdminController extends Controller
             'bank_transfer_revenue' => $bankTransferRevenue,
         ];
 
-        return view('admin.finance.index', compact('payments', 'stats'));
+        $allMembers = Member::orderBy('first_name')->get();
+
+        return view('admin.finance.index', compact('payments', 'stats', 'allMembers'));
+    }
+
+    /**
+     * Record an offline/manual bank transfer payment.
+     */
+    public function recordManualPayment(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'member_id' => ['required', 'exists:members,id'],
+            'amount' => ['required', 'numeric', 'min:100'],
+            'category' => ['required', 'in:membership_dues,workshop_tuition,institutional_grant,other'],
+            'gateway_reference' => ['nullable', 'string', 'max:100'],
+            'notes' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $member = Member::with('user')->findOrFail($validated['member_id']);
+        $user = $member->user ?? Auth::user();
+        $ref = 'MANUAL-BNF-'.date('Ymd').'-'.strtoupper(Str::random(6));
+
+        $payment = MemberPayment::create([
+            'member_id' => $member->id,
+            'user_id' => $user->id,
+            'reference' => $ref,
+            'category' => $validated['category'],
+            'amount' => $validated['amount'],
+            'currency' => 'NGN',
+            'payment_gateway' => 'bank_transfer',
+            'status' => 'successful',
+            'gateway_reference' => $validated['gateway_reference'] ?? ('BANK-TELLER-'.strtoupper(Str::random(6))),
+            'notes' => $validated['notes'] ?? ('Manual offline payment recorded by '.Auth::user()->name),
+            'paid_at' => now(),
+        ]);
+
+        $memberNumber = $member->member_number ?: Member::generateMemberNumber();
+
+        $member->update([
+            'member_number' => $memberNumber,
+            'payment_status' => 'paid',
+            'payment_method' => 'bank_transfer',
+            'paid_amount' => $validated['amount'],
+            'paid_at' => now(),
+            'payment_reference' => $ref,
+            'status' => 'active',
+        ]);
+
+        if ($member->user) {
+            try {
+                Mail::to($member->email)->send(new MemberWelcomeMail($member->user, $member));
+            } catch (\Throwable $e) {
+                Log::warning('Member welcome email notice: '.$e->getMessage());
+            }
+        }
+
+        return back()->with('success', 'Offline payment of ₦'.number_format($validated['amount'], 2)." recorded successfully for {$member->full_name}. Member account #{$memberNumber} activated.");
     }
 
     /**
@@ -820,16 +956,55 @@ class AdminController extends Controller
                 'status' => 'active',
             ]);
 
-            try {
-                Mail::to($member->email)->send(new MemberWelcomeMail($member));
-            } catch (\Throwable $e) {
-                Log::warning('Member welcome email notice: '.$e->getMessage());
+            if ($member->user) {
+                try {
+                    Mail::to($member->email)->send(new MemberWelcomeMail($member->user, $member));
+                } catch (\Throwable $e) {
+                    Log::warning('Member welcome email notice: '.$e->getMessage());
+                }
             }
         } elseif ($payment->member && $validated['status'] === 'failed') {
             $payment->member->update(['payment_status' => 'pending']);
         }
 
         return back()->with('success', "Payment {$payment->reference} status updated to '{$validated['status']}'.");
+    }
+
+    /**
+     * Export institutional partnership inquiries to CSV.
+     */
+    public function exportInquiriesCsv(): StreamedResponse
+    {
+        $inquiries = InstitutionalInquiry::orderBy('id', 'desc')->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="brands_academy_institutional_inquiries_'.date('Y-m-d').'.csv"',
+        ];
+
+        return response()->stream(function () use ($inquiries): void {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['ID', 'Date Received', 'Organization Name', 'Organization Type', 'Solution Interest', 'Contact Person', 'Email', 'Phone', 'Estimated Cohort', 'Target Timeline', 'Status', 'Message', 'Admin Notes']);
+
+            foreach ($inquiries as $inq) {
+                fputcsv($handle, [
+                    $inq->id,
+                    $inq->created_at->format('Y-m-d H:i:s'),
+                    $inq->organization_name,
+                    $inq->organization_type_label,
+                    $inq->solution_interest_label,
+                    $inq->contact_person,
+                    $inq->email,
+                    $inq->phone,
+                    $inq->estimated_cohort_size ?? 'N/A',
+                    $inq->target_timeline ?? 'Immediate',
+                    strtoupper($inq->status),
+                    $inq->message,
+                    $inq->admin_notes,
+                ]);
+            }
+            fclose($handle);
+        }, 200, $headers);
     }
 
     /**

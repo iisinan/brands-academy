@@ -123,13 +123,20 @@
                                 </div>
                             </td>
 
-                            <td class="px-6 py-4 text-right space-x-2">
+                            <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
                                 <a href="{{ route('admin.workshops.edit', $workshop->id) }}" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs inline-block transition-colors">
                                     Edit Cohort
                                 </a>
                                 <a href="{{ route('workshops.show', $workshop->slug) }}" target="_blank" class="font-bold text-slate-700 hover:text-amber-600 text-xs inline-block">
                                     Public Page &rarr;
                                 </a>
+                                <form action="{{ route('admin.workshops.destroy', $workshop->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently delete \'{{ addslashes($workshop->title) }}\'? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs inline-block transition-colors" title="Delete workshop cohort">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @empty

@@ -87,6 +87,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/members', [AdminController::class, 'members'])->name('members');
     Route::get('/members/export', [AdminController::class, 'exportMembers'])->name('members.export');
+    Route::put('/members/{id}', [AdminController::class, 'updateMember'])->name('members.update');
+    Route::post('/members/{id}/resend-welcome', [AdminController::class, 'resendMemberWelcome'])->name('members.resend-welcome');
     Route::post('/members/{member}/payment-status', [AdminController::class, 'updateMemberPaymentStatus'])->name('members.payment-status');
 
     // Workshop management & cohorts
@@ -95,6 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/workshops', [AdminController::class, 'storeWorkshop'])->name('workshops.store');
     Route::get('/workshops/{id}/edit', [AdminController::class, 'editWorkshop'])->name('workshops.edit');
     Route::put('/workshops/{id}', [AdminController::class, 'updateWorkshop'])->name('workshops.update');
+    Route::delete('/workshops/{id}', [AdminController::class, 'destroyWorkshop'])->name('workshops.destroy');
     Route::post('/workshops/{id}/bulk-issue-certificates', [AdminController::class, 'bulkIssueCertificates'])->name('workshops.bulk-issue-certificates');
     Route::post('/workshops/{id}/toggle-status', [AdminController::class, 'toggleWorkshopStatus'])->name('workshops.toggle-status');
     Route::post('/workshops/{id}/toggle-featured', [AdminController::class, 'toggleWorkshopFeatured'])->name('workshops.toggle-featured');
@@ -115,10 +118,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Institutional Partnerships & Inquiries
     Route::get('/inquiries', [AdminController::class, 'inquiries'])->name('inquiries');
+    Route::get('/inquiries/export', [AdminController::class, 'exportInquiriesCsv'])->name('inquiries.export');
     Route::post('/inquiries/{id}/status', [AdminController::class, 'updateInquiryStatus'])->name('inquiries.status');
 
     // 4. Finance & Payment Monitoring
     Route::get('/finance', [AdminController::class, 'finance'])->name('finance');
+    Route::post('/finance/manual', [AdminController::class, 'recordManualPayment'])->name('finance.manual');
     Route::post('/finance/{id}/verify', [AdminController::class, 'verifyPayment'])->name('finance.verify');
     Route::get('/finance/export', [AdminController::class, 'exportFinanceCsv'])->name('finance.export');
 });

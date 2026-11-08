@@ -18,9 +18,19 @@
             </p>
         </div>
 
-        <a href="{{ route('workshops.show', $workshop->slug) }}" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
-            View Live Public Page &rarr;
-        </a>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('workshops.show', $workshop->slug) }}" target="_blank" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+                View Live Public Page &rarr;
+            </a>
+            <form action="{{ route('admin.workshops.destroy', $workshop->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete \'{{ addslashes($workshop->title) }}\'? This action cannot be undone.');" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors inline-flex items-center gap-1.5 shadow-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <span>Delete Cohort</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm">
@@ -175,6 +185,34 @@
             </div>
         </form>
 
+    </div>
+    
+    <!-- Danger Zone Card -->
+    <div class="bg-red-50/60 rounded-3xl border border-red-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2 text-red-700 font-bold text-sm">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Danger Zone &mdash; Delete Workshop Cohort</span>
+                </div>
+                <p class="text-xs text-red-600/90 mt-1 max-w-xl">
+                    Permanently delete <strong>{{ $workshop->title }}</strong> and remove this cohort from the academy directory. This action is irreversible.
+                    @if($workshop->applications()->count() > 0)
+                        <span class="block mt-1 font-semibold text-red-700">Notice: There are currently {{ $workshop->applications()->count() }} student application(s) linked to this cohort. Deleting will cascade and remove these associated records.</span>
+                    @endif
+                </p>
+            </div>
+            <form action="{{ route('admin.workshops.destroy', $workshop->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete \'{{ addslashes($workshop->title) }}\'? This action cannot be undone.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors whitespace-nowrap flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Delete Workshop Cohort
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ApplicationAcceptedMail;
 use App\Mail\ApplicationReceivedMail;
 use App\Mail\CertificateIssuedMail;
+use App\Mail\MemberWelcomeMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
 use App\Models\Member;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PortalFeatureTest extends TestCase
@@ -590,6 +592,133 @@ class PortalFeatureTest extends TestCase
             'fee_amount' => 12000,
             'capacity' => 50,
         ]);
+    }
+
+    /**
+     * Test admin can delete an existing workshop cohort.
+     */
+    public function test_admin_can_delete_existing_workshop_cohort(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin For Workshop Delete',
+            'email' => 'admin-delete-ws@example.com',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Temporary Cohort to Delete',
+            'track_type' => 'workshop',
+            'description' => 'Test workshop to be deleted',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(1),
+            'application_deadline' => Carbon::now()->addDays(5),
+            'starts_at' => Carbon::now()->addDays(10),
+            'ends_at' => Carbon::now()->addDays(20),
+            'status' => 'draft',
+        ]);
+
+        $response = $this->actingAs($admin)->delete("/admin/workshops/{$workshop->id}");
+
+        $response->assertRedirect('/admin/workshops');
+        $response->assertSessionHas('success');
+        $this->assertDatabaseMissing('workshops', ['id' => $workshop->id]);
+    }
+
+    /**
+     * Test non-admin cannot delete workshop cohort.
+     */
+    public function test_non_admin_cannot_delete_workshop_cohort(): void
+    {
+        $member = User::create([
+            'name' => 'Regular Member Trying Delete',
+            'email' => 'member-no-delete@example.com',
+            'password' => Hash::make('password123'),
+            'role' => 'member',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Protected Cohort',
+            'track_type' => 'workshop',
+            'description' => 'Protected workshop cohort',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(1),
+            'application_deadline' => Carbon::now()->addDays(5),
+            'starts_at' => Carbon::now()->addDays(10),
+            'ends_at' => Carbon::now()->addDays(20),
+            'status' => 'published',
+        ]);
+
+        // Unauthenticated guest request
+        $this->delete("/admin/workshops/{$workshop->id}")->assertRedirect('/login');
+
+        // Authenticated non-admin web request redirects with unauthorized notice
+        $this->actingAs($member)
+            ->delete("/admin/workshops/{$workshop->id}")
+            ->assertRedirect(route($member->getDashboardRoute()));
+
+        // Authenticated non-admin json request returns 403 forbidden
+        $this->actingAs($member)
+            ->deleteJson("/admin/workshops/{$workshop->id}")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('workshops', ['id' => $workshop->id]);
+    }
+
+    /**
+     * Test deleting workshop cascades and removes linked applications and certificates.
+     */
+    public function test_deleting_workshop_cascades_and_removes_linked_records(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Cascade Delete',
+            'email' => 'admin-cascade@example.com',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Workshop with Active Applications',
+            'track_type' => 'cba',
+            'description' => 'Test workshop with linked application',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(1),
+            'application_deadline' => Carbon::now()->addDays(5),
+            'starts_at' => Carbon::now()->addDays(10),
+            'ends_at' => Carbon::now()->addDays(20),
+            'status' => 'published',
+        ]);
+
+        $app = WorkshopApplication::create([
+            'workshop_id' => $workshop->id,
+            'applicant_name' => 'Test Candidate',
+            'applicant_email' => 'candidate@example.com',
+            'applicant_phone' => '+234 802 000 1122',
+            'status' => 'accepted',
+        ]);
+
+        $cert = Certificate::create([
+            'certificate_number' => 'BANF-CERT-TEST-99',
+            'verification_token' => (string) Str::uuid(),
+            'workshop_id' => $workshop->id,
+            'workshop_application_id' => $app->id,
+            'recipient_name' => 'Test Candidate',
+            'recipient_email' => 'candidate@example.com',
+            'course_title' => $workshop->title,
+            'track_tier' => 'Associate',
+            'issued_at' => now()->toDateString(),
+            'email_status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($admin)->delete("/admin/workshops/{$workshop->id}");
+
+        $response->assertRedirect('/admin/workshops');
+        $this->assertDatabaseMissing('workshops', ['id' => $workshop->id]);
+        $this->assertDatabaseMissing('workshop_applications', ['id' => $app->id]);
+        $this->assertDatabaseMissing('certificates', ['id' => $cert->id]);
     }
 
     /**
@@ -1232,5 +1361,323 @@ class PortalFeatureTest extends TestCase
         $this->assertEquals('paid', $member->fresh()->payment_status);
         $this->assertEquals('active', $member->fresh()->status);
         $this->assertStringStartsWith('BANF-MBR-', $member->fresh()->member_number);
+    }
+
+    /**
+     * Test admin can update a member dossier.
+     */
+    public function test_admin_can_update_member_dossier(): void
+    {
+        $admin = User::create([
+            'name' => 'Directory Admin',
+            'email' => 'dir.admin@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $user = User::create([
+            'name' => 'Aisha Bello',
+            'email' => 'aisha.bello@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'first_name' => 'Aisha',
+            'last_name' => 'Bello',
+            'email' => 'aisha.bello@example.com',
+            'phone' => '+234 803 111 2222',
+            'category' => 'student',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'pending',
+            'qr_code_token' => 'aisha-token-edit',
+        ]);
+
+        $response = $this->actingAs($admin)->put("/admin/members/{$member->id}", [
+            'category' => 'fellow',
+            'status' => 'active',
+            'institution_or_company' => 'Ahmadu Bello University Zaria',
+            'designation' => 'Associate Professor of Brand Communication',
+            'phone' => '+234 803 999 8888',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'bio' => 'Distinguished research fellow in semiotics and civic branding.',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertEquals('fellow', $member->fresh()->category);
+        $this->assertEquals('active', $member->fresh()->status);
+        $this->assertEquals('Associate Professor of Brand Communication', $member->fresh()->designation);
+        $this->assertEquals('Ahmadu Bello University Zaria', $member->fresh()->institution_or_company);
+    }
+
+    /**
+     * Test admin can resend welcome email and digital credentials to member.
+     */
+    public function test_admin_can_resend_member_welcome_email(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Membership Registrar',
+            'email' => 'registrar@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $user = User::create([
+            'name' => 'Chinedu Eze',
+            'email' => 'chinedu.eze@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2026-CHIN1',
+            'first_name' => 'Chinedu',
+            'last_name' => 'Eze',
+            'email' => 'chinedu.eze@example.com',
+            'phone' => '+234 809 333 4455',
+            'category' => 'professional',
+            'state' => 'Enugu',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'payment_status' => 'paid',
+            'qr_code_token' => 'chinedu-token-resend',
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/members/{$member->id}/resend-welcome");
+
+        $response->assertSessionHas('success');
+        Mail::assertSent(MemberWelcomeMail::class, function ($mail) use ($member) {
+            return $mail->hasTo($member->email);
+        });
+    }
+
+    /**
+     * Test admin can manage institutional inquiries and export them to CSV.
+     */
+    public function test_admin_can_manage_and_export_institutional_inquiries(): void
+    {
+        $admin = User::create([
+            'name' => 'Partnerships Lead',
+            'email' => 'partnerships.lead@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $inquiry = InstitutionalInquiry::create([
+            'organization_name' => 'Bayero University Kano',
+            'organization_type' => 'university',
+            'contact_person' => 'Prof. Sani Garba',
+            'email' => 'sani.garba@buk.edu.ng',
+            'phone' => '+234 802 333 4444',
+            'solution_interest' => 'curriculum',
+            'estimated_cohort_size' => '85',
+            'target_timeline' => 'Q3 2026',
+            'message' => 'Proposal for integrating Brand Architecture module into mass comm syllabus.',
+            'status' => 'new',
+        ]);
+
+        // View list
+        $viewResponse = $this->actingAs($admin)->get('/admin/inquiries');
+        $viewResponse->assertStatus(200);
+        $viewResponse->assertSee('Bayero University Kano');
+
+        // Update inquiry status
+        $statusResponse = $this->actingAs($admin)->post("/admin/inquiries/{$inquiry->id}/status", [
+            'status' => 'in_discussion',
+            'admin_notes' => 'Introductory meeting held with Vice Chancellor on Feb 14.',
+        ]);
+        $statusResponse->assertSessionHas('success');
+        $this->assertEquals('in_discussion', $inquiry->fresh()->status);
+        $this->assertEquals('Introductory meeting held with Vice Chancellor on Feb 14.', $inquiry->fresh()->admin_notes);
+
+        // Export inquiries CSV
+        $exportResponse = $this->actingAs($admin)->get('/admin/inquiries/export');
+        $exportResponse->assertStatus(200);
+        $exportResponse->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+    }
+
+    /**
+     * Test admin can record manual offline bank payment and activate member.
+     */
+    public function test_admin_can_record_manual_offline_bank_payment(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Bursar Officer',
+            'email' => 'bursar.officer@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $user = User::create([
+            'name' => 'Maryam Aliyu',
+            'email' => 'maryam.aliyu@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'first_name' => 'Maryam',
+            'last_name' => 'Aliyu',
+            'email' => 'maryam.aliyu@example.com',
+            'phone' => '+234 809 999 0000',
+            'category' => 'professional',
+            'state' => 'Abuja',
+            'country' => 'Nigeria',
+            'status' => 'pending',
+            'payment_status' => 'pending',
+            'qr_code_token' => 'maryam-token-offline',
+        ]);
+
+        $response = $this->actingAs($admin)->post('/admin/finance/manual', [
+            'member_id' => $member->id,
+            'category' => 'membership_dues',
+            'amount' => 10000.00,
+            'gateway_reference' => 'STANBIC-TELLER-774411',
+            'notes' => 'Cash deposit confirmed at Area 11 branch.',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertEquals('paid', $member->fresh()->payment_status);
+        $this->assertEquals('active', $member->fresh()->status);
+        $this->assertStringStartsWith('BANF-MBR-', $member->fresh()->member_number);
+
+        $this->assertDatabaseHas('member_payments', [
+            'member_id' => $member->id,
+            'amount' => 10000.00,
+            'payment_gateway' => 'bank_transfer',
+            'status' => 'successful',
+            'gateway_reference' => 'STANBIC-TELLER-774411',
+        ]);
+
+        Mail::assertSent(MemberWelcomeMail::class, function ($mail) use ($member) {
+            return $mail->hasTo($member->email);
+        });
+    }
+
+    /**
+     * Test admin can toggle workshop live status and featured on hero.
+     */
+    public function test_admin_can_toggle_workshop_status_and_featured_flag(): void
+    {
+        $admin = User::create([
+            'name' => 'Curriculum Director',
+            'email' => 'director@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Advanced Visual Identity Masterclass',
+            'slug' => 'advanced-visual-identity-masterclass',
+            'track_type' => 'cba',
+            'tagline' => 'High-end corporate branding systems',
+            'description' => 'Comprehensive masterclass on brand architecture.',
+            'curriculum_topics' => ['Vector Typography', 'Brand Guidelines'],
+            'delivery_mode' => 'hybrid',
+            'fee_type' => 'paid',
+            'fee_amount' => 35000.00,
+            'application_starts_at' => Carbon::now()->subDays(5),
+            'application_deadline' => Carbon::now()->addDays(20),
+            'starts_at' => Carbon::now()->addDays(25),
+            'ends_at' => Carbon::now()->addDays(35),
+            'status' => 'draft',
+            'is_featured' => false,
+        ]);
+
+        // Toggle status: draft -> published
+        $toggleStatusResponse = $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-status");
+        $toggleStatusResponse->assertSessionHas('success');
+        $this->assertEquals('published', $workshop->fresh()->status);
+
+        // Toggle featured: false -> true
+        $toggleFeaturedResponse = $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-featured");
+        $toggleFeaturedResponse->assertSessionHas('success');
+        $this->assertTrue($workshop->fresh()->is_featured);
+    }
+
+    /**
+     * Test admin can bulk issue certificates to eligible candidates in a workshop cohort.
+     */
+    public function test_admin_can_bulk_issue_certificates_to_workshop_cohort(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Dean of Academics',
+            'email' => 'dean@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Executive Brand Leadership Cohort',
+            'slug' => 'executive-brand-leadership-cohort',
+            'track_type' => 'executive',
+            'description' => 'Executive certification in brand governance.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'paid',
+            'fee_amount' => 50000.00,
+            'application_starts_at' => Carbon::now()->subDays(30),
+            'application_deadline' => Carbon::now()->subDays(10),
+            'starts_at' => Carbon::now()->subDays(8),
+            'ends_at' => Carbon::now()->subDays(1),
+            'status' => 'published',
+        ]);
+
+        $appUser = User::create([
+            'name' => 'Yakubu Danladi',
+            'email' => 'yakubu.d@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $appUser->id,
+            'first_name' => 'Yakubu',
+            'last_name' => 'Danladi',
+            'email' => 'yakubu.d@example.com',
+            'phone' => '+234 800 000 0000',
+            'category' => 'corporate',
+            'state' => 'Kaduna',
+            'status' => 'active',
+            'payment_status' => 'paid',
+            'qr_code_token' => 'yakubu-token-cert',
+        ]);
+
+        $application = WorkshopApplication::create([
+            'workshop_id' => $workshop->id,
+            'member_id' => $member->id,
+            'user_id' => $appUser->id,
+            'applicant_name' => 'Yakubu Danladi',
+            'applicant_email' => 'yakubu.d@example.com',
+            'applicant_phone' => '+234 802 000 1122',
+            'organization' => 'Northern Star Capital',
+            'designation' => 'Managing Director',
+            'statement_of_interest' => 'Executive governance alignment.',
+            'status' => 'accepted',
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/bulk-issue-certificates");
+
+        $response->assertSessionHas('success');
+        $this->assertEquals('completed', $application->fresh()->status);
+        $this->assertDatabaseHas('certificates', [
+            'workshop_id' => $workshop->id,
+            'workshop_application_id' => $application->id,
+            'recipient_email' => 'yakubu.d@example.com',
+        ]);
+
+        Mail::assertSent(CertificateIssuedMail::class, function ($mail) use ($application) {
+            return $mail->hasTo($application->applicant_email);
+        });
     }
 }
