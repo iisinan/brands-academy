@@ -317,4 +317,138 @@ class SmartRBACTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Administrator View');
     }
+
+    /**
+     * Test admin can provision a new administrator user.
+     */
+    public function test_admin_can_provision_new_admin_user(): void
+    {
+        $admin = User::create([
+            'name' => 'Managing Admin',
+            'email' => 'managing@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this->actingAs($admin)->post('/admin/users', [
+            'name' => 'Prof. Samaila Mande',
+            'email' => 'mande@brandsacademy.org',
+            'password' => 'securePassword123',
+            'role' => 'admin',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'email' => 'mande@brandsacademy.org',
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * Test admin can provision a new member user with auto-created Member profile.
+     */
+    public function test_admin_can_provision_new_member_user_with_profile(): void
+    {
+        $admin = User::create([
+            'name' => 'Managing Admin',
+            'email' => 'managing@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this->actingAs($admin)->post('/admin/users', [
+            'name' => 'Khadijah Aliyu',
+            'email' => 'khadijah@example.com',
+            'password' => 'securePassword123',
+            'role' => 'member',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'khadijah@example.com',
+            'role' => 'member',
+        ]);
+
+        $this->assertDatabaseHas('members', [
+            'email' => 'khadijah@example.com',
+            'first_name' => 'Khadijah',
+        ]);
+    }
+
+    /**
+     * Test admin can delete a user account.
+     */
+    public function test_admin_can_delete_user_account(): void
+    {
+        $admin = User::create([
+            'name' => 'Root Admin',
+            'email' => 'root@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Admin,
+        ]);
+
+        $userToDelete = User::create([
+            'name' => 'Spam User',
+            'email' => 'spam@example.com',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Member,
+        ]);
+
+        $response = $this->actingAs($admin)->delete("/admin/users/{$userToDelete->id}");
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseMissing('users', ['id' => $userToDelete->id]);
+    }
+
+    /**
+     * Test admin cannot delete their own active account.
+     */
+    public function test_admin_cannot_delete_their_own_account(): void
+    {
+        $admin = User::create([
+            'name' => 'Immortal Admin',
+            'email' => 'immortal@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this->actingAs($admin)->delete("/admin/users/{$admin->id}");
+
+        $response->assertSessionHas('error');
+        $this->assertDatabaseHas('users', ['id' => $admin->id]);
+    }
+
+    /**
+     * Test granular RBAC capabilities and Gate definitions.
+     */
+    public function test_granular_rbac_capabilities_and_gates(): void
+    {
+        $admin = User::create([
+            'name' => 'Gate Admin',
+            'email' => 'gateadmin@brandsacademy.org',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Admin,
+        ]);
+
+        $member = User::create([
+            'name' => 'Gate Member',
+            'email' => 'gatemember@example.com',
+            'password' => Hash::make('secret'),
+            'role' => UserRole::Member,
+        ]);
+
+        // Admin capabilities
+        $this->assertTrue($admin->canPerform('view_admin_panel'));
+        $this->assertTrue($admin->canPerform('manage_users'));
+        $this->assertTrue($admin->canPerform('manage_workshops'));
+        $this->assertTrue($admin->canPerform('evaluate_portfolios'));
+
+        // Member capabilities
+        $this->assertFalse($member->canPerform('manage_users'));
+        $this->assertFalse($member->canPerform('manage_workshops'));
+        $this->assertTrue($member->canPerform('view_member_portal'));
+        $this->assertTrue($member->canPerform('apply_workshops'));
+        $this->assertTrue($member->canPerform('submit_portfolio'));
+    }
 }

@@ -44,8 +44,19 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
-// Member Protected Portal
-Route::middleware(['auth', 'role:member,admin'])->group(function (): void {
+// Email Verification
+Route::middleware('auth')->group(function (): void {
+    Route::get('/email/verify', [AuthController::class, 'showVerificationNotice'])->name('verification.notice');
+    Route::post('/email/verification-notification', [AuthController::class, 'resendVerificationEmail'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+});
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
+
+// Member Protected Portal (Requires Auth, Member/Admin Role, and Verified Email)
+Route::middleware(['auth', 'role:member,admin', 'verified'])->group(function (): void {
     Route::get('/member/dashboard', [MembershipController::class, 'dashboard'])->name('member.dashboard');
     Route::post('/member/profile', [MembershipController::class, 'updateProfile'])->name('member.profile.update');
     Route::get('/member/applications/{id}/submit-portfolio', [MembershipController::class, 'submitPortfolio'])->name('member.portfolio.create');

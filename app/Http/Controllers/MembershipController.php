@@ -83,10 +83,13 @@ class MembershipController extends Controller
             'joined_at' => now()->toDateString(),
         ]);
 
-        // 3. Log user into portal
+        // 3. Dispatch Email Verification notification via Resend
+        $user->sendEmailVerificationNotification();
+
+        // 4. Log user into portal session
         Auth::login($user);
 
-        return redirect()->route('member.dashboard')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your official Member ID is {$member->member_number}.");
+        return redirect()->route('verification.notice')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your account has been created with Member ID {$member->member_number}. We have sent a verification email to {$user->email}. Please verify your email to unlock access to your Member Portal.");
     }
 
     /**

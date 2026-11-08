@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +49,11 @@ class AuthController extends Controller
 
             /** @var User $user */
             $user = Auth::user();
+
+            // If user is a member and has NOT verified their email, block access and redirect to verification notice
+            if ($user->isMember() && ! $user->hasVerifiedEmail()) {
+                return redirect()->route('verification.notice')->with('warning', 'Please verify your email address to access your member dashboard. A verification link has been sent to your email.');
+            }
 
             // Smart RBAC: Resolve destination based on detected role
             $targetRoute = $user->getDashboardRoute();
@@ -174,5 +180,60 @@ class AuthController extends Controller
         }
 
         return back()->withErrors(['email' => __($status)]);
+    }
+
+    /**
+     * Display the email verification notice.
+     */
+    public function showVerificationNotice(Request $request): View|RedirectResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route($user->getDashboardRoute());
+        }
+
+        return view('auth.verify-email');
+    }
+
+    /**
+     * Mark the authenticated or link recipient's email address as verified.
+     */
+    public function verifyEmail(Request $request, int|string $id, string $hash): RedirectResponse
+    {
+        $user = User::findOrFail($id);
+
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            abort(403, 'Invalid or expired email verification link.');
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            event(new Verified($user));
+        }
+
+        if (! Auth::check()) {
+            Auth::login($user);
+        }
+
+        return redirect()->route($user->getDashboardRoute())->with('success', 'Your email address has been successfully verified! You now have full access to your member portal.');
+    }
+
+    /**
+     * Resend the email verification notification.
+     */
+    public function resendVerificationEmail(Request $request): RedirectResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route($user->getDashboardRoute());
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return back()->with('success', "A fresh verification link has been sent to your email address: {$user->email}.");
     }
 }
