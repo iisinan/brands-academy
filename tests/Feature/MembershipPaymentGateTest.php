@@ -109,8 +109,8 @@ class MembershipPaymentGateTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('₦75,000'); // Corporate tier amount
         $response->assertSee('Corporate Member');
-        $response->assertSee('Zenith Bank Plc');
-        $response->assertSee('1012345678');
+        $response->assertSee('Paystack');
+        $response->assertSee('Pay ₦75,000 via Paystack');
     }
 
     /**
