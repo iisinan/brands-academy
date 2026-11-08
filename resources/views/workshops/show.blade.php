@@ -2,6 +2,32 @@
 
 @section('title', $workshop->title . ' - Brands Academy')
 
+@push('styles')
+<style>
+    @keyframes checkmarkPop {
+        0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(4deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes strokeCheck {
+        0% { stroke-dashoffset: 32; }
+        100% { stroke-dashoffset: 0; }
+    }
+    .anim-check-pop {
+        animation: checkmarkPop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        transform-origin: center center;
+    }
+    .anim-check-stroke {
+        stroke-dasharray: 32;
+        stroke-dashoffset: 32;
+        animation: strokeCheck 0.32s cubic-bezier(0.65, 0, 0.45, 1) 0.08s forwards;
+    }
+    .field-interactive {
+        transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, transform 0.15s ease;
+    }
+</style>
+@endpush
+
 @section('content')
 
 @php $window = $workshop->application_window_status; @endphp
@@ -141,8 +167,12 @@
 
                 <!-- Window Case 2: Window IS OPEN FOR APPLICATIONS -->
                 @elseif($workshop->isOpenForApplications())
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900 mb-1">Submit Your Application</h3>
+                    <div x-data="workshopApplicationForm({
+                        initialName: @js(old('applicant_name', auth()->user()?->name ?? '')),
+                        initialEmail: @js(old('applicant_email', auth()->user()?->email ?? '')),
+                        initialPhone: @js(old('applicant_phone', auth()->user()?->member?->phone ?? ''))
+                    })">
+                        <h3 class="text-lg font-bold text-slate-900 mb-1 font-serif-title">Submit Your Application</h3>
                         <p class="text-xs text-slate-500 mb-4">Complete this short form to apply for cohort admissions.</p>
 
                         @auth
@@ -154,21 +184,57 @@
                             @endif
                         @endauth
 
-                        <form action="{{ route('workshops.apply', $workshop->slug) }}" method="POST" class="space-y-4">
+                        <form action="{{ route('workshops.apply', $workshop->slug) }}" method="POST" @submit="isSubmitting = true" class="space-y-4">
                             @csrf
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name *</label>
-                                <input type="text" name="applicant_name" value="{{ old('applicant_name', auth()->user()?->name ?? '') }}" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-bold text-slate-700 uppercase">Full Name *</label>
+                                    <span x-show="isNameValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        </span>
+                                        <span>Valid</span>
+                                    </span>
+                                </div>
+                                <input type="text" name="applicant_name" x-model="name" required
+                                       class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
+                                       :class="isNameValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email *</label>
-                                    <input type="email" name="applicant_email" value="{{ old('applicant_email', auth()->user()?->email ?? '') }}" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">Email *</label>
+                                        <span x-show="isEmailValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                                <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                            </span>
+                                            <span>Valid</span>
+                                        </span>
+                                    </div>
+                                    <input type="email" name="applicant_email" x-model="email" required
+                                           class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
+                                           :class="isEmailValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Phone Number *</label>
-                                    <input type="text" name="applicant_phone" value="{{ old('applicant_phone', auth()->user()?->member?->phone ?? '') }}" required placeholder="+234..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-xs font-bold text-slate-700 uppercase">Phone *</label>
+                                        <div class="flex items-center gap-1.5">
+                                            <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[9px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                                                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                                                <span x-text="phoneCarrier"></span>
+                                            </span>
+                                            <span x-show="isPhoneValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                                    <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                                </span>
+                                                <span>Valid</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <input type="text" name="applicant_phone" x-model="phone" @blur="formatPhone()" required placeholder="+234..."
+                                           class="w-full px-3.5 py-2.5 rounded-xl border text-sm field-interactive focus:outline-none"
+                                           :class="isPhoneValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
                                 </div>
                             </div>
 
@@ -196,8 +262,9 @@
                                 </div>
                             @endif
 
-                            <button type="submit" class="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all">
-                                Submit Cohort Application
+                            <button type="submit" :disabled="isSubmitting" class="w-full py-3.5 px-4 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75">
+                                <svg x-show="isSubmitting" class="w-4 h-4 animate-spin text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                <span>Submit Cohort Application</span>
                             </button>
                         </form>
                     </div>
@@ -240,3 +307,57 @@
 </section>
 
 @endsection
+
+@push('scripts')
+<script>
+    function workshopApplicationForm(config) {
+        return {
+            name: config.initialName || '',
+            email: config.initialEmail || '',
+            phone: config.initialPhone || '',
+            isSubmitting: false,
+
+            get isNameValid() {
+                return (this.name || '').trim().length >= 3;
+            },
+
+            get isEmailValid() {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((this.email || '').trim());
+            },
+
+            get isPhoneValid() {
+                const digits = (this.phone || '').replace(/[^0-9]/g, '');
+                return digits.length >= 10 && digits.length <= 15;
+            },
+
+            get phoneCarrier() {
+                const raw = (this.phone || '').replace(/[^0-9]/g, '');
+                let prefix = '';
+                if (raw.startsWith('234') && raw.length >= 6) {
+                    prefix = '0' + raw.substring(3, 6);
+                } else if (raw.startsWith('0') && raw.length >= 4) {
+                    prefix = raw.substring(0, 4);
+                }
+                const mtn = ['0803', '0806', '0703', '0706', '0813', '0816', '0810', '0814', '0903', '0906', '0913', '0916'];
+                const airtel = ['0802', '0808', '0708', '0812', '0701', '0902', '0901', '0904', '0907', '0912'];
+                const glo = ['0805', '0807', '0705', '0815', '0811', '0905', '0915'];
+                const nineMobile = ['0809', '0817', '0818', '0909', '0908'];
+
+                if (mtn.includes(prefix)) return 'MTN';
+                if (airtel.includes(prefix)) return 'Airtel';
+                if (glo.includes(prefix)) return 'Glo';
+                if (nineMobile.includes(prefix)) return '9mobile';
+                return '';
+            },
+
+            formatPhone() {
+                let cleaned = (this.phone || '').trim().replace(/[^\d+]/g, '');
+                if (cleaned.startsWith('0') && cleaned.length === 11) {
+                    cleaned = '+234 ' + cleaned.substring(1, 4) + ' ' + cleaned.substring(4, 7) + ' ' + cleaned.substring(7);
+                }
+                this.phone = cleaned;
+            }
+        };
+    }
+</script>
+@endpush

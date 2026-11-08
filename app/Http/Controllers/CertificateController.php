@@ -56,7 +56,7 @@ class CertificateController extends Controller
             return back()->with('success', "Certificate #{$certificate->certificate_number} has been emailed to {$certificate->recipient_email}.");
         }
 
-        return back()->with('error', "Could not deliver email to {$certificate->recipient_email}. Check mail configuration.");
+        return back()->with('error', "Could not deliver email to {$certificate->recipient_email}: ".($certificate->email_error ?? 'Check mail configuration.'));
     }
 
     /**
@@ -105,16 +105,14 @@ class CertificateController extends Controller
 
             return true;
         } catch (\Throwable $e) {
-            Log::warning("Certificate email dispatch failed for #{$certificate->certificate_number}: ".$e->getMessage());
+            Log::error("Certificate email dispatch failed for #{$certificate->certificate_number}: ".$e->getMessage());
 
-            // If SMTP is not actively configured locally, we record the attempt
             $certificate->update([
-                'email_status' => 'sent', // Marked as generated and queued
-                'email_sent_at' => now(),
-                'email_error' => 'Simulated delivery (local test environment): '.$e->getMessage(),
+                'email_status' => 'failed',
+                'email_error' => $e->getMessage(),
             ]);
 
-            return true;
+            return false;
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Mail\ApplicationAcceptedMail;
+use App\Mail\ApplicationReceivedMail;
 use App\Mail\CertificateIssuedMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
@@ -656,5 +657,202 @@ class PortalFeatureTest extends TestCase
 
         $response->assertSessionHas('success');
         Mail::assertSent(CertificateIssuedMail::class);
+    }
+
+    /**
+     * Test member dashboard renders with metrics, quick credential modal, and nigerian states datalist.
+     */
+    public function test_member_dashboard_renders_with_metrics_and_quick_credential(): void
+    {
+        $user = User::create([
+            'name' => 'Suleiman Yusuf',
+            'email' => 'suleiman@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2024-TEST1',
+            'first_name' => 'Suleiman',
+            'last_name' => 'Yusuf',
+            'email' => 'suleiman@example.com',
+            'phone' => '+234 803 123 4567',
+            'category' => 'professional',
+            'institution_or_company' => 'Brand Horizons Nigeria',
+            'designation' => 'Brand Strategist',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'joined_at' => now()->toDateString(),
+            'qr_code_token' => 'test-mbr-qr-token-1234',
+        ]);
+
+        $response = $this->actingAs($user)->get('/member/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertSee('Suleiman Yusuf');
+        $response->assertSee('BANF-MBR-2024-TEST1');
+        $response->assertSee('Quick Credential');
+        $response->assertSee('nigerian-states');
+    }
+
+    /**
+     * Test member can update profile records.
+     */
+    public function test_member_can_update_profile_records(): void
+    {
+        $user = User::create([
+            'name' => 'Aisha Bello',
+            'email' => 'aisha.bello@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2024-TEST2',
+            'first_name' => 'Aisha',
+            'last_name' => 'Bello',
+            'email' => 'aisha.bello@example.com',
+            'phone' => '+234 802 000 0000',
+            'category' => 'student',
+            'state' => 'Kano',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'joined_at' => now()->toDateString(),
+            'qr_code_token' => 'test-mbr-qr-token-5678',
+        ]);
+
+        $response = $this->actingAs($user)->post('/member/profile', [
+            'phone' => '+234 803 999 0000',
+            'state' => 'Lagos',
+            'institution_or_company' => 'Apex Creative Lab',
+            'designation' => 'Lead Identity Designer',
+            'bio' => 'Focusing on brand strategy and visual systems.',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $member->refresh();
+        $this->assertEquals('+234 803 999 0000', $member->phone);
+        $this->assertEquals('Lagos', $member->state);
+        $this->assertEquals('Apex Creative Lab', $member->institution_or_company);
+        $this->assertEquals('Lead Identity Designer', $member->designation);
+    }
+
+    /**
+     * Test credential verification lookup for both certificate and member.
+     */
+    public function test_credential_verification_lookup_for_certificate_and_member(): void
+    {
+        $workshop = Workshop::create([
+            'title' => 'Brand Strategy Masterclass',
+            'slug' => 'bsm-test-verify',
+            'track_type' => 'masterclass',
+            'description' => 'Test workshop description.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(10),
+            'application_deadline' => Carbon::now()->subDays(5),
+            'starts_at' => Carbon::now()->subDays(3),
+            'ends_at' => Carbon::now()->subDay(),
+            'status' => 'published',
+        ]);
+
+        $cert = Certificate::create([
+            'certificate_number' => 'BANF-CERT-2024-VERIFY1',
+            'verification_token' => 'cert-verify-token-uuid-1',
+            'workshop_id' => $workshop->id,
+            'recipient_name' => 'Dr. Kalu Okonkwo',
+            'recipient_email' => 'kalu@example.com',
+            'course_title' => 'Brand Strategy Masterclass',
+            'track_tier' => 'Executive Masterclass',
+            'issued_at' => now()->toDateString(),
+            'email_status' => 'sent',
+        ]);
+
+        $member = Member::create([
+            'member_number' => 'BANF-MBR-2024-VERIFY2',
+            'first_name' => 'Halima',
+            'last_name' => 'Danladi',
+            'email' => 'halima@example.com',
+            'phone' => '+234 808 123 4567',
+            'category' => 'fellow',
+            'institution_or_company' => 'Ahmadu Bello University',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'joined_at' => now()->toDateString(),
+            'qr_code_token' => 'member-verify-token-uuid-2',
+        ]);
+
+        // 1. Search for Certificate by certificate_number
+        $response1 = $this->get('/verify?q=BANF-CERT-2024-VERIFY1');
+        $response1->assertStatus(200);
+        $response1->assertSee('Dr. Kalu Okonkwo');
+        $response1->assertSee('Authentic Certificate Verified');
+
+        // 2. Direct lookup by certificate verification token
+        $response2 = $this->get('/verify/cert-verify-token-uuid-1');
+        $response2->assertStatus(200);
+        $response2->assertSee('Dr. Kalu Okonkwo');
+
+        // 3. Search for Member by member_number
+        $response3 = $this->get('/verify?q=BANF-MBR-2024-VERIFY2');
+        $response3->assertStatus(200);
+        $response3->assertSee('Halima Danladi');
+        $response3->assertSee('Active Member Verified');
+
+        // 4. Direct lookup by member qr_code_token
+        $response4 = $this->get('/verify/member-verify-token-uuid-2');
+        $response4->assertStatus(200);
+        $response4->assertSee('Halima Danladi');
+    }
+
+    /**
+     * Test workshop application dispatches acknowledgment receipt email.
+     */
+    public function test_workshop_application_dispatches_acknowledgment_email(): void
+    {
+        Mail::fake();
+
+        $workshop = Workshop::create([
+            'title' => 'Open Cohort 2026',
+            'slug' => 'open-cohort-2026-test',
+            'track_type' => 'cba',
+            'description' => 'Test workshop description.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(2),
+            'application_deadline' => Carbon::now()->addDays(10),
+            'starts_at' => Carbon::now()->addDays(15),
+            'ends_at' => Carbon::now()->addDays(30),
+            'status' => 'published',
+        ]);
+
+        $response = $this->post("/workshops/{$workshop->slug}/apply", [
+            'applicant_name' => 'Emmanuel Chukwu',
+            'applicant_email' => 'emmanuel@example.com',
+            'applicant_phone' => '+234 813 555 7777',
+            'applicant_organization' => 'Enugu Design Guild',
+            'statement_of_purpose' => 'Passionate about brand identity systems and typography across African markets.',
+        ]);
+
+        $response->assertRedirect("/workshops/{$workshop->slug}");
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('workshop_applications', [
+            'workshop_id' => $workshop->id,
+            'applicant_email' => 'emmanuel@example.com',
+            'applicant_name' => 'Emmanuel Chukwu',
+        ]);
+
+        Mail::assertSent(ApplicationReceivedMail::class, function ($mail) {
+            return $mail->application->applicant_email === 'emmanuel@example.com';
+        });
     }
 }

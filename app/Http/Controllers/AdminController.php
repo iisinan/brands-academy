@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ApplicationAcceptedMail;
+use App\Mail\ApplicationStatusUpdatedMail;
+use App\Mail\PortfolioEvaluatedMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
 use App\Models\Member;
@@ -408,6 +410,12 @@ class AdminController extends Controller
             } catch (\Throwable $e) {
                 Log::warning('Offer email delivery notice: '.$e->getMessage());
             }
+        } elseif (in_array($validated['status'], ['waitlisted', 'rejected']) && $previousStatus !== $validated['status']) {
+            try {
+                Mail::to($application->applicant_email)->send(new ApplicationStatusUpdatedMail($application, $validated['status']));
+            } catch (\Throwable $e) {
+                Log::warning("Status update email delivery notice ({$validated['status']}): ".$e->getMessage());
+            }
         }
 
         return back()->with('success', "Application #{$application->id} updated to '{$application->status}'.");
@@ -509,7 +517,7 @@ class AdminController extends Controller
      */
     public function evaluateSubmission(Request $request, int $id): RedirectResponse
     {
-        $submission = PortfolioSubmission::with('application')->findOrFail($id);
+        $submission = PortfolioSubmission::with(['application', 'workshop'])->findOrFail($id);
 
         $validated = $request->validate([
             'status' => ['required', 'in:under_review,approved,revisions_requested'],
@@ -530,7 +538,16 @@ class AdminController extends Controller
             $submission->application->update(['status' => 'completed']);
         }
 
-        return back()->with('success', "Portfolio submission evaluated: Status updated to '{$submission->status}'.");
+        // Dispatch mentor evaluation feedback email to student
+        if (in_array($validated['status'], ['approved', 'revisions_requested']) && ! empty($submission->application?->applicant_email)) {
+            try {
+                Mail::to($submission->application->applicant_email)->send(new PortfolioEvaluatedMail($submission));
+            } catch (\Throwable $e) {
+                Log::warning('Portfolio feedback email notice: '.$e->getMessage());
+            }
+        }
+
+        return back()->with('success', "Portfolio submission evaluated: Status updated to '{$submission->status}'. Feedback email dispatched to student.");
     }
 
     /**

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InstitutionalInquiryMail;
 use App\Models\InstitutionalInquiry;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class PartnershipController extends Controller
 {
@@ -34,7 +37,18 @@ class PartnershipController extends Controller
             'message' => ['required', 'string', 'min:20', 'max:2000'],
         ]);
 
-        InstitutionalInquiry::create($validated);
+        $inquiry = InstitutionalInquiry::create($validated);
+
+        try {
+            Mail::to($inquiry->email)->send(new InstitutionalInquiryMail($inquiry, isInternalAlert: false));
+
+            $adminEmail = config('mail.from.address');
+            if ($adminEmail && $adminEmail !== $inquiry->email) {
+                Mail::to($adminEmail)->send(new InstitutionalInquiryMail($inquiry, isInternalAlert: true));
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Could not dispatch inquiry email: '.$e->getMessage());
+        }
 
         return back()->with('success', 'Thank you for contacting Brands Academy Nigeria Foundation. Our institutional partnership team will review your requirements and reach out within 48 hours.');
     }

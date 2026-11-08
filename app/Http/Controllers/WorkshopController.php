@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApplicationReceivedMail;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class WorkshopController extends Controller
 {
@@ -100,7 +103,7 @@ class WorkshopController extends Controller
             return back()->with('error', 'An application has already been submitted for this email address and cohort.');
         }
 
-        WorkshopApplication::create([
+        $application = WorkshopApplication::create([
             'workshop_id' => $workshop->id,
             'member_id' => $member?->id,
             'user_id' => $user?->id,
@@ -115,6 +118,12 @@ class WorkshopController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('workshops.show', $workshop->slug)->with('success', "Your application for '{$workshop->title}' has been submitted successfully! The admissions committee will review your profile.");
+        try {
+            Mail::to($application->applicant_email)->send(new ApplicationReceivedMail($application));
+        } catch (\Throwable $e) {
+            Log::warning("Could not dispatch application receipt email to {$application->applicant_email}: ".$e->getMessage());
+        }
+
+        return redirect()->route('workshops.show', $workshop->slug)->with('success', "Your application for '{$workshop->title}' has been submitted successfully! A confirmation receipt has been sent to {$application->applicant_email}.");
     }
 }
