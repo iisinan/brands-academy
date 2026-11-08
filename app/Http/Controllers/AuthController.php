@@ -59,8 +59,11 @@ class AuthController extends Controller
             }
 
             // If user is a member and has NOT paid their annual membership dues, redirect to payment checkout
-            if ($user->isMember() && $user->member && ! $user->member->isPaid()) {
-                return redirect()->route('membership.payment')->with('warning', 'Please complete your annual membership dues to unlock your member portal.');
+            if ($user->isMember()) {
+                $member = $user->member;
+                if (! $member || ! $member->isPaid()) {
+                    return redirect()->route('membership.payment')->with('warning', 'Please complete your annual membership dues to unlock your member portal.');
+                }
             }
 
             // Smart RBAC: Resolve destination based on detected role
@@ -234,11 +237,14 @@ class AuthController extends Controller
         }
 
         // If user is a member and has not yet paid their membership dues, guide them to checkout
-        if ($user->isMember() && $user->member && ! $user->member->isPaid()) {
-            return redirect()->route('membership.payment')->with(
-                'success',
-                'Email verified successfully! Please complete your annual membership dues to activate your member portal access and digital credential.'
-            );
+        if ($user->isMember()) {
+            $member = $user->member;
+            if (! $member || ! $member->isPaid()) {
+                return redirect()->route('membership.payment')->with(
+                    'success',
+                    'Email verified successfully! Please complete your annual membership dues to activate your member portal access and digital credential.'
+                );
+            }
         }
 
         return redirect()->route($user->getDashboardRoute())->with('success', 'Your email address has been successfully verified! You now have full access to your member portal.');

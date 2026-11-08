@@ -29,7 +29,7 @@ class EnsureMembershipIsPaid
 
         $member = $user->member;
 
-        if ($member && ! $member->isPaid()) {
+        if (! $member || ! $member->isPaid()) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => 'Annual membership dues payment required to access this resource.',

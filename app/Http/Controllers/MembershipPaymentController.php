@@ -36,7 +36,22 @@ class MembershipPaymentController extends Controller
         $member = $user->member;
 
         if (! $member) {
-            return redirect()->route('membership.register')->with('warning', 'Please complete your membership profile first.');
+            $nameParts = explode(' ', $user->name, 2);
+            $member = Member::create([
+                'user_id' => $user->id,
+                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'first_name' => $nameParts[0] ?? 'Member',
+                'last_name' => $nameParts[1] ?? 'User',
+                'email' => $user->email,
+                'phone' => '+234 800 000 0000',
+                'category' => 'professional',
+                'state' => 'Kaduna',
+                'country' => 'Nigeria',
+                'status' => 'active',
+                'payment_status' => 'pending',
+                'qr_code_token' => (string) Str::uuid(),
+                'joined_at' => now()->toDateString(),
+            ]);
         }
 
         // If member has already paid dues, grant direct access to dashboard
@@ -89,11 +104,26 @@ class MembershipPaymentController extends Controller
     public function initializePaystack(Request $request): RedirectResponse
     {
         $user = $request->user();
-        /** @var Member $member */
+        /** @var Member|null $member */
         $member = $user->member;
 
         if (! $member) {
-            return redirect()->route('membership.register');
+            $nameParts = explode(' ', $user->name, 2);
+            $member = Member::create([
+                'user_id' => $user->id,
+                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'first_name' => $nameParts[0] ?? 'Member',
+                'last_name' => $nameParts[1] ?? 'User',
+                'email' => $user->email,
+                'phone' => '+234 800 000 0000',
+                'category' => 'professional',
+                'state' => 'Kaduna',
+                'country' => 'Nigeria',
+                'status' => 'active',
+                'payment_status' => 'pending',
+                'qr_code_token' => (string) Str::uuid(),
+                'joined_at' => now()->toDateString(),
+            ]);
         }
 
         if ($member->isPaid()) {

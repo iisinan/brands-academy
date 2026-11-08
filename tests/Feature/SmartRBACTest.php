@@ -26,6 +26,18 @@ class SmartRBACTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
+        Member::create([
+            'user_id' => $member->id,
+            'member_number' => 'BANF-MBR-AMINA-01',
+            'first_name' => 'Amina',
+            'last_name' => 'Member',
+            'email' => 'amina@example.com',
+            'phone' => '+234 800 000 0001',
+            'category' => 'professional',
+            'state' => 'Kaduna',
+            'payment_status' => 'paid',
+        ]);
+
         $response = $this->post('/login', [
             'email' => 'amina@example.com',
             'password' => 'password123',
@@ -63,12 +75,24 @@ class SmartRBACTest extends TestCase
      */
     public function test_member_attempting_to_access_admin_route_is_redirected_to_member_dashboard(): void
     {
-        User::create([
+        $user = User::create([
             'name' => 'John Member',
             'email' => 'john@example.com',
             'password' => Hash::make('password123'),
             'role' => UserRole::Member,
             'email_verified_at' => now(),
+        ]);
+
+        Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-JOHN-01',
+            'first_name' => 'John',
+            'last_name' => 'Member',
+            'email' => 'john@example.com',
+            'phone' => '+234 800 000 0002',
+            'category' => 'professional',
+            'state' => 'Kaduna',
+            'payment_status' => 'paid',
         ]);
 
         // Unauthenticated visit to admin page stores intended url

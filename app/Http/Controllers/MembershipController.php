@@ -122,9 +122,15 @@ class MembershipController extends Controller
                 'state' => 'Kaduna',
                 'country' => 'Nigeria',
                 'status' => 'active',
+                'payment_status' => 'pending',
                 'qr_code_token' => (string) Str::uuid(),
                 'joined_at' => now()->toDateString(),
             ]);
+        }
+
+        // Defense-in-depth: Ensure member has paid dues before viewing dashboard
+        if (! $user->isAdmin() && ! $member->isPaid()) {
+            return redirect()->route('membership.payment')->with('warning', 'Please complete your annual membership dues to unlock your member portal.');
         }
 
         $openWorkshops = Workshop::query()

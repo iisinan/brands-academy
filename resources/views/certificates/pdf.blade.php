@@ -57,19 +57,19 @@
         .corner-br { bottom: 3.5pt; right: 3.5pt; border-width: 0 2.5pt 2.5pt 0; }
 
         .content-box {
-            padding: 20pt 28pt 0 28pt;
+            padding: 18pt 36pt 14pt 36pt;
             text-align: center;
         }
 
         .header-logo {
-            width: 54pt;
-            height: 54pt;
+            width: 58pt;
+            height: 58pt;
             margin: 0 auto 6pt auto;
             display: block;
         }
 
         .institution-title {
-            font-size: 20pt;
+            font-size: 21pt;
             font-weight: 800;
             letter-spacing: 4px;
             color: #0f172a;
@@ -78,8 +78,8 @@
         }
 
         .institution-subtitle {
-            font-size: 9pt;
-            letter-spacing: 2.8px;
+            font-size: 9.5pt;
+            letter-spacing: 3px;
             color: #b45309;
             font-weight: 700;
             text-transform: uppercase;
@@ -88,74 +88,90 @@
         }
 
         .legal-subtext {
-            font-size: 7pt;
+            font-size: 7.2pt;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 1.3px;
-            margin-bottom: 11pt;
+            margin-bottom: 9pt;
         }
 
         .gold-divider {
-            width: 180pt;
+            width: 190pt;
             height: 1.6pt;
             background-color: #d97706;
-            margin: 0 auto 13pt auto;
+            margin: 0 auto 10pt auto;
         }
 
         .cert-type {
-            font-size: 12pt;
-            letter-spacing: 3.8px;
+            font-size: 13pt;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: #1e293b;
             font-weight: 800;
-            margin-bottom: 6pt;
+            margin-bottom: 5pt;
         }
 
         .cert-presentation {
-            font-size: 9.2pt;
+            font-size: 9.5pt;
             color: #64748b;
             font-style: italic;
-            margin-bottom: 12pt;
+            margin-bottom: 10pt;
         }
 
         .recipient-name {
-            font-size: 27pt;
+            font-size: 32pt;
             font-weight: 800;
             color: #0f172a;
-            border-bottom: 2.2pt solid #f59e0b;
+            border-bottom: 2.5pt solid #f59e0b;
             display: inline-block;
-            padding: 0 34pt 4pt 34pt;
-            margin-bottom: 14pt;
+            padding: 0 42pt 5pt 42pt;
+            margin-bottom: 12pt;
             letter-spacing: 0.5px;
         }
 
         .cert-body {
-            font-size: 9.4pt;
-            line-height: 1.5;
+            font-size: 10pt;
+            line-height: 1.55;
             color: #334155;
-            max-width: 620pt;
+            max-width: 630pt;
             margin: 0 auto 10pt auto;
         }
 
-        .program-title {
+        .category-badge-pill {
+            display: inline-block;
+            padding: 5pt 26pt;
+            border: 1.4pt solid #d97706;
+            background-color: #fffbeb;
+            color: #92400e;
+            border-radius: 18pt;
             font-size: 13pt;
             font-weight: 800;
-            color: #0f172a;
+            letter-spacing: 2.2px;
             text-transform: uppercase;
-            letter-spacing: 0.9px;
+            margin-bottom: 11pt;
         }
 
-        /* Anchored Bottom Section */
-        .bottom-anchor {
-            position: absolute;
-            bottom: 12pt;
-            left: 24pt;
-            width: 745.89pt;
+        .conferral-proclamation {
+            font-size: 9pt;
+            color: #475569;
+            font-style: italic;
+            max-width: 630pt;
+            margin: 0 auto 14pt auto;
+            line-height: 1.55;
+        }
+
+        .ornamental-filigree {
+            width: 180pt;
+            height: 1.5pt;
+            background-color: #d97706;
+            margin: 0 auto 16pt auto;
         }
 
         .footer-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 4pt;
         }
 
         .footer-table td {
@@ -206,8 +222,8 @@
         }
 
         .qr-img {
-            width: 50pt;
-            height: 50pt;
+            width: 48pt;
+            height: 48pt;
             display: inline-block;
             border: 1pt solid #cbd5e1;
             padding: 2pt;
@@ -216,11 +232,13 @@
 
         .meta-table {
             width: 100%;
-            margin-top: 12pt;
+            margin-top: 14pt;
             font-size: 7pt;
             color: #64748b;
             border-top: 0.8pt solid #e2e8f0;
             padding-top: 4pt;
+            border-collapse: separate;
+            border-spacing: 0;
         }
     </style>
 </head>
@@ -257,18 +275,24 @@
                     has successfully completed all prescribed curricula, practical masterclasses, and executive portfolio assessments established by the Foundation's Board of Trustees for
                 </div>
 
-                <div class="program-title">{{ $certificate->track_tier }}</div>
-            </div>
+                <div>
+                    <span class="category-badge-pill">{{ $certificate->track_tier }}</span>
+                </div>
 
-            <!-- Anchored Signatures, Barcodes, & Security Metadata -->
-            <div class="bottom-anchor">
+                <div class="conferral-proclamation">
+                    In testimony whereof, the official Seal of Brands Academy Nigeria Foundation and the signatures of the authorized officers of the Board of Trustees are hereunto affixed.
+                </div>
+
+                <div class="ornamental-filigree"></div>
+
+                <!-- Signatures & Real Barcodes Table -->
                 <table class="footer-table">
                     <tr>
                         <!-- Signatory 1: Chairman -->
                         <td style="width: 30%;">
                             <div class="sig-container">
                                 @if(file_exists(public_path('images/signatures/prof-samaila-mande.png')))
-                                     <img src="{{ public_path('images/signatures/prof-samaila-mande.png') }}" class="sig-img" alt="Prof. Samaila Mande Signature">
+                                    <img src="{{ public_path('images/signatures/prof-samaila-mande.png') }}" class="sig-img" alt="Prof. Samaila Mande Signature">
                                 @endif
                             </div>
                             <div class="sig-line"></div>
@@ -278,9 +302,9 @@
 
                         <!-- Center: Real Scannable Barcode & QR Code -->
                         <td style="width: 40%;" class="barcode-box">
-                            <table style="width: 100%; border-collapse: collapse;">
+                            <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
                                 <tr>
-                                    <td style="width: 58pt; text-align: center; vertical-align: middle;">
+                                    <td style="width: 56pt; text-align: center; vertical-align: middle;">
                                         @if(!empty($qrCode))
                                             <img src="{{ $qrCode }}" class="qr-img" alt="Scannable QR Code" />
                                         @endif
