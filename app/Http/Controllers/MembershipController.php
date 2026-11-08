@@ -7,9 +7,12 @@ use App\Models\PortfolioSubmission;
 use App\Models\User;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
+use App\Services\BarcodeService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -235,5 +238,57 @@ class MembershipController extends Controller
         $member = Member::where('qr_code_token', $token)->firstOrFail();
 
         return view('membership.card', compact('member'));
+    }
+
+    /**
+     * Download official high-resolution PDF Membership Certificate.
+     */
+    public function downloadCertificate(string $token): Response
+    {
+        $member = Member::where('qr_code_token', $token)
+            ->orWhere('member_number', $token)
+            ->firstOrFail();
+
+        $pdf = $this->renderCertificatePdf($member);
+
+        return $pdf->download("Brands_Academy_Membership_Certificate_{$member->member_number}.pdf");
+    }
+
+    /**
+     * Stream PDF Membership Certificate in browser for preview.
+     */
+    public function previewCertificate(string $token): Response
+    {
+        $member = Member::where('qr_code_token', $token)
+            ->orWhere('member_number', $token)
+            ->firstOrFail();
+
+        $pdf = $this->renderCertificatePdf($member);
+
+        return $pdf->stream("Brands_Academy_Membership_Certificate_{$member->member_number}.pdf");
+    }
+
+    /**
+     * Internal helper to render the DomPDF Membership Certificate.
+     */
+    public function renderCertificatePdf(Member $member): \Barryvdh\DomPDF\PDF
+    {
+        $verifyUrl = route('verify.certificate', $member->qr_code_token);
+
+        // Generate real, mathematically valid QR code and Code-128 linear barcode PNGs
+        $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+        $barcode128 = BarcodeService::generateCode128Png($member->member_number, barWidth: 2, barHeight: 36, showText: true);
+
+        $pdf = Pdf::loadView('membership.certificate-pdf', [
+            'member' => $member,
+            'qrCode' => $qrCode,
+            'barcode128' => $barcode128,
+            'verifyUrl' => $verifyUrl,
+        ]);
+
+        $pdf->setPaper([0, 0, 841.89, 595.28]);
+        $pdf->setOption(['isRemoteEnabled' => true, 'isHtml5ParserEnabled' => true]);
+
+        return $pdf;
     }
 }

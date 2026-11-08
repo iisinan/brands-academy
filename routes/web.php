@@ -26,6 +26,8 @@ Route::post('/workshops/{slug}/apply', [WorkshopController::class, 'apply'])->na
 Route::get('/membership/register', [MembershipController::class, 'create'])->name('membership.register');
 Route::post('/membership/register', [MembershipController::class, 'store'])->name('membership.store');
 Route::get('/membership/card/{token}', [MembershipController::class, 'card'])->name('membership.card');
+Route::get('/membership/certificate/{token}/download', [MembershipController::class, 'downloadCertificate'])->name('membership.certificate.download');
+Route::get('/membership/certificate/{token}/preview', [MembershipController::class, 'previewCertificate'])->name('membership.certificate.preview');
 
 // Credential Verification & Download
 Route::get('/verify/{token?}', [VerificationController::class, 'index'])->name('verify.certificate');

@@ -95,6 +95,11 @@
                             <span class="text-sm sm:text-base font-extrabold font-mono text-amber-400">{{ $member->member_number }}</span>
                         </div>
                         <div class="flex items-center gap-2">
+                            <!-- Download Official Certificate PDF -->
+                            <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5 shadow-sm" title="Download Official Membership Certificate (PDF)">
+                                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span class="hidden sm:inline">Certificate PDF</span>
+                            </a>
                             <!-- Quick View Modal Trigger -->
                             <button type="button" @click="showCardModal = true" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -580,8 +585,9 @@
 
                         <!-- QR Verification Code -->
                         <div class="bg-white p-3 rounded-xl border border-amber-500/30 shadow-md shrink-0 flex flex-col items-center">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&format=svg&data={{ urlencode(route('verify.certificate', $member->qr_code_token)) }}"
-                                 alt="Verification QR" class="w-24 h-24 sm:w-28 sm:h-28">
+                            <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+                                {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(105)->generate(route('verify.certificate', $member->qr_code_token)) !!}
+                            </div>
                             <span class="text-[9px] font-mono text-slate-600 mt-1 uppercase font-bold tracking-tight">Scan to Verify</span>
                         </div>
                     </div>
@@ -589,6 +595,12 @@
 
                 <!-- Credential Action Buttons -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <!-- Download Official Certificate (PDF) -->
+                    <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="py-2.5 px-4 rounded-xl font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center justify-center gap-2 shadow-xs col-span-1 sm:col-span-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Download Official Certificate of Membership (PDF)</span>
+                    </a>
+
                     <!-- 1-Click Copy Member ID -->
                     <button type="button" @click="copyMemberId()" class="py-2.5 px-4 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
@@ -602,7 +614,7 @@
                     </button>
 
                     <!-- Standalone Card View -->
-                    <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank" class="py-2.5 px-4 rounded-xl font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center justify-center gap-2 shadow-xs">
+                    <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank" class="py-2.5 px-4 rounded-xl font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         <span>Open High-Res Digital Card</span>
                     </a>

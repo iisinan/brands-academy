@@ -948,4 +948,50 @@ class PortalFeatureTest extends TestCase
         $dashboardResponse->assertStatus(200);
         $dashboardResponse->assertSee('Littoral (Douala), Cameroon');
     }
+
+    /**
+     * Test member official certificate PDF generation, preview, and download.
+     */
+    public function test_membership_certificate_pdf_preview_and_download(): void
+    {
+        $user = User::create([
+            'name' => 'Dr. Faruq Bello',
+            'email' => 'faruq.b@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2024-FARUQ',
+            'first_name' => 'Faruq',
+            'last_name' => 'Bello',
+            'email' => $user->email,
+            'phone' => '+234 802 999 8888',
+            'category' => 'fellow',
+            'institution_or_company' => 'Ahmadu Bello University',
+            'designation' => 'Professor of Visual Identity',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'qr_code_token' => 'token-faruq-cert-test',
+            'joined_at' => now()->toDateString(),
+        ]);
+
+        // Preview PDF
+        $previewResponse = $this->get(route('membership.certificate.preview', $member->qr_code_token));
+        $previewResponse->assertStatus(200);
+        $previewResponse->assertHeader('Content-Type', 'application/pdf');
+
+        // Download PDF
+        $downloadResponse = $this->get(route('membership.certificate.download', $member->qr_code_token));
+        $downloadResponse->assertStatus(200);
+        $downloadResponse->assertHeader('Content-Type', 'application/pdf');
+
+        // Digital card has link to download certificate
+        $cardResponse = $this->get(route('membership.card', $member->qr_code_token));
+        $cardResponse->assertStatus(200);
+        $cardResponse->assertSee('Download Certificate (PDF)');
+    }
 }

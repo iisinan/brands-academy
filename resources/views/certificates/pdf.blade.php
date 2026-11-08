@@ -27,10 +27,10 @@
         /* Sovereign Double Ornamental Frame */
         .outer-border {
             position: absolute;
-            top: 22pt;
-            left: 22pt;
-            width: 797.89pt;
-            height: 551.28pt;
+            top: 18pt;
+            left: 18pt;
+            width: 805.89pt;
+            height: 559.28pt;
             border: 3.5pt solid #0f172a;
         }
 
@@ -38,8 +38,8 @@
             position: absolute;
             top: 4.5pt;
             left: 4.5pt;
-            width: 785.89pt;
-            height: 539.28pt;
+            width: 793.89pt;
+            height: 547.28pt;
             border: 1.5pt solid #d97706;
         }
 
