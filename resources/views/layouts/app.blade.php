@@ -12,6 +12,9 @@
     <meta property="og:title" content="@yield('title', 'Brands Academy Nigeria Foundation | Institutional Portal')">
     <meta property="og:description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
     <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="{{ asset('images/logo/bran-logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,9 +67,7 @@
                 
                 <!-- Logo & Brand -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0 group">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-600 flex items-center justify-center text-white shadow-md shadow-slate-950/15 group-hover:scale-105 transition-transform shrink-0">
-                        <span class="font-serif-title font-bold text-xl text-amber-400">B</span>
-                    </div>
+                    <x-brand-logo class="w-12 h-12 drop-shadow-xs group-hover:scale-105 transition-transform" />
                     <div class="leading-none">
                         <div class="font-serif-title font-bold text-slate-950 tracking-tight text-base sm:text-lg uppercase">
                             Brands Academy
@@ -226,9 +227,7 @@
                 <!-- Col 1: Organization Overview -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 to-amber-600 flex items-center justify-center text-white">
-                            <span class="font-serif-title font-bold text-lg text-amber-400">B</span>
-                        </div>
+                        <x-brand-logo class="w-12 h-12 drop-shadow-md" />
                         <div>
                             <div class="font-bold text-white tracking-wide text-base uppercase font-serif-title">
                                 Brands Academy

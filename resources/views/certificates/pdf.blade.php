@@ -174,7 +174,9 @@
         <div class="corner-decoration corner-br"></div>
 
         <div class="inner-border">
-            
+            @if(file_exists(public_path('images/logo/bran-logo.png')))
+                <img src="{{ public_path('images/logo/bran-logo.png') }}" style="width: 55px; height: 55px; margin: 0 auto 8px auto; display: block;" alt="BRAN Official Seal">
+            @endif
             <div class="institution-title">Brands Academy</div>
             <div class="institution-subtitle">Nigeria Foundation</div>
             <div class="legal-subtext">Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>

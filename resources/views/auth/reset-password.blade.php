@@ -8,9 +8,7 @@
     <div class="w-full max-w-md bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xl">
         
         <div class="text-center mb-8">
-            <div class="w-12 h-12 rounded-2xl bg-slate-900 text-amber-400 font-bold flex items-center justify-center mx-auto mb-4 font-serif-title text-2xl shadow-md">
-                B
-            </div>
+            <x-brand-logo class="w-16 h-16 mx-auto mb-4 drop-shadow-md" />
             <h1 class="text-2xl font-extrabold text-slate-900 font-serif-title">Set New Password</h1>
             <p class="text-xs text-slate-500 mt-2">
                 Choose a strong new password for your Brands Academy account.

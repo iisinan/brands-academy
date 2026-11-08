@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <!-- Master 24k Metallic Gold Gradient -->
+    <linearGradient id="goldGrad" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="15%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="65%" stop-color="#d97706" />
+      <stop offset="85%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#92400e" />
+    </linearGradient>
+
+    <!-- Warm Luminous Gold Gradient for Typography -->
+    <linearGradient id="goldGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="30%" stop-color="#fef08a" />
+      <stop offset="70%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- Globe Sphere Shading Gradient -->
+    <linearGradient id="globeGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="25%" stop-color="#fbbf24" />
+      <stop offset="55%" stop-color="#f59e0b" />
+      <stop offset="85%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#92400e" />
+    </linearGradient>
+
+    <!-- Outer Rim Metallic Shading -->
+    <linearGradient id="outerRimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef9c3" />
+      <stop offset="20%" stop-color="#f59e0b" />
+      <stop offset="45%" stop-color="#b45309" />
+      <stop offset="75%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+
+    <!-- Filters for Depth and Prestige -->
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#020617" flood-opacity="0.35" />
+    </filter>
+
+    <filter id="medallionShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#020617" flood-opacity="0.15" />
+    </filter>
+
+    
+          <radialGradient id="bandGrad" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#1e293b" />
+            <stop offset="55%" stop-color="#0f172a" />
+            <stop offset="100%" stop-color="#020617" />
+          </radialGradient>
+        
+
+    <!-- Top Text Path: Clockwise arch across top from left to right -->
+    <path id="topTextArc" d="M 83,300 A 217,217 0 0,1 517,300" fill="none" />
+
+    <!-- Bottom Text Path: Left to right counter-clockwise arc along bottom -->
+    <path id="botTextArc" d="M 130,464 A 236,236 0 0,0 470,464" fill="none" />
+  </defs>
+
+  <!-- ==================== OUTER BEVELED GOLD RIM ==================== -->
+  <circle cx="300" cy="300" r="286" fill="url(#outerRimGrad)" />
+  <circle cx="300" cy="300" r="282" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.65" />
+  <circle cx="300" cy="300" r="274" fill="none" stroke="#78350f" stroke-width="1.8" opacity="0.8" />
+
+  <!-- ==================== MAIN COLORED BAND ==================== -->
+  <circle cx="300" cy="300" r="272" fill="url(#bandGrad)" />
+
+  
+          <circle cx="300" cy="300" r="268" fill="none" stroke="#008751" stroke-width="2.5" opacity="0.85" />
+          <circle cx="300" cy="300" r="180" fill="none" stroke="#008751" stroke-width="2" opacity="0.85" />
+        
+
+  <!-- ==================== INNER BEVELED GOLD RIM ==================== -->
+  <circle cx="300" cy="300" r="175" fill="url(#outerRimGrad)" />
+  <circle cx="300" cy="300" r="173" fill="none" stroke="#78350f" stroke-width="1.2" opacity="0.75" />
+  <circle cx="300" cy="300" r="169" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.6" />
+
+  <!-- ==================== CORE WHITE MEDALLION ==================== -->
+  <circle cx="300" cy="300" r="168" fill="#FFFFFF" filter="url(#medallionShadow)" />
+  <!-- Subtle ivory inner rim stroke -->
+  <circle cx="300" cy="300" r="168" fill="none" stroke="#e2e8f0" stroke-width="1" />
+
+  <!-- ==================== CURVED TYPOGRAPHY ==================== -->
+  <!-- Top Text: THE BRANDS ACADEMY NIGERIA -->
+  <text font-family="'Instrument Sans', 'Montserrat', 'Inter', 'Segoe UI', system-ui, sans-serif" 
+        font-size="23.5" 
+        font-weight="800" 
+        fill="#FFFFFF" 
+        letter-spacing="2.6"
+        filter="url(#subtleShadow)">
+    <textPath href="#topTextArc" startOffset="50%" text-anchor="middle">
+      THE BRANDS ACADEMY NIGERIA
+    </textPath>
+  </text>
+
+  <!-- Left Flanking Star (Angle ~ 152 deg: x=102, y=405) -->
+  <g transform="translate(101, 404) scale(0.95)" fill="#10b981" filter="url(#subtleShadow)">
+    <!-- 8-point faceted star -->
+    <path d="M 0,-9 L 2.5,-2.5 L 9,0 L 2.5,2.5 L 0,9 L -2.5,2.5 L -9,0 L -2.5,-2.5 Z" />
+    <path d="M 0,-6.5 L 1.8,-1.8 L 6.5,0 L 1.8,1.8 L 0,6.5 L -1.8,1.8 L -6.5,0 L -1.8,-1.8 Z" fill="#ffffff" opacity="0.35" />
+    <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+  </g>
+
+  <!-- Right Flanking Star (Angle ~ 28 deg: x=499, y=405) -->
+  <g transform="translate(499, 404) scale(0.95)" fill="#10b981" filter="url(#subtleShadow)">
+    <!-- 8-point faceted star -->
+    <path d="M 0,-9 L 2.5,-2.5 L 9,0 L 2.5,2.5 L 0,9 L -2.5,2.5 L -9,0 L -2.5,-2.5 Z" />
+    <path d="M 0,-6.5 L 1.8,-1.8 L 6.5,0 L 1.8,1.8 L 0,6.5 L -1.8,1.8 L -6.5,0 L -1.8,-1.8 Z" fill="#ffffff" opacity="0.35" />
+    <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+  </g>
+
+  <!-- Bottom Text: BRAN -->
+  <text font-family="'Instrument Sans', 'Montserrat', 'Inter', 'Segoe UI', system-ui, sans-serif" 
+        font-size="33" 
+        font-weight="900" 
+        fill="url(#goldGradLight)" 
+        letter-spacing="6.5"
+        filter="url(#subtleShadow)">
+    <textPath href="#botTextArc" startOffset="50%" text-anchor="middle">
+      BRAN
+    </textPath>
+  </text>
+
+  <!-- ==================== THE POLISHED 3D GOLD GLOBE ==================== -->
+  <g id="branGlobeIcon" transform="translate(300, 300) scale(1.16)" filter="url(#subtleShadow)">
+    <!-- Outer Crescent Arc framing upper-right of sphere -->
+    <path d="M -25,-92 
+             C 25,-104 88,-70 102,-8 
+             C 108,35 92,78 58,102 
+             C 86,76 98,36 94,-5 
+             C 82,-58 28,-90 -20,-84 
+             C -25,-84 -28,-88 -25,-92 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 1 (Top-most) -->
+    <path d="M -28,-72 
+             C -10,-82 12,-78 28,-62 
+             C 14,-67 -4,-70 -20,-64 
+             C -30,-60 -36,-66 -28,-72 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 2 -->
+    <path d="M -56,-48 
+             C -20,-60 22,-52 54,-24 
+             C 34,-36 -4,-42 -38,-34 
+             C -56,-28 -64,-38 -56,-48 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 3 -->
+    <path d="M -75,-18 
+             C -30,-32 28,-22 75,14 
+             C 48,-2 -8,-8 -50,2 
+             C -74,10 -84,-4 -75,-18 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 4 (Equatorial) -->
+    <path d="M -78,14 
+             C -30,0 32,8 82,50 
+             C 52,32 -6,22 -52,32 
+             C -78,40 -86,26 -78,14 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 5 -->
+    <path d="M -68,48 
+             C -26,38 28,46 70,82 
+             C 46,68 -4,58 -46,66 
+             C -68,72 -76,60 -68,48 Z" 
+          fill="url(#globeGrad)" />
+
+    <!-- Ribbon 6 (Bottom) -->
+    <path d="M -42,78 
+             C -12,74 24,80 44,102 
+             C 26,94 -6,88 -34,92 
+             C -46,94 -50,86 -42,78 Z" 
+          fill="url(#globeGrad)" />
+  </g>
+</svg>

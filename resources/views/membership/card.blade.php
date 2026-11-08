@@ -37,9 +37,7 @@
         <!-- Card Header -->
         <div class="flex items-center justify-between gap-4 mb-6 pb-5 border-b border-white/10 relative z-10">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center font-serif-title text-xl">
-                    B
-                </div>
+                <x-brand-logo class="w-11 h-11 drop-shadow-md" />
                 <div>
                     <div class="font-extrabold text-sm uppercase tracking-wider text-white font-serif-title">
                         Brands Academy

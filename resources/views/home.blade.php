@@ -112,9 +112,7 @@
 
                             <!-- Certificate Header -->
                             <div class="text-center mb-3">
-                                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-950 text-amber-400 font-serif-title font-bold text-sm shadow-xs mb-1">
-                                    B
-                                </div>
+                                <x-brand-logo class="w-10 h-10 mx-auto mb-1.5 drop-shadow-xs" />
                                 <div class="font-serif-title font-extrabold text-[13px] tracking-tight text-slate-950 uppercase leading-none">
                                     Brands Academy Nigeria Foundation
                                 </div>
