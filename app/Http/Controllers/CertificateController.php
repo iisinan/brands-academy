@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\CertificateIssuedMail;
 use App\Models\Certificate;
+use App\Services\BarcodeService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificateController extends Controller
 {
@@ -66,17 +66,14 @@ class CertificateController extends Controller
     {
         $verifyUrl = route('verify.certificate', $certificate->verification_token);
 
-        // Generate base64 SVG QR code for DomPDF embedding
-        $qrCodeSvg = QrCode::format('svg')
-            ->size(130)
-            ->errorCorrection('H')
-            ->generate($verifyUrl);
-
-        $qrCodeBase64 = 'data:image/svg+xml;base64,'.base64_encode($qrCodeSvg);
+        // Generate real, mathematically valid QR code and Code-128 linear barcode PNGs
+        $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+        $barcode128 = BarcodeService::generateCode128Png($certificate->certificate_number, barWidth: 2, barHeight: 38, showText: true);
 
         $pdf = Pdf::loadView('certificates.pdf', [
             'certificate' => $certificate,
-            'qrCode' => $qrCodeBase64,
+            'qrCode' => $qrCode,
+            'barcode128' => $barcode128,
             'verifyUrl' => $verifyUrl,
         ]);
 

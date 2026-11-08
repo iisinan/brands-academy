@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Services\BarcodeService;
 use PHPUnit\Framework\TestCase;
 
 class BarcodeServiceTest extends TestCase
@@ -11,7 +12,7 @@ class BarcodeServiceTest extends TestCase
      */
     public function test_generates_valid_qr_code_png_data_uri(): void
     {
-        $dataUri = \App\Services\BarcodeService::generateQrCodePng('https://brandsacademy.ng/verify/BANF-CERT-2024-00108');
+        $dataUri = BarcodeService::generateQrCodePng('https://brandsacademy.ng/verify/BANF-CERT-2024-00108');
 
         $this->assertStringStartsWith('data:image/png;base64,', $dataUri);
 
@@ -34,7 +35,7 @@ class BarcodeServiceTest extends TestCase
     public function test_generates_valid_code128_linear_barcode(): void
     {
         $code = 'BANF-CERT-2024-00108';
-        $dataUri = \App\Services\BarcodeService::generateCode128Png($code);
+        $dataUri = BarcodeService::generateCode128Png($code);
 
         $this->assertStringStartsWith('data:image/png;base64,', $dataUri);
 
