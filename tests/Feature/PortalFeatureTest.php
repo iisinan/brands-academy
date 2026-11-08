@@ -72,7 +72,9 @@ class PortalFeatureTest extends TestCase
         ]);
 
         $member = Member::where('email', 'fatima.s@example.com')->first();
-        $this->assertStringStartsWith('BANF-MBR-', $member->member_number);
+        $this->assertNull($member->member_number);
+        $member->markAsPaid();
+        $this->assertStringStartsWith('BANF-MBR-', $member->fresh()->member_number);
     }
 
     /**
@@ -892,6 +894,7 @@ class PortalFeatureTest extends TestCase
         $this->assertNotNull($member);
         $this->assertSame('Ghana', $member->country);
         $this->assertSame('Greater Accra', $member->state);
+        $member->markAsPaid();
 
         // Verification view reflects country & jurisdiction
         $verifyResponse = $this->get('/verify?q='.$member->member_number);

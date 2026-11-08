@@ -24,57 +24,80 @@
             position: relative;
         }
 
-        /* Sovereign Double Ornamental Frame */
+        /* Sovereign Triple Ornamental Frame */
         .outer-border {
             position: absolute;
-            top: 18pt;
-            left: 18pt;
-            width: 805.89pt;
-            height: 559.28pt;
+            top: 16pt;
+            left: 16pt;
+            width: 809.89pt;
+            height: 563.28pt;
             border: 3.5pt solid #0f172a;
+        }
+
+        .mid-border {
+            position: absolute;
+            top: 4pt;
+            left: 4pt;
+            width: 799.89pt;
+            height: 553.28pt;
+            border: 1.5pt solid #d97706;
         }
 
         .inner-border {
             position: absolute;
-            top: 4.5pt;
-            left: 4.5pt;
-            width: 793.89pt;
-            height: 547.28pt;
-            border: 1.5pt solid #d97706;
+            top: 3.5pt;
+            left: 3.5pt;
+            width: 790.89pt;
+            height: 544.28pt;
+            border: 0.6pt solid #cbd5e1;
         }
 
-        /* Ornamental Corner Accents */
+        /* Sovereign Corner Accents */
         .corner {
             position: absolute;
-            width: 16pt;
-            height: 16pt;
+            width: 18pt;
+            height: 18pt;
             border-color: #d97706;
             border-style: solid;
         }
-        .corner-tl { top: 3.5pt; left: 3.5pt; border-width: 2.5pt 0 0 2.5pt; }
-        .corner-tr { top: 3.5pt; right: 3.5pt; border-width: 2.5pt 2.5pt 0 0; }
-        .corner-bl { bottom: 3.5pt; left: 3.5pt; border-width: 0 0 2.5pt 2.5pt; }
-        .corner-br { bottom: 3.5pt; right: 3.5pt; border-width: 0 2.5pt 2.5pt 0; }
+        .corner-tl { top: 3pt; left: 3pt; border-width: 2.5pt 0 0 2.5pt; }
+        .corner-tr { top: 3pt; right: 3pt; border-width: 2.5pt 2.5pt 0 0; }
+        .corner-bl { bottom: 3pt; left: 3pt; border-width: 0 0 2.5pt 2.5pt; }
+        .corner-br { bottom: 3pt; right: 3pt; border-width: 0 2.5pt 2.5pt 0; }
+
+        /* Subtle Center Watermark */
+        .bg-watermark {
+            position: absolute;
+            top: 130pt;
+            left: 255pt;
+            width: 280pt;
+            height: 280pt;
+            opacity: 0.95;
+            z-index: 1;
+        }
 
         .content-box {
-            padding: 18pt 36pt 14pt 36pt;
+            position: relative;
+            z-index: 2;
+            padding: 18pt 36pt 12pt 36pt;
             text-align: center;
         }
 
         .header-logo {
             width: 58pt;
             height: 58pt;
-            margin: 0 auto 6pt auto;
             display: block;
+            margin: 0 auto;
         }
 
         .institution-title {
             font-size: 21pt;
             font-weight: 800;
-            letter-spacing: 4px;
+            letter-spacing: 4.5px;
             color: #0f172a;
             text-transform: uppercase;
             line-height: 1.1;
+            margin-top: 2pt;
         }
 
         .institution-subtitle {
@@ -84,49 +107,44 @@
             font-weight: 700;
             text-transform: uppercase;
             margin-top: 3pt;
-            margin-bottom: 3pt;
+            margin-bottom: 2pt;
         }
 
         .legal-subtext {
             font-size: 7.2pt;
             color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 1.3px;
-            margin-bottom: 9pt;
-        }
-
-        .gold-divider {
-            width: 190pt;
-            height: 1.6pt;
-            background-color: #d97706;
-            margin: 0 auto 10pt auto;
+            letter-spacing: 1.4px;
+            margin-bottom: 8pt;
         }
 
         .cert-type {
-            font-size: 13pt;
-            letter-spacing: 4px;
+            font-family: 'Times-Roman', 'Times New Roman', serif;
+            font-size: 15pt;
+            letter-spacing: 3.5px;
             text-transform: uppercase;
             color: #1e293b;
-            font-weight: 800;
-            margin-bottom: 5pt;
+            font-weight: bold;
+            margin-bottom: 4pt;
         }
 
         .cert-presentation {
             font-size: 9.5pt;
             color: #64748b;
             font-style: italic;
-            margin-bottom: 10pt;
+            margin-bottom: 8pt;
         }
 
         .recipient-name {
-            font-size: 32pt;
-            font-weight: 800;
+            font-family: 'Times-Roman', 'Times New Roman', serif;
+            font-size: 34pt;
+            font-weight: bold;
             color: #0f172a;
             border-bottom: 2.5pt solid #f59e0b;
             display: inline-block;
-            padding: 0 42pt 5pt 42pt;
-            margin-bottom: 12pt;
-            letter-spacing: 0.5px;
+            padding: 0 46pt 5pt 46pt;
+            margin-bottom: 11pt;
+            letter-spacing: 0.8px;
         }
 
         .cert-body {
@@ -134,12 +152,12 @@
             line-height: 1.55;
             color: #334155;
             max-width: 630pt;
-            margin: 0 auto 10pt auto;
+            margin: 0 auto 9pt auto;
         }
 
         .category-badge-pill {
             display: inline-block;
-            padding: 5pt 26pt;
+            padding: 5pt 28pt;
             border: 1.4pt solid #d97706;
             background-color: #fffbeb;
             color: #92400e;
@@ -155,7 +173,7 @@
             font-size: 9pt;
             color: #64748b;
             font-style: italic;
-            margin-bottom: 12pt;
+            margin-bottom: 11pt;
         }
 
         .conferral-proclamation {
@@ -163,7 +181,7 @@
             color: #475569;
             font-style: italic;
             max-width: 630pt;
-            margin: 0 auto 14pt auto;
+            margin: 0 auto 13pt auto;
             line-height: 1.55;
         }
 
@@ -171,14 +189,14 @@
             width: 180pt;
             height: 1.5pt;
             background-color: #d97706;
-            margin: 0 auto 16pt auto;
+            margin: 0 auto 14pt auto;
         }
 
         .footer-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin-top: 4pt;
+            margin-top: 2pt;
         }
 
         .footer-table td {
@@ -216,9 +234,12 @@
             color: #64748b;
         }
 
-        .barcode-box {
-            text-align: center;
-            padding: 0 4pt;
+        .security-badge-panel {
+            background-color: #f8fafc;
+            border: 0.8pt solid #cbd5e1;
+            border-radius: 6pt;
+            padding: 4pt 8pt 3pt 8pt;
+            display: inline-block;
         }
 
         .barcode-img {
@@ -239,7 +260,7 @@
 
         .meta-table {
             width: 100%;
-            margin-top: 14pt;
+            margin-top: 12pt;
             font-size: 7pt;
             color: #64748b;
             border-top: 0.8pt solid #e2e8f0;
@@ -252,123 +273,144 @@
 <body>
 
     <div class="outer-border">
-        <div class="inner-border">
-            <!-- Ornamental Corner Accents -->
-            <div class="corner corner-tl"></div>
-            <div class="corner corner-tr"></div>
-            <div class="corner corner-bl"></div>
-            <div class="corner corner-br"></div>
+        <div class="mid-border">
+            <div class="inner-border">
+                <!-- Sovereign Corner Accents -->
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
 
-            <div class="content-box">
-                <!-- 3D Seal Medallion Logo -->
-                @if(file_exists(public_path('images/logo/bran-logo-3d.png')))
-                    <img src="{{ public_path('images/logo/bran-logo-3d.png') }}" class="header-logo" alt="BRAN 3D Seal">
-                @elseif(file_exists(public_path('images/logo/bran-logo.png')))
-                    <img src="{{ public_path('images/logo/bran-logo.png') }}" class="header-logo" alt="BRAN Official Seal">
+                <!-- Subtle Background Watermark -->
+                @if(file_exists(public_path('images/logo/bran-watermark.png')))
+                    <img src="{{ public_path('images/logo/bran-watermark.png') }}" class="bg-watermark" alt="Watermark">
                 @endif
 
-                <div class="institution-title">Brands Academy</div>
-                <div class="institution-subtitle">Nigeria Foundation</div>
-                <div class="legal-subtext">Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>
-
-                <div class="gold-divider"></div>
-
-                <div class="cert-type">Certificate of Membership</div>
-                <div class="cert-presentation">Be it known to all that having satisfied the statutory requirements of the Foundation</div>
-
-                <div class="recipient-name">{{ $member->full_name }}</div>
-
-                <div class="cert-body">
-                    has been officially admitted and registered on the Institutional Roll of Brands Academy Nigeria Foundation as an active and recognized
-                </div>
-
-                <div style="margin-bottom: 4pt;">
-                    <span class="category-badge-pill">{{ $member->category_label }}</span>
-                </div>
-
-                @if($member->institution_or_company)
-                    <div class="affiliation-text">
-                        Affiliation: {{ $member->designation ? $member->designation . ' • ' : '' }}{{ $member->institution_or_company }} ({{ $member->state }}, {{ $member->country ?? 'Nigeria' }})
-                    </div>
-                @else
-                    <div class="affiliation-text">
-                        Jurisdiction: {{ $member->state }}, {{ $member->country ?? 'Nigeria' }} &bull; Standing: In Good Standing
-                    </div>
-                @endif
-
-                <div class="conferral-proclamation">
-                    In witness whereof, by virtue of the authority vested in the Board of Trustees under the Companies and Allied Matters Act, this Certificate is conferred with all honors, rights, and privileges pertaining to this membership grade.
-                </div>
-
-                <div class="ornamental-filigree"></div>
-
-                <!-- Signatures & Real Barcodes Table -->
-                <table class="footer-table">
-                    <tr>
-                        <!-- Signatory 1: Chairman -->
-                        <td style="width: 30%;">
-                            <div class="sig-container">
-                                @if(file_exists(public_path('images/signatures/prof-samaila-mande.png')))
-                                    <img src="{{ public_path('images/signatures/prof-samaila-mande.png') }}" class="sig-img" alt="Prof. Samaila Mande Signature">
+                <div class="content-box">
+                    <!-- Flanked 3D Crest Header -->
+                    <table style="margin: 0 auto 4pt auto; border-collapse: separate; border-spacing: 0;">
+                        <tr>
+                            <td style="width: 70pt; vertical-align: middle;">
+                                <div style="height: 1pt; background-color: #d97706;"></div>
+                            </td>
+                            <td style="padding: 0 10pt; vertical-align: middle;">
+                                @if(file_exists(public_path('images/logo/bran-logo-3d.png')))
+                                    <img src="{{ public_path('images/logo/bran-logo-3d.png') }}" class="header-logo" alt="BRAN 3D Seal">
+                                @elseif(file_exists(public_path('images/logo/bran-logo.png')))
+                                    <img src="{{ public_path('images/logo/bran-logo.png') }}" class="header-logo" alt="BRAN Official Seal">
                                 @endif
-                            </div>
-                            <div class="sig-line"></div>
-                            <div class="sig-name">Prof. Samaila Mande</div>
-                            <div class="sig-title">Chairman, Board of Trustees</div>
-                        </td>
+                            </td>
+                            <td style="width: 70pt; vertical-align: middle;">
+                                <div style="height: 1pt; background-color: #d97706;"></div>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <!-- Center: Real Scannable Barcode & QR Code -->
-                        <td style="width: 40%;" class="barcode-box">
-                            <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
-                                <tr>
-                                    <td style="width: 56pt; text-align: center; vertical-align: middle;">
-                                        @if(!empty($qrCode))
-                                            <img src="{{ $qrCode }}" class="qr-img" alt="Scannable QR Code" />
-                                        @endif
-                                    </td>
-                                    <td style="text-align: center; vertical-align: middle; padding-left: 6pt;">
-                                        @if(!empty($barcode128))
-                                            <img src="{{ $barcode128 }}" class="barcode-img" alt="Code-128 Linear Barcode" />
-                                        @endif
-                                        <div style="font-size: 7.5pt; font-family: monospace; font-weight: bold; color: #0f172a; margin-top: 2pt; letter-spacing: 0.5px;">
-                                            MEMBER ID: {{ $member->member_number }}
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div style="font-size: 6.2pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2pt;">
-                                Cryptographically Verifiable Credential
-                            </div>
-                        </td>
+                    <div class="institution-title">Brands Academy</div>
+                    <div class="institution-subtitle">Nigeria Foundation</div>
+                    <div class="legal-subtext">Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>
 
-                        <!-- Signatory 2: Secretary -->
-                        <td style="width: 30%;">
-                            <div class="sig-container">
-                                @if(file_exists(public_path('images/signatures/titus-eveshoyan.png')))
-                                    <img src="{{ public_path('images/signatures/titus-eveshoyan.png') }}" class="sig-img" alt="Titus Eveshoyan Signature">
-                                @endif
-                            </div>
-                            <div class="sig-line"></div>
-                            <div class="sig-name">Titus Eveshoyan</div>
-                            <div class="sig-title">Secretary to the Board &amp; Registrar</div>
-                        </td>
-                    </tr>
-                </table>
+                    <div class="ornamental-filigree" style="width: 160pt; height: 1.2pt; margin-bottom: 8pt;"></div>
 
-                <!-- Security & Verification Metadata -->
-                <table class="meta-table">
-                    <tr>
-                        <td style="text-align: left; width: 33%;">
-                            <strong>Date Admitted:</strong> {{ $member->joined_at ? $member->joined_at->format('F d, Y') : now()->format('F d, Y') }}
-                        </td>
-                        <td style="text-align: center; width: 34%;">
-                            <strong>Status:</strong> Active Member in Good Standing
-                        </td>
-                        <td style="text-align: right; width: 33%;">
-                            <strong>Verify:</strong> {{ $verifyUrl }}
-                        </td>
-                    </tr>
-                </table>
+                    <div class="cert-type">Certificate of Membership</div>
+                    <div class="cert-presentation">Be it known to all that having satisfied the statutory requirements of the Foundation</div>
+
+                    <div class="recipient-name">{{ $member->full_name }}</div>
+
+                    <div class="cert-body">
+                        has been officially admitted and registered on the Institutional Roll of Brands Academy Nigeria Foundation as an active and recognized
+                    </div>
+
+                    <div style="margin-bottom: 4pt;">
+                        <span class="category-badge-pill">{{ $member->category_label }}</span>
+                    </div>
+
+                    @if($member->institution_or_company)
+                        <div class="affiliation-text">
+                            Affiliation: {{ $member->designation ? $member->designation . ' • ' : '' }}{{ $member->institution_or_company }} ({{ $member->state }}, {{ $member->country ?? 'Nigeria' }})
+                        </div>
+                    @else
+                        <div class="affiliation-text">
+                            Jurisdiction: {{ $member->state }}, {{ $member->country ?? 'Nigeria' }} &bull; Standing: In Good Standing
+                        </div>
+                    @endif
+
+                    <div class="conferral-proclamation">
+                        In witness whereof, by virtue of the authority vested in the Board of Trustees under the Companies and Allied Matters Act, this Certificate is conferred with all honors, rights, and privileges pertaining to this membership grade.
+                    </div>
+
+                    <div class="ornamental-filigree"></div>
+
+                    <!-- Signatures & Real Barcodes Table -->
+                    <table class="footer-table">
+                        <tr>
+                            <!-- Signatory 1: Chairman -->
+                            <td style="width: 30%;">
+                                <div class="sig-container">
+                                    @if(file_exists(public_path('images/signatures/prof-samaila-mande.png')))
+                                        <img src="{{ public_path('images/signatures/prof-samaila-mande.png') }}" class="sig-img" alt="Prof. Samaila Mande Signature">
+                                    @endif
+                                </div>
+                                <div class="sig-line"></div>
+                                <div class="sig-name">Prof. Samaila Mande</div>
+                                <div class="sig-title">Chairman, Board of Trustees</div>
+                            </td>
+
+                            <!-- Center: Real Scannable Barcode & QR Code in Security Panel -->
+                            <td style="width: 40%; text-align: center;">
+                                <div class="security-badge-panel">
+                                    <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
+                                        <tr>
+                                            <td style="width: 56pt; text-align: center; vertical-align: middle;">
+                                                @if(!empty($qrCode))
+                                                    <img src="{{ $qrCode }}" class="qr-img" alt="Scannable QR Code" />
+                                                @endif
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding-left: 6pt;">
+                                                @if(!empty($barcode128))
+                                                    <img src="{{ $barcode128 }}" class="barcode-img" alt="Code-128 Linear Barcode" />
+                                                @endif
+                                                <div style="font-size: 7.5pt; font-family: monospace; font-weight: bold; color: #0f172a; margin-top: 2pt; letter-spacing: 0.5px;">
+                                                    MEMBER ID: {{ $member->member_number }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div style="font-size: 6pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2pt;">
+                                        Cryptographically Verifiable Credential
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Signatory 2: Secretary -->
+                            <td style="width: 30%;">
+                                <div class="sig-container">
+                                    @if(file_exists(public_path('images/signatures/titus-eveshoyan.png')))
+                                        <img src="{{ public_path('images/signatures/titus-eveshoyan.png') }}" class="sig-img" alt="Titus Eveshoyan Signature">
+                                    @endif
+                                </div>
+                                <div class="sig-line"></div>
+                                <div class="sig-name">Titus Eveshoyan</div>
+                                <div class="sig-title">Secretary to the Board &amp; Registrar</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Security & Verification Metadata -->
+                    <table class="meta-table">
+                        <tr>
+                            <td style="text-align: left; width: 33%;">
+                                <strong>Date Admitted:</strong> {{ $member->joined_at ? $member->joined_at->format('F d, Y') : now()->format('F d, Y') }}
+                            </td>
+                            <td style="text-align: center; width: 34%;">
+                                <strong>Status:</strong> Active Member in Good Standing
+                            </td>
+                            <td style="text-align: right; width: 33%;">
+                                <strong>Verify:</strong> {{ $verifyUrl }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

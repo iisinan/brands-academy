@@ -95,7 +95,7 @@ class MembershipPaymentGateTest extends TestCase
 
         Member::create([
             'user_id' => $user->id,
-            'member_number' => 'BANF-MBR-CORP-01',
+            'member_number' => null,
             'first_name' => 'Corporate',
             'last_name' => 'Leader',
             'email' => 'corp@example.com',
@@ -110,6 +110,7 @@ class MembershipPaymentGateTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('₦75,000'); // Corporate tier amount
         $response->assertSee('Corporate Member');
+        $response->assertSee('Issued After Payment');
         $response->assertSee('Paystack');
         $response->assertSee('Pay ₦75,000 via Paystack');
     }
@@ -187,7 +188,7 @@ class MembershipPaymentGateTest extends TestCase
 
         $member = Member::create([
             'user_id' => $memberUser->id,
-            'member_number' => 'BANF-MBR-APPROVE-01',
+            'member_number' => null,
             'first_name' => 'Awaiting',
             'last_name' => 'Member',
             'email' => 'awaiting@example.com',
@@ -208,6 +209,8 @@ class MembershipPaymentGateTest extends TestCase
         $member->refresh();
         $this->assertTrue($member->isPaid());
         $this->assertEquals('paid', $member->payment_status);
+        $this->assertNotNull($member->member_number);
+        $this->assertStringStartsWith('BANF-MBR-', $member->member_number);
 
         // Now member has full dashboard access
         $dashResponse = $this->actingAs($memberUser)->get('/member/dashboard');
@@ -230,7 +233,7 @@ class MembershipPaymentGateTest extends TestCase
 
         $member = Member::create([
             'user_id' => $user->id,
-            'member_number' => 'BANF-MBR-CARD-01',
+            'member_number' => null,
             'first_name' => 'Card',
             'last_name' => 'Payer',
             'email' => 'card@example.com',
@@ -249,6 +252,8 @@ class MembershipPaymentGateTest extends TestCase
         $this->assertTrue($member->isPaid());
         $this->assertEquals('paid', $member->payment_status);
         $this->assertEquals(150000.00, (float) $member->paid_amount);
+        $this->assertNotNull($member->member_number);
+        $this->assertStringStartsWith('BANF-MBR-', $member->member_number);
 
         // Confirmed direct dashboard access
         $dashResponse = $this->actingAs($user)->get('/member/dashboard');
@@ -272,7 +277,7 @@ class MembershipPaymentGateTest extends TestCase
 
         $member = Member::create([
             'user_id' => $user->id,
-            'member_number' => 'BANF-MBR-WH-01',
+            'member_number' => null,
             'first_name' => 'Webhook',
             'last_name' => 'Payer',
             'email' => 'webhook@example.com',
@@ -325,5 +330,7 @@ class MembershipPaymentGateTest extends TestCase
         $this->assertTrue($member->isPaid());
         $this->assertEquals('paid', $member->payment_status);
         $this->assertEquals(10000.00, (float) $member->paid_amount);
+        $this->assertNotNull($member->member_number);
+        $this->assertStringStartsWith('BANF-MBR-', $member->member_number);
     }
 }

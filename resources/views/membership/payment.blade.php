@@ -25,7 +25,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 mb-4">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            Annual Dues Checkout &bull; {{ $member->member_number }}
+            Annual Dues Checkout &bull; {{ $member->isPaid() && $member->member_number ? $member->member_number : 'Activation Required' }}
         </div>
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-serif-title tracking-tight text-white">
             Complete Membership Payment
@@ -108,7 +108,14 @@
 
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                     <span class="text-slate-500 font-medium block text-[11px]">Member ID &bull; Category</span>
-                    <span class="font-mono text-sm font-extrabold text-amber-700 block mt-0.5">{{ $member->member_number }}</span>
+                    @if ($member->isPaid() && $member->member_number)
+                        <span class="font-mono text-sm font-extrabold text-amber-700 block mt-0.5">{{ $member->member_number }}</span>
+                    @else
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 block mt-1 w-fit">
+                            <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            Issued After Payment
+                        </span>
+                    @endif
                     <span class="inline-block mt-1 text-[11px] font-bold text-slate-700">{{ $feeConfig['label'] }} ({{ $feeConfig['badge'] }})</span>
                 </div>
             </div>

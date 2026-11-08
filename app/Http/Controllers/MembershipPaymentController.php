@@ -39,7 +39,7 @@ class MembershipPaymentController extends Controller
             $nameParts = explode(' ', $user->name, 2);
             $member = Member::create([
                 'user_id' => $user->id,
-                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'member_number' => null,
                 'first_name' => $nameParts[0] ?? 'Member',
                 'last_name' => $nameParts[1] ?? 'User',
                 'email' => $user->email,
@@ -111,7 +111,7 @@ class MembershipPaymentController extends Controller
             $nameParts = explode(' ', $user->name, 2);
             $member = Member::create([
                 'user_id' => $user->id,
-                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'member_number' => null,
                 'first_name' => $nameParts[0] ?? 'Member',
                 'last_name' => $nameParts[1] ?? 'User',
                 'email' => $user->email,
@@ -189,7 +189,7 @@ class MembershipPaymentController extends Controller
                     'metadata' => [
                         'member_id' => $member->id,
                         'user_id' => $user->id,
-                        'member_number' => $member->member_number,
+                        'member_number' => $member->member_number ?? 'PENDING_PAYMENT',
                         'category' => $member->category,
                     ],
                 ]);

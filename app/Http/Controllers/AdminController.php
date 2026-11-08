@@ -93,7 +93,10 @@ class AdminController extends Controller
         $status = $validated['payment_status'];
 
         if ($status === 'paid' || $status === 'waived') {
+            $memberNumber = $member->member_number ?: Member::generateMemberNumber();
+
             $member->update([
+                'member_number' => $memberNumber,
                 'payment_status' => $status,
                 'status' => 'active',
                 'payment_method' => $member->payment_method ?? 'manual_approval',

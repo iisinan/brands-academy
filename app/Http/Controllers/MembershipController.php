@@ -67,10 +67,10 @@ class MembershipController extends Controller
             'role' => 'member',
         ]);
 
-        // 2. Create Member Profile
+        // 2. Create Member Profile (Member ID assigned only after payment)
         $member = Member::create([
             'user_id' => $user->id,
-            'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+            'member_number' => null,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -81,6 +81,7 @@ class MembershipController extends Controller
             'state' => $validated['state'],
             'country' => $validated['country'] ?? 'Nigeria',
             'status' => 'active',
+            'payment_status' => 'pending',
             'bio' => $validated['bio'] ?? null,
             'qr_code_token' => (string) Str::uuid(),
             'joined_at' => now()->toDateString(),
@@ -92,7 +93,7 @@ class MembershipController extends Controller
         // 4. Log user into portal session
         Auth::login($user);
 
-        return redirect()->route('verification.notice')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your account has been created with Member ID {$member->member_number}. We have sent a verification email to {$user->email}. Please check your inbox (and spam or junk folder) and verify your email to unlock access to your Member Portal.");
+        return redirect()->route('verification.notice')->with('success', "Welcome to Brands Academy Nigeria Foundation! Your registration is complete. We have sent a verification email to {$user->email}. Please check your inbox (and spam or junk folder) and verify your email to complete dues payment and receive your official Member ID.");
     }
 
     /**
@@ -113,7 +114,7 @@ class MembershipController extends Controller
             $nameParts = explode(' ', $user->name, 2);
             $member = Member::create([
                 'user_id' => $user->id,
-                'member_number' => 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5)),
+                'member_number' => null,
                 'first_name' => $nameParts[0] ?? 'Member',
                 'last_name' => $nameParts[1] ?? 'User',
                 'email' => $user->email,

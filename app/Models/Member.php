@@ -60,13 +60,22 @@ class Member extends Model
     }
 
     /**
-     * Automatically populate member_number and qr_code_token on creation.
+     * Generate an official unique member identification number upon payment.
+     */
+    public static function generateMemberNumber(): string
+    {
+        return 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5));
+    }
+
+    /**
+     * Automatically populate qr_code_token on creation.
+     * Member number is strictly assigned upon payment confirmation.
      */
     protected static function booted(): void
     {
         static::creating(function (Member $member): void {
-            if (empty($member->member_number)) {
-                $member->member_number = 'BANF-MBR-'.date('Y').'-'.strtoupper(Str::random(5));
+            if (empty($member->member_number) && $member->isPaid()) {
+                $member->member_number = self::generateMemberNumber();
             }
             if (empty($member->qr_code_token)) {
                 $member->qr_code_token = (string) Str::uuid();
@@ -164,7 +173,11 @@ class Member extends Model
      */
     public function markAsPaid(string $method = 'paystack', ?float $amount = null, ?string $reference = null): void
     {
+        $memberNumber = $this->member_number ?: self::generateMemberNumber();
+        $this->member_number = $memberNumber;
+
         $this->update([
+            'member_number' => $memberNumber,
             'payment_status' => 'paid',
             'status' => 'active',
             'payment_method' => $method,

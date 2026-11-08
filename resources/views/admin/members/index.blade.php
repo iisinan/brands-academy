@@ -80,7 +80,13 @@
                         <tr class="hover:bg-slate-50/50">
                             <td class="px-6 py-4">
                                 <span class="font-bold text-slate-900 text-sm block">{{ $member->full_name }}</span>
-                                <span class="font-mono text-[11px] font-bold text-amber-700">{{ $member->member_number }}</span>
+                                @if($member->member_number)
+                                    <span class="font-mono text-[11px] font-bold text-amber-700">{{ $member->member_number }}</span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                        Pending Payment
+                                    </span>
+                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-200">
