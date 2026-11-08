@@ -75,6 +75,41 @@ class PortalFeatureTest extends TestCase
     }
 
     /**
+     * Test ongoing membership registration with merged full name field.
+     */
+    public function test_ongoing_membership_registration_with_merged_full_name(): void
+    {
+        $response = $this->post('/membership/register', [
+            'name' => 'Umar Suleiman',
+            'email' => 'umar.s@example.com',
+            'phone' => '+234 809 333 4455',
+            'category' => 'student',
+            'institution_or_company' => 'Ahmadu Bello University',
+            'designation' => 'Undergraduate Student',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'password' => 'secret1234',
+            'password_confirmation' => 'secret1234',
+        ]);
+
+        $response->assertRedirect('/member/dashboard');
+        $this->assertAuthenticated();
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Umar Suleiman',
+            'email' => 'umar.s@example.com',
+            'role' => 'member',
+        ]);
+
+        $this->assertDatabaseHas('members', [
+            'email' => 'umar.s@example.com',
+            'first_name' => 'Umar',
+            'last_name' => 'Suleiman',
+            'category' => 'student',
+        ]);
+    }
+
+    /**
      * Test application window logic (Pillar 2: Open vs Closed).
      */
     public function test_can_apply_to_workshop_during_active_application_window(): void

@@ -81,7 +81,7 @@
         <div class="w-full md:w-72 shrink-0">
             <div class="flex items-center justify-between text-[11px] font-semibold text-slate-600 mb-1.5">
                 <span>Verification Progress</span>
-                <span class="text-amber-600 font-bold" x-text="completedFieldsCount + ' / 8 Required'"></span>
+                <span class="text-amber-600 font-bold" x-text="completedFieldsCount + ' / 7 Required'"></span>
             </div>
             <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
                 <div class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full transition-all duration-300"
@@ -191,43 +191,23 @@
                     </div>
 
                     <div class="space-y-4">
-                        <!-- First Name & Last Name -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                        First Name <span class="text-rose-500">*</span>
-                                    </label>
-                                    <span x-show="isFieldVerified('first_name')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        </span>
-                                        <span>Verified</span>
+                        <!-- Full Name (Merged) -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                    Full Name <span class="text-rose-500">*</span>
+                                </label>
+                                <span x-show="isFieldVerified('name')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                        <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                     </span>
-                                </div>
-                                <input type="text" name="first_name" x-model="firstName" @blur="touch('first_name')" required
-                                    class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
-                                    :class="isFieldVerified('first_name') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['first_name'] && !firstName.trim() ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
-                                    placeholder="e.g. Fatima">
+                                    <span>Verified</span>
+                                </span>
                             </div>
-
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                        Last Name <span class="text-rose-500">*</span>
-                                    </label>
-                                    <span x-show="isFieldVerified('last_name')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        </span>
-                                        <span>Verified</span>
-                                    </span>
-                                </div>
-                                <input type="text" name="last_name" x-model="lastName" @blur="touch('last_name')" required
-                                    class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
-                                    :class="isFieldVerified('last_name') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['last_name'] && !lastName.trim() ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
-                                    placeholder="e.g. Suleiman">
-                            </div>
+                            <input type="text" name="name" x-model="name" @input="touch('name')" @blur="touch('name')" required
+                                class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
+                                :class="isFieldVerified('name') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['name'] && !name.trim() ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
+                                placeholder="e.g. Umar Suleiman">
                         </div>
 
                         <!-- Email & Phone -->
@@ -709,8 +689,7 @@
 <script>
     function membershipRegistrationForm() {
         return {
-            firstName: {!! json_encode(old('first_name', '')) !!},
-            lastName: {!! json_encode(old('last_name', '')) !!},
+            name: {!! json_encode(old('name', old('first_name') ? trim(old('first_name').' '.old('last_name')) : '')) !!},
             email: {!! json_encode(old('email', '')) !!},
             phone: {!! json_encode(old('phone', '')) !!},
             category: {!! json_encode(old('category', 'professional')) !!},
@@ -771,10 +750,8 @@
 
             isFieldVerified(field) {
                 switch(field) {
-                    case 'first_name':
-                        return (this.firstName || '').trim().length >= 2;
-                    case 'last_name':
-                        return (this.lastName || '').trim().length >= 2;
+                    case 'name':
+                        return (this.name || '').trim().length >= 2;
                     case 'email':
                         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((this.email || '').trim()) && !this.emailTypoSuggestion;
                     case 'phone':
@@ -793,8 +770,7 @@
             },
 
             get isStage1Complete() {
-                return this.isFieldVerified('first_name') &&
-                       this.isFieldVerified('last_name') &&
+                return this.isFieldVerified('name') &&
                        this.isFieldVerified('email') &&
                        this.isFieldVerified('phone');
             },
@@ -809,8 +785,7 @@
 
             get completedFieldsCount() {
                 const checks = [
-                    this.isFieldVerified('first_name'),
-                    this.isFieldVerified('last_name'),
+                    this.isFieldVerified('name'),
                     this.isFieldVerified('email'),
                     this.isFieldVerified('phone'),
                     this.isFieldVerified('category'),
@@ -822,7 +797,7 @@
             },
 
             get completionPercentage() {
-                return Math.round((this.completedFieldsCount / 8) * 100);
+                return Math.round((this.completedFieldsCount / 7) * 100);
             },
 
             get passwordStrength() {
@@ -836,10 +811,8 @@
             },
 
             get fullName() {
-                const first = (this.firstName || '').trim();
-                const last = (this.lastName || '').trim();
-                const combined = (first + ' ' + last).trim();
-                return combined.length > 0 ? combined : 'MEMBER FULL NAME';
+                const trimmed = (this.name || '').trim();
+                return trimmed.length > 0 ? trimmed : 'MEMBER FULL NAME';
             },
 
             get categoryLabel() {
@@ -853,8 +826,9 @@
             },
 
             get previewMemberNumber() {
-                const f = (this.firstName || '').trim().charAt(0).toUpperCase() || 'B';
-                const l = (this.lastName || '').trim().charAt(0).toUpperCase() || 'A';
+                const words = (this.name || '').trim().split(/\s+/).filter(Boolean);
+                const f = words[0]?.charAt(0).toUpperCase() || 'B';
+                const l = (words[1] || words[0])?.charAt(0).toUpperCase() || 'A';
                 return 'BANF-MBR-{{ date('Y') }}-' + f + l + '88';
             }
         };

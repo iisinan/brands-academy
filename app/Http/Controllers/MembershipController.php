@@ -29,7 +29,18 @@ class MembershipController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        if ($request->filled('name') && (! $request->filled('first_name') || ! $request->filled('last_name'))) {
+            $parts = preg_split('/\s+/', trim((string) $request->input('name')), 2);
+            $firstName = $parts[0] ?? 'Member';
+            $lastName = $parts[1] ?? $parts[0] ?? 'User';
+            $request->merge([
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+            ]);
+        }
+
         $validated = $request->validate([
+            'name' => ['nullable', 'string', 'max:200'],
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'unique:members,email'],
@@ -43,9 +54,11 @@ class MembershipController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
+        $fullName = ! empty($validated['name']) ? trim($validated['name']) : "{$validated['first_name']} {$validated['last_name']}";
+
         // 1. Create User login account
         $user = User::create([
-            'name' => "{$validated['first_name']} {$validated['last_name']}",
+            'name' => $fullName,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'member',
