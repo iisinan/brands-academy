@@ -95,6 +95,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/workshops/{id}/edit', [AdminController::class, 'editWorkshop'])->name('workshops.edit');
     Route::put('/workshops/{id}', [AdminController::class, 'updateWorkshop'])->name('workshops.update');
     Route::post('/workshops/{id}/bulk-issue-certificates', [AdminController::class, 'bulkIssueCertificates'])->name('workshops.bulk-issue-certificates');
+    Route::post('/workshops/{id}/toggle-status', [AdminController::class, 'toggleWorkshopStatus'])->name('workshops.toggle-status');
+    Route::post('/workshops/{id}/toggle-featured', [AdminController::class, 'toggleWorkshopFeatured'])->name('workshops.toggle-featured');
 
     // Admissions & Applications Review
     Route::get('/applications', [AdminController::class, 'applications'])->name('applications');
@@ -113,4 +115,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Institutional Partnerships & Inquiries
     Route::get('/inquiries', [AdminController::class, 'inquiries'])->name('inquiries');
     Route::post('/inquiries/{id}/status', [AdminController::class, 'updateInquiryStatus'])->name('inquiries.status');
+
+    // 4. Finance & Payment Monitoring
+    Route::get('/finance', [AdminController::class, 'finance'])->name('finance');
+    Route::post('/finance/{id}/verify', [AdminController::class, 'verifyPayment'])->name('finance.verify');
+    Route::get('/finance/export', [AdminController::class, 'exportFinanceCsv'])->name('finance.export');
 });

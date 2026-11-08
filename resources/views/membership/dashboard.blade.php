@@ -43,7 +43,7 @@
 })">
 
     <!-- Member Top Profile Banner -->
-    <section class="bg-slate-900 text-white py-12 border-b border-slate-800 relative overflow-hidden">
+    <section id="overview" class="scroll-mt-20 bg-slate-900 text-white py-12 border-b border-slate-800 relative overflow-hidden">
         <!-- Ambient decorative glow -->
         <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -136,12 +136,68 @@
         </div>
     </section>
 
-    <!-- Dashboard Main Content -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="space-y-10">
+    <!-- Dashboard Main Content Grid with Responsive Member Sidebar -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
-            <!-- 1. Currently Open Cohorts Fast-Apply Section -->
-            <div>
+        <!-- Mobile Horizontal Sticky Sub-Nav / Drawer Trigger (< lg) -->
+        <div class="lg:hidden mb-6 space-y-3">
+            <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-slate-800 font-mono">{{ $member->member_number }}</span>
+                    <span class="text-[10px] text-slate-500">&bull; {{ $member->category_label }}</span>
+                </div>
+                <button type="button" @click="mobileSidebarOpen = true" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <span>Member Menu</span>
+                </button>
+            </div>
+
+            <!-- Horizontal Scroll Pills for Instant Section Jump -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+                <button type="button" @click="scrollTo('cohorts')"
+                        :class="activeSection === 'cohorts' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
+                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
+                    Cohorts ({{ $openWorkshops->count() }})
+                </button>
+                <button type="button" @click="scrollTo('certificates')"
+                        :class="activeSection === 'certificates' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
+                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
+                    Certificates ({{ $certificates->count() }})
+                </button>
+                <button type="button" @click="scrollTo('applications')"
+                        :class="activeSection === 'applications' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
+                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
+                    Applications ({{ $applications->count() }})
+                </button>
+                <button type="button" @click="scrollTo('profile')"
+                        :class="activeSection === 'profile' ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white text-slate-700 border border-slate-200'"
+                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap transition-colors shadow-2xs cursor-pointer">
+                    Profile &amp; Settings
+                </button>
+                <button type="button" @click="showCardModal = true"
+                        class="px-3.5 py-1.5 rounded-full whitespace-nowrap bg-amber-50 text-amber-900 border border-amber-300 font-bold shadow-2xs cursor-pointer">
+                    Digital ID QR
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Desktop Sticky Sidebar (lg:col-span-4 xl:col-span-3) -->
+            <aside class="hidden lg:block lg:col-span-4 xl:col-span-3 lg:sticky lg:top-24 space-y-5">
+                <x-member-sidebar
+                    :member="$member"
+                    :open-workshops="$openWorkshops"
+                    :certificates="$certificates"
+                    :applications="$applications" />
+            </aside>
+
+            <!-- Main Content Area (lg:col-span-8 xl:col-span-9) -->
+            <main class="lg:col-span-8 xl:col-span-9 space-y-10 min-w-0">
+
+                <!-- 1. Currently Open Cohorts Fast-Apply Section -->
+                <div id="cohorts" class="scroll-mt-28">
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Cohorts Open for Applications</h2>
@@ -209,7 +265,7 @@
             </div>
 
             <!-- 2. My Earned Certificates & Digital Badges -->
-            <div>
+            <div id="certificates" class="scroll-mt-28">
                 <div class="mb-4">
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Earned Certificates</h2>
                     <p class="text-xs sm:text-sm text-slate-500">Official, verifiable credentials awarded upon completing Academy cohorts.</p>
@@ -272,7 +328,7 @@
             </div>
 
             <!-- 3. My Submitted Applications History -->
-            <div>
+            <div id="applications" class="scroll-mt-28">
                 <div class="mb-4">
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Application History</h2>
                     <p class="text-xs sm:text-sm text-slate-500">Track admission decisions and cohort progression.</p>
@@ -359,7 +415,7 @@
             </div>
 
             <!-- 4. Member Profile & Contact Information -->
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+            <div id="profile" class="scroll-mt-28 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
                 <div class="mb-6">
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Member Profile & Registry Information</h2>
                     <p class="text-xs sm:text-sm text-slate-500">Keep your professional affiliations and contact records up to date.</p>
@@ -513,8 +569,49 @@
                 </form>
             </div>
 
+            </main>
         </div>
     </section>
+
+    <!-- Mobile Sidebar Drawer (< lg) -->
+    <div x-show="mobileSidebarOpen" x-cloak
+         class="fixed inset-0 z-50 lg:hidden overflow-hidden"
+         role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
+             x-show="mobileSidebarOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="mobileSidebarOpen = false"></div>
+
+        <!-- Sliding Panel -->
+        <div class="fixed inset-y-0 left-0 max-w-xs w-full bg-slate-50 shadow-2xl flex flex-col z-10 overflow-y-auto p-5"
+             x-show="mobileSidebarOpen"
+             x-transition:enter="ease-out duration-300 transform"
+             x-transition:enter-start="-translate-x-full"
+             x-transition:enter-end="translate-x-0"
+             x-transition:leave="ease-in duration-200 transform"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="-translate-x-full">
+
+            <div class="flex items-center justify-between pb-4 mb-3 border-b border-slate-200">
+                <span class="font-serif-title font-bold text-slate-900 text-sm">Member Navigation</span>
+                <button type="button" @click="mobileSidebarOpen = false" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <x-member-sidebar
+                :member="$member"
+                :open-workshops="$openWorkshops"
+                :certificates="$certificates"
+                :applications="$applications" />
+        </div>
+    </div>
 
     <!-- Digital Credential Modal -->
     <div x-show="showCardModal" x-cloak
@@ -657,6 +754,19 @@
             copiedMemberId: false,
             copiedUrl: false,
             copiedCertUrl: '',
+            activeSection: 'cohorts',
+            mobileSidebarOpen: false,
+
+            scrollTo(sectionId) {
+                this.activeSection = sectionId;
+                this.mobileSidebarOpen = false;
+                const el = document.getElementById(sectionId);
+                if (el) {
+                    const yOffset = -90;
+                    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            },
 
             nigerianStates: [
                 'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',

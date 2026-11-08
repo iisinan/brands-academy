@@ -9,6 +9,7 @@ use App\Mail\PortfolioEvaluatedMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
 use App\Models\Member;
+use App\Models\MemberPayment;
 use App\Models\PortfolioSubmission;
 use App\Models\User;
 use App\Models\Workshop;
@@ -682,5 +683,177 @@ class AdminController extends Controller
         $inquiry->update($validated);
 
         return back()->with('success', "Inquiry from {$inquiry->organization_name} updated successfully.");
+    }
+
+    /**
+     * Toggle workshop published status (controls landing page visibility).
+     */
+    public function toggleWorkshopStatus(int $id): RedirectResponse
+    {
+        $workshop = Workshop::findOrFail($id);
+        $newStatus = $workshop->status === 'published' ? 'draft' : 'published';
+        $workshop->update(['status' => $newStatus]);
+
+        $message = $newStatus === 'published'
+            ? "'{$workshop->title}' is now Published and live on the Landing Page."
+            : "'{$workshop->title}' has been moved to Draft and hidden from the Landing Page.";
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * Toggle workshop featured flag on landing page.
+     */
+    public function toggleWorkshopFeatured(int $id): RedirectResponse
+    {
+        $workshop = Workshop::findOrFail($id);
+        $workshop->update(['is_featured' => ! $workshop->is_featured]);
+
+        $message = $workshop->is_featured
+            ? "'{$workshop->title}' is now Featured prominently on the Landing Page."
+            : "'{$workshop->title}' is no longer pinned as Featured.";
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * Finance & Payment Monitoring Hub.
+     */
+    public function finance(Request $request): View
+    {
+        $query = MemberPayment::with(['member', 'user']);
+
+        if ($request->filled('q')) {
+            $q = $request->query('q');
+            $query->where(function ($sub) use ($q): void {
+                $sub->where('reference', 'like', "%{$q}%")
+                    ->orWhere('gateway_reference', 'like', "%{$q}%")
+                    ->orWhereHas('member', function ($m) use ($q): void {
+                        $m->where('first_name', 'like', "%{$q}%")
+                            ->orWhere('last_name', 'like', "%{$q}%")
+                            ->orWhere('email', 'like', "%{$q}%")
+                            ->orWhere('member_number', 'like', "%{$q}%");
+                    });
+            });
+        }
+
+        if ($request->filled('gateway')) {
+            $query->where('payment_gateway', $request->query('gateway'));
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->query('status'));
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->query('category'));
+        }
+
+        $payments = $query->latest()->paginate(20);
+
+        // Compute Financial Metrics
+        $totalRevenue = (float) MemberPayment::where('status', 'successful')->sum('amount');
+        $successfulCount = MemberPayment::where('status', 'successful')->count();
+        $pendingReviewsCount = MemberPayment::whereIn('status', ['pending', 'under_review'])->count() + Member::where('payment_status', 'under_review')->count();
+        $thisMonthRevenue = (float) MemberPayment::where('status', 'successful')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('amount');
+
+        // Revenue by gateway
+        $paystackRevenue = (float) MemberPayment::where('status', 'successful')->where('payment_gateway', 'paystack')->sum('amount');
+        $squadRevenue = (float) MemberPayment::where('status', 'successful')->where('payment_gateway', 'squad')->sum('amount');
+        $bankTransferRevenue = (float) MemberPayment::where('status', 'successful')->where('payment_gateway', 'bank_transfer')->sum('amount');
+
+        $stats = [
+            'total_revenue' => $totalRevenue,
+            'successful_count' => $successfulCount,
+            'pending_reviews_count' => $pendingReviewsCount,
+            'this_month_revenue' => $thisMonthRevenue,
+            'paystack_revenue' => $paystackRevenue,
+            'squad_revenue' => $squadRevenue,
+            'bank_transfer_revenue' => $bankTransferRevenue,
+        ];
+
+        return view('admin.finance.index', compact('payments', 'stats'));
+    }
+
+    /**
+     * Verify and approve a payment (e.g. Bank Transfer receipt).
+     */
+    public function verifyPayment(Request $request, int $id): RedirectResponse
+    {
+        $payment = MemberPayment::with('member')->findOrFail($id);
+
+        $validated = $request->validate([
+            'status' => ['required', 'in:successful,under_review,failed,waived'],
+            'notes' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $payment->update([
+            'status' => $validated['status'],
+            'notes' => $validated['notes'] ?? $payment->notes,
+            'paid_at' => $validated['status'] === 'successful' ? ($payment->paid_at ?? now()) : null,
+        ]);
+
+        // If successful, update the member record and issue/activate Member ID
+        if ($payment->member && $validated['status'] === 'successful') {
+            $member = $payment->member;
+            $memberNumber = $member->member_number ?: Member::generateMemberNumber();
+
+            $member->update([
+                'member_number' => $memberNumber,
+                'payment_status' => 'paid',
+                'payment_method' => $payment->payment_gateway,
+                'paid_amount' => $payment->amount,
+                'paid_at' => now(),
+                'payment_reference' => $payment->reference,
+                'status' => 'active',
+            ]);
+
+            try {
+                Mail::to($member->email)->send(new MemberWelcomeMail($member));
+            } catch (\Throwable $e) {
+                Log::warning('Member welcome email notice: '.$e->getMessage());
+            }
+        } elseif ($payment->member && $validated['status'] === 'failed') {
+            $payment->member->update(['payment_status' => 'pending']);
+        }
+
+        return back()->with('success', "Payment {$payment->reference} status updated to '{$validated['status']}'.");
+    }
+
+    /**
+     * Export financial transaction ledger to CSV.
+     */
+    public function exportFinanceCsv(): StreamedResponse
+    {
+        $payments = MemberPayment::with(['member', 'user'])->orderBy('id', 'desc')->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="brands_academy_finance_ledger_'.date('Y-m-d').'.csv"',
+        ];
+
+        return response()->stream(function () use ($payments): void {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Reference', 'Date', 'Payer Name', 'Payer Email', 'Category', 'Gateway', 'Amount (NGN)', 'Status', 'Gateway Reference', 'Notes']);
+
+            foreach ($payments as $pay) {
+                fputcsv($handle, [
+                    $pay->reference,
+                    $pay->created_at->format('Y-m-d H:i:s'),
+                    $pay->member?->full_name ?? $pay->user?->name ?? 'N/A',
+                    $pay->member?->email ?? $pay->user?->email ?? 'N/A',
+                    strtoupper($pay->category),
+                    ucfirst(str_replace('_', ' ', $pay->payment_gateway)),
+                    number_format((float) $pay->amount, 2, '.', ''),
+                    strtoupper($pay->status),
+                    $pay->gateway_reference,
+                    $pay->notes,
+                ]);
+            }
+            fclose($handle);
+        }, 200, $headers);
     }
 }
