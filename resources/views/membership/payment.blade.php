@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Annual Membership Dues - Paystack Checkout - Brands Academy')
+@section('title', 'Annual Membership Dues - Secure Online Checkout - Brands Academy')
 
 @push('styles')
 <style>
@@ -31,7 +31,7 @@
             Complete Membership Payment
         </h1>
         <p class="text-slate-300 text-sm sm:text-base mt-3 max-w-2xl mx-auto font-light leading-relaxed">
-            Pay your annual foundation dues securely via <strong>Paystack</strong> to immediately activate your account and unlock direct access to your <strong>Member Dashboard</strong>.
+            Pay your annual foundation dues securely online to immediately activate your account and unlock direct access to your <strong>Member Dashboard</strong>.
         </p>
     </div>
 </section>
@@ -138,7 +138,7 @@
                     <span class="font-medium">Payment Gateway:</span>
                     <span class="font-semibold text-emerald-700 flex items-center gap-1">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        Paystack Official Online Checkout
+                        Official Online Checkout
                     </span>
                 </div>
             </div>
@@ -161,11 +161,11 @@
             </div>
         </div>
 
-        <!-- Paystack Channels & Security Banner -->
+        <!-- Payment Channels & Security Banner -->
         <div class="py-6 border-b border-slate-100">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5">
                 <div>
-                    <span class="text-xs font-bold text-slate-900 block">Accepted Payment Options on Paystack:</span>
+                    <span class="text-xs font-bold text-slate-900 block">Accepted Payment Methods:</span>
                     <span class="text-[11.5px] text-slate-600 block mt-0.5">
                         Debit &amp; Credit Cards (Visa, Mastercard, Verve), Bank Transfer (Virtual Account), USSD Codes, Apple Pay.
                     </span>
@@ -177,7 +177,7 @@
             </div>
         </div>
 
-        <!-- Paystack Action Form -->
+        <!-- Payment Action Form -->
         <div class="pt-8 space-y-4">
             <form action="{{ route('membership.payment.initialize') }}" method="POST">
                 @csrf
@@ -188,12 +188,12 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                     </svg>
-                    <span>Pay ₦{{ number_format($feeConfig['amount']) }} via Paystack &rarr;</span>
+                    <span>Pay ₦{{ number_format($feeConfig['amount']) }} Securely Online &rarr;</span>
                 </button>
             </form>
 
             <p class="text-[11px] text-slate-400 text-center leading-relaxed">
-                You will be securely redirected to Paystack to complete your payment. Once approved, your member credentials and dashboard access will unlock immediately.
+                You will be securely redirected to complete your payment. Once approved, your member credentials and dashboard access will unlock immediately.
             </p>
         </div>
 

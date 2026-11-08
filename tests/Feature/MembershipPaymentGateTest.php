@@ -111,8 +111,9 @@ class MembershipPaymentGateTest extends TestCase
         $response->assertSee('₦75,000'); // Corporate tier amount
         $response->assertSee('Corporate Member');
         $response->assertSee('Issued After Payment');
-        $response->assertSee('Paystack');
-        $response->assertSee('Pay ₦75,000 via Paystack');
+        $response->assertSee('Official Online Checkout');
+        $response->assertSee('Pay ₦75,000 Securely Online');
+        $response->assertDontSee('Paystack');
     }
 
     /**

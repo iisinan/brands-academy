@@ -175,7 +175,7 @@ class MembershipPaymentController extends Controller
                 );
             }
 
-            return back()->with('error', 'Paystack live payments are currently being configured by the Foundation. Please use the Direct Bank Transfer option below to complete your payment.');
+            return back()->with('error', 'Online payment processing is currently being configured by the Secretariat. Please contact support or try again shortly.');
         }
 
         try {
@@ -183,7 +183,7 @@ class MembershipPaymentController extends Controller
                 ->timeout(15)
                 ->post(rtrim(config('membership.paystack.payment_url', 'https://api.paystack.co'), '/').'/transaction/initialize', [
                     'email' => $user->email,
-                    'amount' => (int) ($amount * 100), // Paystack requires amount in Kobo
+                    'amount' => (int) ($amount * 100), // Amount in Kobo
                     'reference' => $payment->reference,
                     'callback_url' => route('membership.payment.callback'),
                     'metadata' => [
@@ -200,13 +200,13 @@ class MembershipPaymentController extends Controller
                 return redirect()->away($authorizationUrl);
             }
 
-            Log::error('Paystack initialization failed', ['response' => $response->body()]);
+            Log::error('Payment gateway initialization failed', ['response' => $response->body()]);
 
-            return back()->with('error', 'Could not initialize online checkout: '.($response->json('message') ?? 'Please try again or use Bank Transfer.'));
+            return back()->with('error', 'Could not initialize online checkout: '.($response->json('message') ?? 'Please try again.'));
         } catch (\Throwable $e) {
-            Log::error('Paystack connection exception: '.$e->getMessage());
+            Log::error('Payment gateway connection exception: '.$e->getMessage());
 
-            return back()->with('error', 'Unable to connect to Paystack payment gateway. Please try direct bank transfer or contact support.');
+            return back()->with('error', 'Unable to connect to the secure online payment gateway. Please try again or contact support.');
         }
     }
 
