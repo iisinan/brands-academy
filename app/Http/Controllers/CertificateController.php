@@ -77,7 +77,7 @@ class CertificateController extends Controller
             'verifyUrl' => $verifyUrl,
         ]);
 
-        $pdf->setPaper('a4', 'landscape');
+        $pdf->setPaper([0, 0, 841.89, 595.28]);
         $pdf->setOption(['isRemoteEnabled' => true, 'isHtml5ParserEnabled' => true]);
 
         return $pdf;
