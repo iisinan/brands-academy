@@ -1,29 +1,35 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Admissions Queue & Cohort Applications - Admin')
+@section('page_title', 'Admissions Queue & Cohort Applications')
 
 @section('content')
 
-<!-- Header -->
-<section class="bg-slate-900 text-white py-10 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <a href="{{ route('admin.dashboard') }}" class="text-xs text-amber-400 hover:underline block mb-1">&larr; Admin Dashboard</a>
-                <h1 class="text-2xl sm:text-3xl font-extrabold font-serif-title">
-                    Cohort Admissions & Applications
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+    <!-- Header Actions Strip -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-serif-title">
+                    Cohort Admissions &amp; Applications
                 </h1>
-                <p class="text-slate-300 text-xs mt-1">Review candidates, evaluate scholarship requests, and issue post-cohort certificates.</p>
             </div>
-            <a href="{{ route('admin.certificates') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors">
+            <p class="text-xs text-slate-500 mt-1">
+                Review candidate statements of purpose, evaluate admission status, and dispatch verified certificates.
+            </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <a href="{{ route('admin.workshops') }}" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors">
+                &larr; Workshops
+            </a>
+            <a href="{{ route('admin.certificates') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs">
                 Issued Certificates Registry &rarr;
             </a>
         </div>
     </div>
-</section>
-
-<!-- Filter Section -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs mb-6">
         <form action="{{ route('admin.applications') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
             <select name="workshop_id" class="px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white flex-1">
@@ -183,6 +189,6 @@
         @endif
     </div>
 
-</section>
+</div>
 
 @endsection

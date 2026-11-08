@@ -1,11 +1,40 @@
 @props([
-    'member',
-    'openWorkshops' => collect(),
-    'certificates' => collect(),
-    'applications' => collect()
+    'member' => null,
+    'openWorkshops' => null,
+    'certificates' => null,
+    'applications' => null
 ])
 
-<div class="space-y-5">
+@php
+    $member = $member ?? auth()->user()?->member;
+    if (!$member && auth()->check()) {
+        $member = auth()->user()->member;
+    }
+    $openWorkshops = $openWorkshops ?? \App\Models\Workshop::where('status', 'published')->where('application_starts_at', '<=', now())->where('application_deadline', '>=', now())->get();
+    $certificates = $certificates ?? ($member ? $member->certificates()->get() : collect());
+    $applications = $applications ?? ($member ? $member->applications()->get() : collect());
+    $isOnDashboard = request()->routeIs('member.dashboard');
+@endphp
+
+@if($member)
+<div class="space-y-5" x-data="{
+    localCopiedId: false,
+    localCopiedUrl: false,
+    copyMemberIdLocal() {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText('{{ $member->member_number }}');
+            this.localCopiedId = true;
+            setTimeout(() => this.localCopiedId = false, 2500);
+        }
+    },
+    copyUrlLocal() {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText('{{ route('verify.certificate', $member->qr_code_token) }}');
+            this.localCopiedUrl = true;
+            setTimeout(() => this.localCopiedUrl = false, 2500);
+        }
+    }
+}">
 
     <!-- Member Identity Card -->
     <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs relative overflow-hidden">
@@ -43,10 +72,10 @@
                 <span class="block text-[9px] uppercase font-bold text-slate-400 tracking-wider">Member ID</span>
                 <span class="text-xs font-extrabold font-mono text-amber-700 block truncate">{{ $member->member_number }}</span>
             </div>
-            <button type="button" @click="copyMemberId()" class="px-2 py-1 rounded-lg text-[10px] font-bold bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-700 border border-slate-200 hover:border-amber-300 transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer" title="Copy Member ID">
-                <svg x-show="!copiedMemberId" class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                <svg x-show="copiedMemberId" x-cloak class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span x-text="copiedMemberId ? 'Copied!' : 'Copy'"></span>
+            <button type="button" @click="typeof copyMemberId === 'function' ? copyMemberId() : copyMemberIdLocal()" class="px-2 py-1 rounded-lg text-[10px] font-bold bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-700 border border-slate-200 hover:border-amber-300 transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer" title="Copy Member ID">
+                <svg x-show="!(typeof copiedMemberId !== 'undefined' ? copiedMemberId : localCopiedId)" class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <svg x-show="typeof copiedMemberId !== 'undefined' ? copiedMemberId : localCopiedId" x-cloak class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span x-text="(typeof copiedMemberId !== 'undefined' ? copiedMemberId : localCopiedId) ? 'Copied!' : 'Copy'"></span>
             </button>
         </div>
 
@@ -64,77 +93,146 @@
         </div>
 
         <!-- Overview -->
-        <button type="button" @click="scrollTo('overview')"
-                :class="activeSection === 'overview' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
-            <span class="flex items-center gap-2.5">
-                <span :class="activeSection === 'overview' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        @if($isOnDashboard)
+            <button type="button" @click="scrollTo('overview')"
+                    :class="activeSection === 'overview' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
+                <span class="flex items-center gap-2.5">
+                    <span :class="activeSection === 'overview' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    </span>
+                    <span>Dashboard Overview</span>
                 </span>
-                <span>Dashboard Overview</span>
-            </span>
-            <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
-        </button>
+                <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
+            </button>
+        @else
+            <a href="{{ route('member.dashboard') }}#overview"
+               class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-left group">
+                <span class="flex items-center gap-2.5">
+                    <span class="text-slate-400 group-hover:text-slate-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    </span>
+                    <span>Dashboard Overview</span>
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
+            </a>
+        @endif
 
         <!-- Cohorts Open for Applications -->
-        <button type="button" @click="scrollTo('cohorts')"
-                :class="activeSection === 'cohorts' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
-            <span class="flex items-center gap-2.5">
-                <span :class="activeSection === 'cohorts' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                </span>
-                <span>Workshop Cohorts</span>
-            </span>
-            <span class="flex items-center gap-1.5">
-                @if($openWorkshops->count() > 0)
-                    <span class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-amber-500 text-slate-950 font-mono">
-                        {{ $openWorkshops->count() }} Open
+        @if($isOnDashboard)
+            <button type="button" @click="scrollTo('cohorts')"
+                    :class="activeSection === 'cohorts' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
+                <span class="flex items-center gap-2.5">
+                    <span :class="activeSection === 'cohorts' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     </span>
-                @endif
-                <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
-                    25% Off
+                    <span>Workshop Cohorts</span>
                 </span>
-            </span>
-        </button>
+                <span class="flex items-center gap-1.5">
+                    @if($openWorkshops->count() > 0)
+                        <span class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-amber-500 text-slate-950 font-mono">
+                            {{ $openWorkshops->count() }} Open
+                        </span>
+                    @endif
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
+                        25% Off
+                    </span>
+                </span>
+            </button>
+        @else
+            <a href="{{ route('member.dashboard') }}#cohorts"
+               class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-left group">
+                <span class="flex items-center gap-2.5">
+                    <span class="text-slate-400 group-hover:text-slate-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </span>
+                    <span>Workshop Cohorts</span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                    @if($openWorkshops->count() > 0)
+                        <span class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-amber-500 text-slate-950 font-mono">
+                            {{ $openWorkshops->count() }} Open
+                        </span>
+                    @endif
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
+                        25% Off
+                    </span>
+                </span>
+            </a>
+        @endif
 
         <!-- Earned Certificates -->
-        <button type="button" @click="scrollTo('certificates')"
-                :class="activeSection === 'certificates' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
-            <span class="flex items-center gap-2.5">
-                <span :class="activeSection === 'certificates' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        @if($isOnDashboard)
+            <button type="button" @click="scrollTo('certificates')"
+                    :class="activeSection === 'certificates' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
+                <span class="flex items-center gap-2.5">
+                    <span :class="activeSection === 'certificates' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </span>
+                    <span>My Certificates</span>
                 </span>
-                <span>My Certificates</span>
-            </span>
-            @if($certificates->count() > 0)
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 font-mono">
-                    {{ $certificates->count() }} Issued
+                @if($certificates->count() > 0)
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 font-mono">
+                        {{ $certificates->count() }} Issued
+                    </span>
+                @else
+                    <span class="text-[10px] text-slate-400">0</span>
+                @endif
+            </button>
+        @else
+            <a href="{{ route('member.dashboard') }}#certificates"
+               class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-left group">
+                <span class="flex items-center gap-2.5">
+                    <span class="text-slate-400 group-hover:text-slate-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </span>
+                    <span>My Certificates</span>
                 </span>
-            @else
-                <span class="text-[10px] text-slate-400">0</span>
-            @endif
-        </button>
+                @if($certificates->count() > 0)
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 font-mono">
+                        {{ $certificates->count() }} Issued
+                    </span>
+                @else
+                    <span class="text-[10px] text-slate-400">0</span>
+                @endif
+            </a>
+        @endif
 
         <!-- Application History -->
-        <button type="button" @click="scrollTo('applications')"
-                :class="activeSection === 'applications' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
-            <span class="flex items-center gap-2.5">
-                <span :class="activeSection === 'applications' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        @if($isOnDashboard)
+            <button type="button" @click="scrollTo('applications')"
+                    :class="activeSection === 'applications' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
+                <span class="flex items-center gap-2.5">
+                    <span :class="activeSection === 'applications' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    </span>
+                    <span>Application History</span>
                 </span>
-                <span>Application History</span>
-            </span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 font-mono">
-                {{ $applications->count() }}
-            </span>
-        </button>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 font-mono">
+                    {{ $applications->count() }}
+                </span>
+            </button>
+        @else
+            <a href="{{ route('member.dashboard') }}#applications"
+               class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-left group">
+                <span class="flex items-center gap-2.5">
+                    <span class="text-slate-400 group-hover:text-slate-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    </span>
+                    <span>Application History</span>
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 font-mono">
+                    {{ $applications->count() }}
+                </span>
+            </a>
+        @endif
 
         <!-- Digital ID Card (Triggers Quick View Modal) -->
-        <button type="button" @click="showCardModal = true"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs text-slate-700 hover:bg-amber-50 hover:text-amber-900 transition-all border border-transparent hover:border-amber-200 text-left cursor-pointer group">
+        <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank"
+           class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs text-slate-700 hover:bg-amber-50 hover:text-amber-900 transition-all border border-transparent hover:border-amber-200 text-left group">
             <span class="flex items-center gap-2.5">
                 <span class="text-amber-500 group-hover:text-amber-600">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -144,20 +242,33 @@
             <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-500/20 text-amber-800">
                 Live QR
             </span>
-        </button>
+        </a>
 
         <!-- Profile Settings -->
-        <button type="button" @click="scrollTo('profile')"
-                :class="activeSection === 'profile' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
-                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
-            <span class="flex items-center gap-2.5">
-                <span :class="activeSection === 'profile' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        @if($isOnDashboard)
+            <button type="button" @click="scrollTo('profile')"
+                    :class="activeSection === 'profile' ? 'bg-amber-500/10 text-amber-900 font-bold border-amber-500/30' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 border-transparent'"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border text-left cursor-pointer group">
+                <span class="flex items-center gap-2.5">
+                    <span :class="activeSection === 'profile' ? 'text-amber-600' : 'text-slate-400 group-hover:text-slate-600'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </span>
+                    <span>Profile &amp; Settings</span>
                 </span>
-                <span>Profile &amp; Settings</span>
-            </span>
-            <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
-        </button>
+                <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
+            </button>
+        @else
+            <a href="{{ route('member.dashboard') }}#profile"
+               class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-left group">
+                <span class="flex items-center gap-2.5">
+                    <span class="text-slate-400 group-hover:text-slate-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </span>
+                    <span>Profile &amp; Settings</span>
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">&rarr;</span>
+            </a>
+        @endif
     </nav>
 
     <!-- 25% Member Benefit Callout Card -->
@@ -230,7 +341,7 @@
     </div>
 
     <!-- Admin Control Panel Link (Conditional for Administrators) -->
-    @if(auth()->user()->isAdmin())
+    @if(auth()->user()?->isAdmin())
         <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xs">
             <span class="block text-[10px] uppercase font-bold text-amber-400 tracking-wider mb-1">Administrative Privileges</span>
             <a href="{{ route('admin.dashboard') }}" class="w-full py-2 px-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center justify-center gap-1.5 shadow-xs">
@@ -260,3 +371,4 @@
     </div>
 
 </div>
+@endif

@@ -8,6 +8,7 @@ use App\Mail\CertificateIssuedMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
 use App\Models\Member;
+use App\Models\MemberPayment;
 use App\Models\User;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
@@ -1001,5 +1002,235 @@ class PortalFeatureTest extends TestCase
         $cardResponse = $this->get(route('membership.card', $member->qr_code_token));
         $cardResponse->assertStatus(200);
         $cardResponse->assertSee('Download Certificate (PDF)');
+    }
+
+    /**
+     * Test admin sidebar and executive navigation render with all 4 pillars.
+     */
+    public function test_admin_portal_sidebar_and_pillars_render_for_authorized_admin(): void
+    {
+        $admin = User::create([
+            'name' => 'Dr. Hadiza Usman',
+            'email' => 'hadiza.admin@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin');
+        $response->assertStatus(200);
+
+        // Sidebar Navigation & 4 Requested Pillars
+        $response->assertSee('Workshops &amp; Training', false);
+        $response->assertSee('Members Management', false);
+        $response->assertSee('Institutional Requests', false);
+        $response->assertSee('Finance &amp; Payments', false);
+        $response->assertSee('RC 7344471');
+    }
+
+    /**
+     * Test admin can toggle workshop published status for landing page visibility.
+     */
+    public function test_admin_can_toggle_workshop_status_for_landing_page_visibility(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Controller',
+            'email' => 'admin.controller@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Advanced Visual Identity Workshop',
+            'slug' => 'advanced-visual-identity-workshop',
+            'track_type' => 'cbe',
+            'description' => 'Executive grade curriculum.',
+            'delivery_mode' => 'hybrid',
+            'fee_type' => 'paid',
+            'fee_amount' => 50000,
+            'application_starts_at' => Carbon::now()->subDays(5),
+            'application_deadline' => Carbon::now()->addDays(10),
+            'starts_at' => Carbon::now()->addDays(15),
+            'ends_at' => Carbon::now()->addDays(30),
+            'status' => 'draft', // Initially hidden from landing page
+        ]);
+
+        // When status is draft, not visible on landing page
+        $landingBefore = $this->get('/');
+        $landingBefore->assertDontSee('Advanced Visual Identity Workshop');
+
+        // Toggle to published
+        $toggleResp = $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-status");
+        $toggleResp->assertSessionHas('success');
+        $this->assertEquals('published', $workshop->fresh()->status);
+
+        // Now visible on landing page
+        $landingAfter = $this->get('/');
+        $landingAfter->assertSee('Advanced Visual Identity Workshop');
+
+        // Toggle back to draft
+        $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-status");
+        $this->assertEquals('draft', $workshop->fresh()->status);
+    }
+
+    /**
+     * Test admin can toggle workshop featured status.
+     */
+    public function test_admin_can_toggle_workshop_featured_status(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Feature Lead',
+            'email' => 'lead.feature@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Brand Storytelling & PR Cohort',
+            'slug' => 'brand-storytelling-pr-cohort',
+            'track_type' => 'cbs',
+            'description' => 'PR narratives.',
+            'delivery_mode' => 'online',
+            'fee_type' => 'free',
+            'application_starts_at' => Carbon::now()->subDays(2),
+            'application_deadline' => Carbon::now()->addDays(8),
+            'starts_at' => Carbon::now()->addDays(12),
+            'ends_at' => Carbon::now()->addDays(24),
+            'status' => 'published',
+            'is_featured' => false,
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-featured");
+        $response->assertSessionHas('success');
+        $this->assertTrue($workshop->fresh()->is_featured);
+
+        // Toggle off
+        $this->actingAs($admin)->post("/admin/workshops/{$workshop->id}/toggle-featured");
+        $this->assertFalse($workshop->fresh()->is_featured);
+    }
+
+    /**
+     * Test finance hub access, filtering, and transaction CSV export.
+     */
+    public function test_admin_can_monitor_finance_hub_and_export_csv(): void
+    {
+        $admin = User::create([
+            'name' => 'Finance Director',
+            'email' => 'treasury@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $zainabUser = User::create([
+            'name' => 'Zainab Dahiru',
+            'email' => 'zainab.d@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $zainabUser->id,
+            'first_name' => 'Zainab',
+            'last_name' => 'Dahiru',
+            'email' => 'zainab.d@example.com',
+            'phone' => '+234 803 111 2233',
+            'category' => 'professional',
+            'state' => 'Abuja (FCT)',
+            'country' => 'Nigeria',
+            'status' => 'pending',
+            'payment_status' => 'under_review',
+            'qr_code_token' => 'zainab-payment-token',
+        ]);
+
+        MemberPayment::create([
+            'member_id' => $member->id,
+            'user_id' => $zainabUser->id,
+            'reference' => 'PAY-TEST-REF-9988',
+            'category' => 'membership_dues',
+            'amount' => 25000.00,
+            'payment_gateway' => 'bank_transfer',
+            'status' => 'under_review',
+            'gateway_reference' => 'GTB-TRANSFER-12345',
+            'notes' => 'Awaiting admin verification',
+        ]);
+
+        // Admin can view finance hub
+        $hubResponse = $this->actingAs($admin)->get('/admin/finance');
+        $hubResponse->assertStatus(200);
+        $hubResponse->assertSee('Treasury &amp; Collections Ledger', false);
+        $hubResponse->assertSee('PAY-TEST-REF-9988');
+        $hubResponse->assertSee('Zainab Dahiru');
+
+        // Non-admin cannot view finance hub
+        $memberUser = User::create([
+            'name' => 'Regular Member',
+            'email' => 'reg.user@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+        $this->actingAs($memberUser)->get('/admin/finance')->assertRedirect(route('member.dashboard'));
+        $this->actingAs($memberUser)->getJson('/admin/finance')->assertStatus(403);
+
+        // Export financial CSV
+        $exportResponse = $this->actingAs($admin)->get('/admin/finance/export');
+        $exportResponse->assertStatus(200);
+        $exportResponse->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+    }
+
+    /**
+     * Test admin can verify pending bank transfer payment and activate member.
+     */
+    public function test_admin_can_verify_pending_payment_and_activate_member(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Bursar Admin',
+            'email' => 'bursar@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $ibrahimUser = User::create([
+            'name' => 'Ibrahim Kano',
+            'email' => 'ibrahim.kano@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+        ]);
+
+        $member = Member::create([
+            'user_id' => $ibrahimUser->id,
+            'first_name' => 'Ibrahim',
+            'last_name' => 'Kano',
+            'email' => 'ibrahim.kano@example.com',
+            'phone' => '+234 809 555 4433',
+            'category' => 'student',
+            'state' => 'Kano',
+            'country' => 'Nigeria',
+            'status' => 'pending',
+            'payment_status' => 'under_review',
+            'qr_code_token' => 'ibrahim-token-verify',
+        ]);
+
+        $payment = MemberPayment::create([
+            'member_id' => $member->id,
+            'user_id' => $ibrahimUser->id,
+            'reference' => 'PAY-VERIFY-REF-101',
+            'category' => 'membership_dues',
+            'amount' => 5000.00,
+            'payment_gateway' => 'bank_transfer',
+            'status' => 'under_review',
+            'gateway_reference' => 'TRANSFER-PROOF-XYZ',
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/finance/{$payment->id}/verify", [
+            'status' => 'successful',
+            'notes' => 'Confirmed in GTBank statement.',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertEquals('successful', $payment->fresh()->status);
+        $this->assertEquals('paid', $member->fresh()->payment_status);
+        $this->assertEquals('active', $member->fresh()->status);
+        $this->assertStringStartsWith('BANF-MBR-', $member->fresh()->member_number);
     }
 }

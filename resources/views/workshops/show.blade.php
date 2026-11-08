@@ -63,7 +63,42 @@
 </section>
 
 <!-- Content Grid: Details & Application Widget -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="{ memberSidebarDrawerOpen: false }">
+
+    @if(auth()->check() && auth()->user()->member)
+        <!-- Member Recognition & Sidebar Shortcut Banner -->
+        <div class="mb-8 p-4 sm:p-5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-slate-900 shadow-xs">
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-base flex items-center justify-center font-serif-title shadow-sm ring-2 ring-amber-500/30 shrink-0">
+                    {{ substr(auth()->user()->member->first_name, 0, 1) }}{{ substr(auth()->user()->member->last_name, 0, 1) }}
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-sm text-slate-900">{{ auth()->user()->member->full_name }}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white border border-amber-300 text-amber-900">{{ auth()->user()->member->member_number }}</span>
+                        <span class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Active Member
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-0.5">
+                        Your <strong>25% Member Tuition Discount</strong> is active on this cohort &bull; You do not need to register again.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" @click="memberSidebarDrawerOpen = true" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white hover:bg-amber-50 text-slate-800 border border-slate-300 hover:border-amber-400 transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <span>Open Member Sidebar</span>
+                </button>
+                <a href="{{ route('member.dashboard') }}" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>Member Dashboard &rarr;</span>
+                </a>
+            </div>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
         <!-- Left 7 cols: Syllabus, Overview & Details -->
@@ -472,6 +507,44 @@
         </div>
 
     </div>
+
+    @if(auth()->check() && auth()->user()->member)
+        <!-- Slide-Out Member Sidebar Drawer for Workshop Page -->
+        <div x-show="memberSidebarDrawerOpen" x-cloak
+             class="fixed inset-0 z-50 overflow-hidden"
+             role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
+                 x-show="memberSidebarDrawerOpen"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="memberSidebarDrawerOpen = false"></div>
+
+            <!-- Sliding Panel -->
+            <div class="fixed inset-y-0 left-0 max-w-sm w-full bg-slate-50 shadow-2xl flex flex-col z-10 overflow-y-auto p-5"
+                 x-show="memberSidebarDrawerOpen"
+                 x-transition:enter="ease-out duration-300 transform"
+                 x-transition:enter-start="-translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="ease-in duration-200 transform"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="-translate-x-full">
+
+                <div class="flex items-center justify-between pb-4 mb-3 border-b border-slate-200">
+                    <span class="font-serif-title font-bold text-slate-900 text-sm">Member Portal Navigation</span>
+                    <button type="button" @click="memberSidebarDrawerOpen = false" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <x-member-sidebar />
+            </div>
+        </div>
+    @endif
 </section>
 
 @endsection

@@ -1,29 +1,30 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Portfolio Deliverables & Evaluation - Admin')
+@section('page_title', 'Portfolio Deliverables & Faculty Evaluation')
 
 @section('content')
 
-<!-- Header -->
-<section class="bg-slate-900 text-white py-10 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <a href="{{ route('admin.dashboard') }}" class="text-xs text-amber-400 hover:underline block mb-1">&larr; Admin Dashboard</a>
-                <h1 class="text-2xl sm:text-3xl font-extrabold font-serif-title">
-                    Portfolio Deliverables & Faculty Evaluation
-                </h1>
-                <p class="text-slate-300 text-xs mt-1">Review strategic projects, provide mentor feedback, and approve learners for certification.</p>
-            </div>
-            <a href="{{ route('admin.applications') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors">
-                Admissions Queue &rarr;
-            </a>
-        </div>
-    </div>
-</section>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-<!-- Submissions List -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header Actions Strip -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-serif-title">
+                    Portfolio Deliverables &amp; Faculty Evaluation
+                </h1>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+                Review practical student capstone brand assets, grade submissions, and provide mentorship feedback.
+            </p>
+        </div>
+
+        <a href="{{ route('admin.applications') }}" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+            Admissions Queue &rarr;
+        </a>
+    </div>
     
     <!-- Filter -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs mb-6">
@@ -157,6 +158,6 @@
         @endif
     </div>
 
-</section>
+</div>
 
 @endsection

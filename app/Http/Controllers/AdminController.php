@@ -34,12 +34,16 @@ class AdminController extends Controller
     {
         $stats = [
             'total_members' => Member::count(),
+            'active_members' => Member::where('status', 'active')->count(),
             'active_workshops' => Workshop::where('status', 'published')->count(),
+            'total_workshops' => Workshop::count(),
             'pending_applications' => WorkshopApplication::where('status', 'pending')->count(),
             'total_certificates' => Certificate::count(),
             'pending_submissions' => PortfolioSubmission::where('status', 'submitted')->count(),
             'pending_inquiries' => InstitutionalInquiry::where('status', 'new')->count(),
             'total_inquiries' => InstitutionalInquiry::count(),
+            'total_revenue' => (float) MemberPayment::where('status', 'successful')->sum('amount'),
+            'pending_payments' => MemberPayment::whereIn('status', ['pending', 'under_review'])->count() + Member::where('payment_status', 'under_review')->count(),
             'total_users' => User::count(),
             'admin_users' => User::where('role', 'admin')->count(),
             'member_users' => User::where('role', 'member')->count(),
@@ -320,6 +324,8 @@ class AdminController extends Controller
             'starts_at' => ['required', 'date'],
             'ends_at' => ['required', 'date', 'after:starts_at'],
             'instructor_name' => ['nullable', 'string', 'max:150'],
+            'status' => ['nullable', 'in:published,draft,archived'],
+            'is_featured' => ['nullable', 'boolean'],
         ]);
 
         $topicsArray = [];
@@ -344,7 +350,8 @@ class AdminController extends Controller
             'starts_at' => Carbon::parse($validated['starts_at']),
             'ends_at' => Carbon::parse($validated['ends_at']),
             'instructor_name' => $validated['instructor_name'] ?? null,
-            'status' => 'published',
+            'status' => $validated['status'] ?? 'published',
+            'is_featured' => $request->boolean('is_featured'),
         ]);
 
         return redirect()->route('admin.workshops')->with('success', 'Workshop cohort created successfully with application window configured!');
@@ -384,6 +391,7 @@ class AdminController extends Controller
             'ends_at' => ['required', 'date', 'after:starts_at'],
             'instructor_name' => ['nullable', 'string', 'max:150'],
             'status' => ['required', 'in:published,draft,archived'],
+            'is_featured' => ['nullable', 'boolean'],
         ]);
 
         $topicsArray = [];
@@ -408,6 +416,7 @@ class AdminController extends Controller
             'ends_at' => Carbon::parse($validated['ends_at']),
             'instructor_name' => $validated['instructor_name'] ?? null,
             'status' => $validated['status'],
+            'is_featured' => $request->boolean('is_featured'),
         ]);
 
         return redirect()->route('admin.workshops')->with('success', "Workshop cohort '{$workshop->title}' updated successfully!");

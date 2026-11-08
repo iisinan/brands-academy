@@ -1,58 +1,54 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Users & RBAC Management - Admin')
+@section('page_title', 'Users & Role-Based Access Control')
 
 @section('content')
 
-<div x-data="{ showCreateModal: false }">
+<div x-data="{ showCreateModal: false }" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-<!-- Header -->
-<section class="bg-slate-900 text-white py-10 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <a href="{{ route('admin.dashboard') }}" class="text-xs text-amber-400 hover:underline block mb-1">&larr; Admin Dashboard</a>
-                <h1 class="text-2xl sm:text-3xl font-extrabold font-serif-title">
+    <!-- Header Actions Strip -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-serif-title">
                     User Accounts &amp; Smart RBAC
                 </h1>
-                <p class="text-slate-300 text-xs mt-1">Manage system administrators, members, and access privileges.</p>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
-                <button 
-                    type="button" 
-                    @click="showCreateModal = true" 
-                    class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-md"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Provision New Account
-                </button>
-                <a href="{{ route('admin.members') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors">
-                    Members Directory &rarr;
-                </a>
-            </div>
+            <p class="text-xs text-slate-500 mt-1">Manage system administrators, members, and access privileges.</p>
         </div>
-
-        <!-- Role Stats Strip -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
-                <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Total Accounts</span>
-                <span class="text-2xl font-extrabold text-white font-serif-title">{{ $roleCounts['total'] }}</span>
-            </div>
-            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
-                <span class="text-[10px] uppercase font-bold text-amber-400 block tracking-wider">System Administrators</span>
-                <span class="text-2xl font-extrabold text-amber-400 font-serif-title">{{ $roleCounts['admin'] }}</span>
-            </div>
-            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
-                <span class="text-[10px] uppercase font-bold text-emerald-400 block tracking-wider">Foundation Members</span>
-                <span class="text-2xl font-extrabold text-emerald-400 font-serif-title">{{ $roleCounts['member'] }}</span>
-            </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <button 
+                type="button" 
+                @click="showCreateModal = true" 
+                class="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-md shadow-amber-500/20"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>Provision New Account</span>
+            </button>
+            <a href="{{ route('admin.members') }}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                Members Directory &rarr;
+            </a>
         </div>
     </div>
-</section>
 
-<!-- Search & Listing -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
+    <!-- Role Stats Strip -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Total Accounts</span>
+            <span class="text-2xl font-extrabold text-slate-900 font-serif-title">{{ $roleCounts['total'] }}</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-amber-600 block tracking-wider">System Administrators</span>
+            <span class="text-2xl font-extrabold text-amber-600 font-serif-title">{{ $roleCounts['admin'] }}</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-emerald-600 block tracking-wider">Foundation Members</span>
+            <span class="text-2xl font-extrabold text-emerald-600 font-serif-title">{{ $roleCounts['member'] }}</span>
+        </div>
+    </div>
+
     <!-- Search Bar & Filter -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs mb-6">
         <form action="{{ route('admin.users') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
@@ -243,7 +239,6 @@
             </div>
         </div>
     </div>
-</section>
 
 <!-- Provision New Account Modal -->
 <div 
