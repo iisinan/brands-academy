@@ -5,14 +5,12 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_MEMORY_LIMIT=-1 \
     SERVER_NAME=":8080"
 
-# Install system dependencies (git, unzip, curl, bash, nodejs, npm)
+# Install system dependencies
 RUN apk add --no-cache \
     git \
     unzip \
     curl \
-    bash \
-    nodejs \
-    npm
+    bash
 
 # Install PDO, PostgreSQL and required extensions
 RUN install-php-extensions \
@@ -46,19 +44,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs --no-progress
 
-# Install NPM dependencies (cached layer)
-COPY package.json package-lock.json* ./
-RUN npm install
-
-# Copy application source
+# Copy application source (includes pre-compiled public/build assets)
 COPY . /app/
 
 # Finish Composer dump-autoload & package discovery
 RUN composer dump-autoload --optimize --no-dev && \
     php artisan package:discover --ansi
-
-# Build frontend assets with Vite
-RUN npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache || true
