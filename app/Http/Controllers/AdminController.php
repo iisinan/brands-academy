@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ApplicationAcceptedMail;
 use App\Mail\ApplicationStatusUpdatedMail;
+use App\Mail\MemberWelcomeMail;
 use App\Mail\PortfolioEvaluatedMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
@@ -77,6 +78,52 @@ class AdminController extends Controller
         $members = $query->latest()->paginate(15);
 
         return view('admin.members.index', compact('members'));
+    }
+
+    /**
+     * Update member payment status (Approve bank transfer or mark paid/waived).
+     */
+    public function updateMemberPaymentStatus(Request $request, Member $member): RedirectResponse
+    {
+        $validated = $request->validate([
+            'payment_status' => ['required', 'string', 'in:paid,pending,under_review,waived'],
+            'admin_notes' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $status = $validated['payment_status'];
+
+        if ($status === 'paid' || $status === 'waived') {
+            $member->update([
+                'payment_status' => $status,
+                'status' => 'active',
+                'payment_method' => $member->payment_method ?? 'manual_approval',
+                'paid_amount' => $member->paid_amount ?? $member->getFeeAmount(),
+                'paid_at' => now(),
+            ]);
+
+            // Update associated pending payments
+            $member->payments()->whereIn('status', ['pending', 'under_review'])->update([
+                'status' => 'successful',
+                'paid_at' => now(),
+                'notes' => $validated['admin_notes'] ?? 'Approved by Administrator',
+            ]);
+
+            if ($member->user) {
+                try {
+                    Mail::to($member->user->email)->send(new MemberWelcomeMail($member->user));
+                } catch (\Throwable $e) {
+                    Log::warning('Welcome email delivery error on admin approval: '.$e->getMessage());
+                }
+            }
+
+            return back()->with('success', "Member {$member->member_number} payment status updated to {$status}. Full portal access unlocked.");
+        }
+
+        $member->update([
+            'payment_status' => $status,
+        ]);
+
+        return back()->with('success', "Member {$member->member_number} payment status updated to {$status}.");
     }
 
     /**

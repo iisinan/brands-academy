@@ -58,6 +58,11 @@ class AuthController extends Controller
                 return redirect()->route('verification.notice')->with('warning', 'Please verify your email address to access your member dashboard. A verification link has been sent to your email.');
             }
 
+            // If user is a member and has NOT paid their annual membership dues, redirect to payment checkout
+            if ($user->isMember() && $user->member && ! $user->member->isPaid()) {
+                return redirect()->route('membership.payment')->with('warning', 'Please complete your annual membership dues to unlock your member portal.');
+            }
+
             // Smart RBAC: Resolve destination based on detected role
             $targetRoute = $user->getDashboardRoute();
 
@@ -215,15 +220,25 @@ class AuthController extends Controller
             $user->markEmailAsVerified();
             event(new Verified($user));
 
-            try {
-                Mail::to($user->email)->send(new MemberWelcomeMail($user));
-            } catch (\Throwable $e) {
-                Log::warning('Welcome email delivery notice: '.$e->getMessage());
+            if (! $user->isMember() || ($user->member && $user->member->isPaid())) {
+                try {
+                    Mail::to($user->email)->send(new MemberWelcomeMail($user));
+                } catch (\Throwable $e) {
+                    Log::warning('Welcome email delivery notice: '.$e->getMessage());
+                }
             }
         }
 
         if (! Auth::check()) {
             Auth::login($user);
+        }
+
+        // If user is a member and has not yet paid their membership dues, guide them to checkout
+        if ($user->isMember() && $user->member && ! $user->member->isPaid()) {
+            return redirect()->route('membership.payment')->with(
+                'success',
+                'Email verified successfully! Please complete your annual membership dues to activate your member portal access and digital credential.'
+            );
         }
 
         return redirect()->route($user->getDashboardRoute())->with('success', 'Your email address has been successfully verified! You now have full access to your member portal.');

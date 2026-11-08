@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\MembershipPaymentController;
 use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\WorkshopController;
@@ -57,8 +58,19 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
 
-// Member Protected Portal (Requires Auth, Member/Admin Role, and Verified Email)
+// Membership Dues Payment Gate (Requires Auth, Member/Admin Role, and Verified Email)
 Route::middleware(['auth', 'role:member,admin', 'verified'])->group(function (): void {
+    Route::get('/membership/payment', [MembershipPaymentController::class, 'showPaymentPage'])->name('membership.payment');
+    Route::post('/membership/payment/initialize', [MembershipPaymentController::class, 'initializePaystack'])->name('membership.payment.initialize');
+    Route::get('/membership/payment/callback', [MembershipPaymentController::class, 'handlePaystackCallback'])->name('membership.payment.callback');
+    Route::post('/membership/payment/bank-transfer', [MembershipPaymentController::class, 'submitBankTransfer'])->name('membership.payment.bank-transfer');
+});
+
+// Paystack Webhook (Public POST server-to-server listener)
+Route::post('/membership/payment/webhook', [MembershipPaymentController::class, 'handleWebhook'])->name('membership.payment.webhook');
+
+// Member Protected Portal (Requires Auth, Member/Admin Role, Verified Email, AND Paid Dues)
+Route::middleware(['auth', 'role:member,admin', 'verified', 'membership.paid'])->group(function (): void {
     Route::get('/member/dashboard', [MembershipController::class, 'dashboard'])->name('member.dashboard');
     Route::post('/member/profile', [MembershipController::class, 'updateProfile'])->name('member.profile.update');
     Route::get('/member/applications/{id}/submit-portfolio', [MembershipController::class, 'submitPortfolio'])->name('member.portfolio.create');
@@ -74,6 +86,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/members', [AdminController::class, 'members'])->name('members');
     Route::get('/members/export', [AdminController::class, 'exportMembers'])->name('members.export');
+    Route::post('/members/{member}/payment-status', [AdminController::class, 'updateMemberPaymentStatus'])->name('members.payment-status');
 
     // Workshop management & cohorts
     Route::get('/workshops', [AdminController::class, 'workshops'])->name('workshops');

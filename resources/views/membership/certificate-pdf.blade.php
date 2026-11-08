@@ -196,24 +196,23 @@
 
         .barcode-box {
             text-align: center;
-            padding: 0 4pt;
+            padding: 0 2pt;
         }
 
         .barcode-img {
             height: 30pt;
-            max-width: 145pt;
+            width: auto;
             display: block;
             margin: 0 auto 2pt auto;
         }
 
         .qr-img {
-            width: 46pt;
-            height: 46pt;
+            width: 48pt;
+            height: 48pt;
             display: inline-block;
             border: 1pt solid #cbd5e1;
             padding: 2pt;
             background: #ffffff;
-            margin-bottom: 3pt;
         }
 
         .meta-table {
@@ -275,7 +274,7 @@
                 <table class="footer-table">
                     <tr>
                         <!-- Signatory 1: Chairman -->
-                        <td style="width: 32%;">
+                        <td style="width: 30%;">
                             <div class="sig-container">
                                 @if(file_exists(public_path('images/signatures/prof-samaila-mande.png')))
                                     <img src="{{ public_path('images/signatures/prof-samaila-mande.png') }}" class="sig-img" alt="Prof. Samaila Mande Signature">
@@ -287,31 +286,31 @@
                         </td>
 
                         <!-- Center: Real Scannable Barcode & QR Code -->
-                        <td style="width: 36%;" class="barcode-box">
+                        <td style="width: 40%;" class="barcode-box">
                             <table style="width: 100%; border-collapse: collapse;">
                                 <tr>
-                                    <td style="text-align: center; vertical-align: middle;">
+                                    <td style="width: 56pt; text-align: center; vertical-align: middle;">
                                         @if(!empty($qrCode))
                                             <img src="{{ $qrCode }}" class="qr-img" alt="Scannable QR Code" />
                                         @endif
                                     </td>
-                                    <td style="text-align: center; vertical-align: middle;">
+                                    <td style="text-align: center; vertical-align: middle; padding-left: 6pt;">
                                         @if(!empty($barcode128))
                                             <img src="{{ $barcode128 }}" class="barcode-img" alt="Code-128 Linear Barcode" />
                                         @endif
-                                        <div style="font-size: 6.5pt; font-family: monospace; font-weight: bold; color: #0f172a; margin-top: 1pt;">
+                                        <div style="font-size: 7pt; font-family: monospace; font-weight: bold; color: #0f172a; margin-top: 2pt; letter-spacing: 0.5px;">
                                             MEMBER ID: {{ $member->member_number }}
                                         </div>
                                     </td>
                                 </tr>
                             </table>
-                            <div style="font-size: 6pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2pt;">
+                            <div style="font-size: 6pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2pt;">
                                 Cryptographically Verifiable Credential
                             </div>
                         </td>
 
                         <!-- Signatory 2: Secretary -->
-                        <td style="width: 32%;">
+                        <td style="width: 30%;">
                             <div class="sig-container">
                                 @if(file_exists(public_path('images/signatures/titus-eveshoyan.png')))
                                     <img src="{{ public_path('images/signatures/titus-eveshoyan.png') }}" class="sig-img" alt="Titus Eveshoyan Signature">

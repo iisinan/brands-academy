@@ -353,6 +353,7 @@ class PortalFeatureTest extends TestCase
             'phone' => '+234 801 111 2233',
             'category' => 'student',
             'state' => 'Kaduna',
+            'payment_status' => 'paid',
         ]);
 
         $workshop = Workshop::create([
@@ -685,6 +686,7 @@ class PortalFeatureTest extends TestCase
             'state' => 'Kaduna',
             'country' => 'Nigeria',
             'status' => 'active',
+            'payment_status' => 'paid',
             'joined_at' => now()->toDateString(),
             'qr_code_token' => 'test-mbr-qr-token-1234',
         ]);
@@ -723,6 +725,7 @@ class PortalFeatureTest extends TestCase
             'state' => 'Kano',
             'country' => 'Nigeria',
             'status' => 'active',
+            'payment_status' => 'paid',
             'joined_at' => now()->toDateString(),
             'qr_code_token' => 'test-mbr-qr-token-5678',
         ]);
@@ -921,6 +924,7 @@ class PortalFeatureTest extends TestCase
             'state' => 'Kaduna',
             'country' => 'Nigeria',
             'status' => 'active',
+            'payment_status' => 'paid',
             'qr_code_token' => 'token-amina-test-12345',
             'joined_at' => now()->toDateString(),
         ]);
@@ -975,6 +979,7 @@ class PortalFeatureTest extends TestCase
             'state' => 'Kaduna',
             'country' => 'Nigeria',
             'status' => 'active',
+            'payment_status' => 'paid',
             'qr_code_token' => 'token-faruq-cert-test',
             'joined_at' => now()->toDateString(),
         ]);

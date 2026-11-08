@@ -33,6 +33,12 @@ class Member extends Model
         'state',
         'country',
         'status',
+        'payment_status',
+        'payment_method',
+        'paid_amount',
+        'paid_at',
+        'payment_reference',
+        'payment_proof',
         'bio',
         'avatar',
         'qr_code_token',
@@ -48,6 +54,8 @@ class Member extends Model
     {
         return [
             'joined_at' => 'date',
+            'paid_at' => 'datetime',
+            'paid_amount' => 'decimal:2',
         ];
     }
 
@@ -101,6 +109,69 @@ class Member extends Model
     public function certificates(): HasMany
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    /**
+     * Payments recorded for this member.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(MemberPayment::class);
+    }
+
+    /**
+     * Check if membership dues are paid and active.
+     */
+    public function isPaid(): bool
+    {
+        return in_array($this->payment_status, ['paid', 'waived']);
+    }
+
+    /**
+     * Check if payment is awaiting transfer proof or admin verification.
+     */
+    public function isUnderReview(): bool
+    {
+        return $this->payment_status === 'under_review';
+    }
+
+    /**
+     * Check if payment has not yet been initiated.
+     */
+    public function isPendingPayment(): bool
+    {
+        return $this->payment_status === 'pending';
+    }
+
+    /**
+     * Get the configured fee amount for this member's category.
+     */
+    public function getFeeAmount(): float
+    {
+        return (float) config("membership.fees.{$this->category}.amount", 25000);
+    }
+
+    /**
+     * Get formatted fee string with currency symbol.
+     */
+    public function getFeeFormatted(): string
+    {
+        return '₦'.number_format($this->getFeeAmount());
+    }
+
+    /**
+     * Mark membership as successfully paid and active.
+     */
+    public function markAsPaid(string $method = 'paystack', ?float $amount = null, ?string $reference = null): void
+    {
+        $this->update([
+            'payment_status' => 'paid',
+            'status' => 'active',
+            'payment_method' => $method,
+            'paid_amount' => $amount ?? $this->getFeeAmount(),
+            'paid_at' => now(),
+            'payment_reference' => $reference ?? $this->payment_reference,
+        ]);
     }
 
     /**

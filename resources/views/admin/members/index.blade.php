@@ -70,8 +70,9 @@
                         <th class="px-6 py-4">Portal Role</th>
                         <th class="px-6 py-4">Contact Info</th>
                         <th class="px-6 py-4">Affiliation & State</th>
+                        <th class="px-6 py-4">Dues & Payment</th>
                         <th class="px-6 py-4">Member Since</th>
-                        <th class="px-6 py-4 text-right">Digital Card</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -109,18 +110,60 @@
                                 <div class="font-medium text-slate-800">{{ $member->institution_or_company ?? '—' }}</div>
                                 <div class="text-[11px] text-slate-500">{{ $member->state }}, Nigeria</div>
                             </td>
+                            <td class="px-6 py-4">
+                                @if($member->isPaid())
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Paid ({{ $member->getFeeFormatted() }})
+                                    </span>
+                                    <div class="text-[10px] text-slate-400 mt-0.5 font-mono">{{ ucfirst($member->payment_method ?? 'gateway') }}</div>
+                                @elseif($member->isUnderReview())
+                                    <div class="space-y-1">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-800 border border-amber-300">
+                                            Under Review
+                                        </span>
+                                        @if($member->payment_proof)
+                                            <div>
+                                                <a href="{{ asset('storage/' . $member->payment_proof) }}" target="_blank" class="text-[10.5px] text-amber-700 hover:underline font-semibold block">
+                                                    View Proof &rarr;
+                                                </a>
+                                            </div>
+                                        @endif
+                                        <form action="{{ route('admin.members.payment-status', $member->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="payment_status" value="paid">
+                                            <button type="submit" class="px-2 py-0.5 text-[10px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded transition cursor-pointer">
+                                                Approve
+                                            </button>
+                                        </form>
+                                    </div>
+                                @else
+                                    <div class="space-y-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                            Unpaid ({{ $member->getFeeFormatted() }})
+                                        </span>
+                                        <form action="{{ route('admin.members.payment-status', $member->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="payment_status" value="paid">
+                                            <button type="submit" class="px-2 py-0.5 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 text-amber-400 rounded transition cursor-pointer">
+                                                Mark Paid
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-slate-600">
-                                {{ $member->joined_at->format('M d, Y') }}
+                                {{ $member->joined_at ? $member->joined_at->format('M d, Y') : '—' }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank" class="font-bold text-amber-600 hover:underline">
-                                    View Slip &rarr;
+                                    Card Slip &rarr;
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="p-8 text-center text-slate-500">No members found matching your search.</td>
+                            <td colspan="8" class="p-8 text-center text-slate-500">No members found matching your search.</td>
                         </tr>
                     @endforelse
                 </tbody>

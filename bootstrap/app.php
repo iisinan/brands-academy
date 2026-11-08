@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureMembershipIsPaid;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserRole;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
             'role' => EnsureUserRole::class,
+            'membership.paid' => EnsureMembershipIsPaid::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

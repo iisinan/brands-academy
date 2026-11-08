@@ -68,7 +68,7 @@ class CertificateController extends Controller
 
         // Generate real, mathematically valid QR code and Code-128 linear barcode PNGs
         $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
-        $barcode128 = BarcodeService::generateCode128Png($certificate->certificate_number, barWidth: 2, barHeight: 38, showText: true);
+        $barcode128 = BarcodeService::generateCode128Png($certificate->certificate_number, barWidth: 2, barHeight: 44, showText: false);
 
         $pdf = Pdf::loadView('certificates.pdf', [
             'certificate' => $certificate,

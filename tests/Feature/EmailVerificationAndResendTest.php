@@ -145,6 +145,7 @@ class EmailVerificationAndResendTest extends TestCase
             'phone' => '+234 800 000 0002',
             'category' => 'professional',
             'state' => 'Kaduna',
+            'payment_status' => 'paid',
         ]);
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -424,6 +425,7 @@ class EmailVerificationAndResendTest extends TestCase
             'phone' => '+234 800 000 0999',
             'category' => 'corporate',
             'state' => 'Kaduna',
+            'payment_status' => 'paid',
         ]);
 
         $verificationUrl = URL::temporarySignedRoute(
