@@ -233,12 +233,23 @@
                             <span class="font-bold text-slate-900 text-base">{{ $member->category_label }}</span>
                         </div>
                         <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                            <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Jurisdiction / Location</span>
+                            <span class="font-bold text-slate-900">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
                             <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Affiliation / Organization</span>
                             <span class="font-bold text-slate-900">{{ $member->institution_or_company ?? 'Individual Practitioner' }}</span>
                         </div>
                         <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
                             <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Member Since</span>
                             <span class="font-bold text-slate-900">{{ $member->joined_at ? \Carbon\Carbon::parse($member->joined_at)->format('F d, Y') : 'Active' }}</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                            <span class="text-xs text-slate-400 block uppercase font-bold mb-1">Registry Standing</span>
+                            <span class="inline-flex items-center gap-1.5 font-bold text-emerald-700">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Good Standing &bull; Certified
+                            </span>
                         </div>
                     </div>
 

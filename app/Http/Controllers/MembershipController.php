@@ -157,6 +157,7 @@ class MembershipController extends Controller
             'institution_or_company' => ['nullable', 'string', 'max:200'],
             'designation' => ['nullable', 'string', 'max:150'],
             'state' => ['required', 'string', 'max:100'],
+            'country' => ['nullable', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:1000'],
         ]);
 

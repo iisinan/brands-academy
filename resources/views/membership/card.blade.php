@@ -114,7 +114,7 @@
                     {{ $member->member_number }}
                 </div>
                 <div class="text-[9px] text-slate-400 mt-1">
-                    State: {{ $member->state }}, Nigeria
+                    {{ ($member->country ?? 'Nigeria') === 'Nigeria' ? 'State: ' : 'Region: ' }}{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}
                 </div>
             </div>
 

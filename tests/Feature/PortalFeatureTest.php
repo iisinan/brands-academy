@@ -695,7 +695,8 @@ class PortalFeatureTest extends TestCase
         $response->assertSee('Suleiman Yusuf');
         $response->assertSee('BANF-MBR-2024-TEST1');
         $response->assertSee('Quick Credential');
-        $response->assertSee('nigerian-states');
+        $response->assertSee('nigerianStates');
+        $response->assertSee('Select Nigerian State');
     }
 
     /**
@@ -854,5 +855,97 @@ class PortalFeatureTest extends TestCase
         Mail::assertSent(ApplicationReceivedMail::class, function ($mail) {
             return $mail->application->applicant_email === 'emmanuel@example.com';
         });
+    }
+
+    /**
+     * Test ongoing membership registration with neighboring country and region.
+     */
+    public function test_membership_registration_with_neighboring_country_and_region(): void
+    {
+        $response = $this->post('/membership/register', [
+            'name' => 'Kwame Mensah',
+            'email' => 'kwame.mensah@example.com',
+            'phone' => '+233 24 123 4567',
+            'category' => 'professional',
+            'institution_or_company' => 'Accra Brand Works',
+            'designation' => 'Lead Brand Strategist',
+            'country' => 'Ghana',
+            'state' => 'Greater Accra',
+            'password' => 'secret1234',
+            'password_confirmation' => 'secret1234',
+        ]);
+
+        $response->assertRedirect('/email/verify');
+        $this->assertAuthenticated();
+
+        $this->assertDatabaseHas('members', [
+            'email' => 'kwame.mensah@example.com',
+            'country' => 'Ghana',
+            'state' => 'Greater Accra',
+            'status' => 'active',
+        ]);
+
+        $member = Member::where('email', 'kwame.mensah@example.com')->first();
+        $this->assertNotNull($member);
+        $this->assertSame('Ghana', $member->country);
+        $this->assertSame('Greater Accra', $member->state);
+
+        // Verification view reflects country & jurisdiction
+        $verifyResponse = $this->get('/verify?q='.$member->member_number);
+        $verifyResponse->assertStatus(200);
+        $verifyResponse->assertSee('Kwame Mensah');
+        $verifyResponse->assertSee('Greater Accra, Ghana');
+    }
+
+    /**
+     * Test member can update their profile country and state of residence.
+     */
+    public function test_member_can_update_profile_country_and_state(): void
+    {
+        $user = User::create([
+            'name' => 'Amina Bello',
+            'email' => 'amina.bello@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2024-AMINA',
+            'first_name' => 'Amina',
+            'last_name' => 'Bello',
+            'email' => $user->email,
+            'phone' => '+234 803 111 2233',
+            'category' => 'professional',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'qr_code_token' => 'token-amina-test-12345',
+            'joined_at' => now()->toDateString(),
+        ]);
+
+        $response = $this->actingAs($user)->post('/member/profile', [
+            'phone' => '+237 670 123 456',
+            'country' => 'Cameroon',
+            'state' => 'Littoral (Douala)',
+            'institution_or_company' => 'Douala Creative Hub',
+            'designation' => 'Regional Fellow',
+            'bio' => 'Advancing African brand identities in Central Africa.',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('members', [
+            'id' => $member->id,
+            'country' => 'Cameroon',
+            'state' => 'Littoral (Douala)',
+            'phone' => '+237 670 123 456',
+        ]);
+
+        // Dashboard view displays updated state and country
+        $dashboardResponse = $this->actingAs($user)->get('/member/dashboard');
+        $dashboardResponse->assertStatus(200);
+        $dashboardResponse->assertSee('Littoral (Douala), Cameroon');
     }
 }

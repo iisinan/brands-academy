@@ -81,7 +81,7 @@
         <div class="w-full md:w-72 shrink-0">
             <div class="flex items-center justify-between text-[11px] font-semibold text-slate-600 mb-1.5">
                 <span>Verification Progress</span>
-                <span class="text-amber-600 font-bold" x-text="completedFieldsCount + ' / 7 Required'"></span>
+                <span class="text-amber-600 font-bold" x-text="completedFieldsCount + ' / 8 Required'"></span>
             </div>
             <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
                 <div class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full transition-all duration-300"
@@ -392,75 +392,102 @@
                             </div>
                         </div>
 
-                        <!-- State & Country -->
+                        <!-- Country & State of Residence -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Country Selection -->
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                        State of Residence <span class="text-rose-500">*</span>
+                                        Country <span class="text-rose-500">*</span>
+                                    </label>
+                                    <span x-show="isFieldVerified('country')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        </span>
+                                        <span>Country Set</span>
+                                    </span>
+                                </div>
+                                <select name="country" x-model="country" @change="onCountryChange()" required
+                                    class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive bg-white focus:outline-none"
+                                    :class="isFieldVerified('country') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                    <optgroup label="Primary Country">
+                                        <option value="Nigeria">Nigeria</option>
+                                    </optgroup>
+                                    <optgroup label="Neighboring &amp; West African Countries">
+                                        <option value="Benin">Benin Republic</option>
+                                        <option value="Cameroon">Cameroon</option>
+                                        <option value="Chad">Chad</option>
+                                        <option value="Niger">Niger Republic</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                        <option value="Senegal">Senegal</option>
+                                        <option value="Sierra Leone">Sierra Leone</option>
+                                        <option value="Liberia">Liberia</option>
+                                        <option value="The Gambia">The Gambia</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Guinea">Guinea</option>
+                                        <option value="Burkina Faso">Burkina Faso</option>
+                                    </optgroup>
+                                    <optgroup label="Other African Nations">
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="Rwanda">Rwanda</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="Uganda">Uganda</option>
+                                        <option value="Tanzania">Tanzania</option>
+                                        <option value="Ethiopia">Ethiopia</option>
+                                    </optgroup>
+                                    <optgroup label="Diaspora &amp; International">
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <option value="Other">Other International</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- State of Residence (Dropdown for Nigeria, Interactive input for Neighbors/International) -->
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <span x-text="country === 'Nigeria' ? 'State of Residence *' : 'State / Province / Region *'"></span>
                                     </label>
                                     <span x-show="isFieldVerified('state')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
                                         <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                             <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         </span>
-                                        <span>State Set</span>
+                                        <span x-text="country === 'Nigeria' ? 'State Set' : 'Region Set'"></span>
                                     </span>
                                 </div>
-                                <input type="text" name="state" x-model="state" list="nigerian-states" @input="touch('state')" @blur="touch('state')" required
-                                    class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
-                                    :class="isFieldVerified('state') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['state'] && !isFieldVerified('state') ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
-                                    placeholder="e.g. Kaduna, Lagos, Abuja FCT">
-                                <datalist id="nigerian-states">
-                                    <option value="Abia">
-                                    <option value="Adamawa">
-                                    <option value="Akwa Ibom">
-                                    <option value="Anambra">
-                                    <option value="Bauchi">
-                                    <option value="Bayelsa">
-                                    <option value="Benue">
-                                    <option value="Borno">
-                                    <option value="Cross River">
-                                    <option value="Delta">
-                                    <option value="Ebonyi">
-                                    <option value="Edo">
-                                    <option value="Ekiti">
-                                    <option value="Enugu">
-                                    <option value="FCT Abuja">
-                                    <option value="Gombe">
-                                    <option value="Imo">
-                                    <option value="Jigawa">
-                                    <option value="Kaduna">
-                                    <option value="Kano">
-                                    <option value="Katsina">
-                                    <option value="Kebbi">
-                                    <option value="Kogi">
-                                    <option value="Kwara">
-                                    <option value="Lagos">
-                                    <option value="Nasarawa">
-                                    <option value="Niger">
-                                    <option value="Ogun">
-                                    <option value="Ondo">
-                                    <option value="Osun">
-                                    <option value="Oyo">
-                                    <option value="Plateau">
-                                    <option value="Rivers">
-                                    <option value="Sokoto">
-                                    <option value="Taraba">
-                                    <option value="Yobe">
-                                    <option value="Zamfara">
-                                </datalist>
-                            </div>
 
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Country</label>
-                                    <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400">
-                                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                                        Nigeria
-                                    </span>
-                                </div>
-                                <input type="text" name="country" value="Nigeria" readonly
-                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 text-sm cursor-not-allowed">
+                                <!-- If Nigeria: Dropdown with ALL 36 Nigerian States + FCT Abuja -->
+                                <template x-if="country === 'Nigeria'">
+                                    <select name="state" x-model="state" @change="touch('state')" required
+                                        class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive bg-white focus:outline-none"
+                                        :class="isFieldVerified('state') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                        <option value="" disabled>-- Select Nigerian State --</option>
+                                        <template x-for="st in nigerianStates" :key="st">
+                                            <option :value="st" x-text="st" :selected="state === st"></option>
+                                        </template>
+                                    </select>
+                                </template>
+
+                                <!-- If Neighboring / International: Region / Province input with datalist -->
+                                <template x-if="country !== 'Nigeria'">
+                                    <div>
+                                        <input type="text" name="state" x-model="state" list="international-regions" @input="touch('state')" @blur="touch('state')" required
+                                            class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive placeholder-slate-400 focus:outline-none"
+                                            :class="isFieldVerified('state') ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : (touched['state'] && !isFieldVerified('state') ? 'border-rose-400 ring-2 ring-rose-400/15 bg-rose-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20')"
+                                            :placeholder="getRegionPlaceholder()">
+                                        <datalist id="international-regions">
+                                            <template x-for="rg in currentCountryRegions" :key="rg">
+                                                <option :value="rg"></option>
+                                            </template>
+                                        </datalist>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
@@ -681,7 +708,9 @@
                                  x-text="previewMemberNumber">
                             </div>
                             <div class="text-[9px] text-slate-400 mt-0.5">
-                                State: <span x-text="state.trim() ? state.trim() : 'Kaduna'"></span>, Nigeria
+                                <span x-text="country === 'Nigeria' ? 'State: ' : 'Region: '"></span>
+                                <span class="font-medium text-slate-200" x-text="state.trim() ? state.trim() : (country === 'Nigeria' ? 'Kaduna' : 'Region')"></span>,
+                                <span class="font-medium text-slate-200" x-text="country"></span>
                             </div>
                         </div>
 
@@ -766,6 +795,66 @@
             emailTypoSuggestion: '',
             suggestedDomain: '',
 
+            nigerianStates: [
+                'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
+                'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT Abuja', 'Gombe',
+                'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara',
+                'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau',
+                'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
+            ],
+
+            countryRegions: {
+                'Ghana': ['Greater Accra', 'Ashanti', 'Northern', 'Western', 'Central', 'Eastern', 'Volta', 'Upper East', 'Upper West', 'Bono', 'Bono East', 'Ahafo', 'Oti', 'Savannah', 'North East', 'Western North'],
+                'Cameroon': ['Centre (Yaoundé)', 'Littoral (Douala)', 'Adamawa', 'Far North', 'North', 'Northwest', 'South', 'Southwest', 'West', 'East'],
+                'Niger': ['Niamey', 'Agadez', 'Diffa', 'Dosso', 'Maradi', 'Tahoua', 'Tillabéri', 'Zinder'],
+                'Benin': ['Littoral (Cotonou)', 'Atlantique', 'Ouémé (Porto-Novo)', 'Borgou', 'Zou', 'Collines', 'Atakora', 'Alibori', 'Mono', 'Couffo', 'Plateau', 'Donga'],
+                'Chad': ["N'Djamena", 'Chari-Baguirmi', 'Mayo-Kebbi', 'Logone', 'Ouaddaï', 'Batha', 'Kanem', 'Guéra', 'Wadi Fira', 'Salamat'],
+                'Togo': ['Maritime (Lomé)', 'Plateaux', 'Centrale', 'Kara', 'Savanes'],
+                "Côte d'Ivoire": ['Abidjan', 'Yamoussoukro', 'Bas-Sassandra', 'Comoé', 'Gôh-Djiboua', 'Lacs', 'Lagunes', 'Montagnes', 'Sassandra-Marahoué', 'Savanes', 'Vallée du Bandama', 'Woroba', 'Zanzan'],
+                'Kenya': ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Kiambu', 'Machakos', 'Kilifi'],
+                'Rwanda': ['Kigali', 'Eastern Province', 'Northern Province', 'Southern Province', 'Western Province'],
+                'South Africa': ['Gauteng (Johannesburg/Pretoria)', 'Western Cape (Cape Town)', 'KwaZulu-Natal (Durban)', 'Eastern Cape', 'Free State', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape'],
+                'United Kingdom': ['England - London', 'England - Greater Manchester', 'England - West Midlands', 'Scotland - Edinburgh/Glasgow', 'Wales - Cardiff', 'Northern Ireland - Belfast'],
+                'United States': ['California', 'New York', 'Texas', 'Florida', 'Georgia', 'Illinois', 'Maryland', 'Washington D.C.']
+            },
+
+            get currentCountryRegions() {
+                return this.countryRegions[this.country] || [];
+            },
+
+            getRegionPlaceholder() {
+                switch(this.country) {
+                    case 'Ghana': return 'e.g. Greater Accra, Ashanti, Northern';
+                    case 'Cameroon': return 'e.g. Littoral (Douala), Centre (Yaoundé)';
+                    case 'Niger': return 'e.g. Niamey, Maradi, Zinder';
+                    case 'Benin': return 'e.g. Littoral (Cotonou), Atlantique, Ouémé';
+                    case 'Chad': return "e.g. N'Djamena, Chari-Baguirmi";
+                    case 'Togo': return 'e.g. Maritime (Lomé), Plateaux';
+                    case "Côte d'Ivoire": return 'e.g. Abidjan, Yamoussoukro';
+                    case 'Kenya': return 'e.g. Nairobi, Mombasa';
+                    case 'United Kingdom': return 'e.g. England - London, Scotland';
+                    case 'United States': return 'e.g. Texas, New York, California';
+                    default: return 'Enter state, province, or region...';
+                }
+            },
+
+            onCountryChange() {
+                this.touch('country');
+                if (this.country === 'Nigeria') {
+                    if (!this.nigerianStates.includes(this.state)) {
+                        this.state = 'Kaduna';
+                    }
+                } else {
+                    const regions = this.countryRegions[this.country];
+                    if (regions && regions.length > 0) {
+                        this.state = regions[0];
+                    } else {
+                        this.state = '';
+                    }
+                }
+                this.touch('state');
+            },
+
             touch(field) {
                 this.touched[field] = true;
             },
@@ -804,6 +893,18 @@
                 if (airtel.includes(prefix)) return 'Airtel Nigeria';
                 if (glo.includes(prefix)) return 'Glo Mobile';
                 if (nineMobile.includes(prefix)) return '9mobile';
+
+                // Neighboring & International network detection
+                if (raw.startsWith('233')) return 'Ghana (+233)';
+                if (raw.startsWith('237')) return 'Cameroon (+237)';
+                if (raw.startsWith('227')) return 'Niger (+227)';
+                if (raw.startsWith('229')) return 'Benin (+229)';
+                if (raw.startsWith('235')) return 'Chad (+235)';
+                if (raw.startsWith('228')) return 'Togo (+228)';
+                if (raw.startsWith('225')) return "Côte d'Ivoire (+225)";
+                if (raw.startsWith('254')) return 'Kenya (+254)';
+                if (raw.startsWith('44')) return 'UK (+44)';
+                if (raw.startsWith('1') && raw.length >= 11) return 'US/Canada (+1)';
                 return null;
             },
 
@@ -854,7 +955,12 @@
                         return (this.phone || '').replace(/[^0-9]/g, '').length >= 10;
                     case 'category':
                         return ['student', 'professional', 'corporate', 'fellow'].includes(this.category);
+                    case 'country':
+                        return (this.country || '').trim().length >= 2;
                     case 'state':
+                        if (this.country === 'Nigeria') {
+                            return this.nigerianStates.includes((this.state || '').trim());
+                        }
                         return (this.state || '').trim().length >= 2;
                     case 'password':
                         return (this.password || '').length >= 8;
@@ -872,7 +978,9 @@
             },
 
             get isStage2Complete() {
-                return this.isFieldVerified('category') && this.isFieldVerified('state');
+                return this.isFieldVerified('category') &&
+                       this.isFieldVerified('country') &&
+                       this.isFieldVerified('state');
             },
 
             get isStage3Complete() {
@@ -885,6 +993,7 @@
                     this.isFieldVerified('email'),
                     this.isFieldVerified('phone'),
                     this.isFieldVerified('category'),
+                    this.isFieldVerified('country'),
                     this.isFieldVerified('state'),
                     this.isFieldVerified('password'),
                     this.isFieldVerified('password_confirmation')
@@ -893,7 +1002,7 @@
             },
 
             get completionPercentage() {
-                return Math.round((this.completedFieldsCount / 7) * 100);
+                return Math.round((this.completedFieldsCount / 8) * 100);
             },
 
             get passwordStrength() {
