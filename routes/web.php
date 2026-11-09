@@ -73,6 +73,7 @@ Route::post('/membership/payment/webhook', [MembershipPaymentController::class, 
 Route::middleware(['auth', 'role:member,admin', 'verified', 'membership.paid'])->group(function (): void {
     Route::get('/member/dashboard', [MembershipController::class, 'dashboard'])->name('member.dashboard');
     Route::post('/member/profile', [MembershipController::class, 'updateProfile'])->name('member.profile.update');
+    Route::post('/member/password', [MembershipController::class, 'updatePassword'])->name('member.password.update');
     Route::get('/member/applications/{id}/submit-portfolio', [MembershipController::class, 'submitPortfolio'])->name('member.portfolio.create');
     Route::post('/member/applications/{id}/submit-portfolio', [MembershipController::class, 'storePortfolio'])->name('member.portfolio.store');
 });

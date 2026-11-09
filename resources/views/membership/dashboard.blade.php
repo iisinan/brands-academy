@@ -29,6 +29,22 @@
     .card-preview-glow {
         box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.2);
     }
+    @media print {
+        body {
+            background: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        nav, header, footer, aside, .no-print, [x-show="activeTab !== 'digital-id'"] {
+            display: none !important;
+        }
+        #digital-id-card-container {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            margin: 0 auto !important;
+            box-shadow: none !important;
+        }
+    }
 </style>
 @endpush
 
@@ -290,13 +306,31 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             </a>
         </div>
 
+        <!-- Real-Time Cohort Search & Track Filter Bar -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs">
+            <div class="relative flex-1">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" x-model="cohortSearch" placeholder="Filter cohorts by keyword, track, or subject..." class="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+            </div>
+            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold">
+                <button type="button" @click="cohortTrackFilter = 'all'" :class="cohortTrackFilter === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">All Tracks</button>
+                <button type="button" @click="cohortTrackFilter = 'executive'" :class="cohortTrackFilter === 'executive' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">Executive</button>
+                <button type="button" @click="cohortTrackFilter = 'design'" :class="cohortTrackFilter === 'design' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">Design</button>
+                <button type="button" @click="cohortTrackFilter = 'strategy'" :class="cohortTrackFilter === 'strategy' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">Strategy</button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($openWorkshops as $workshop)
                 @php
                     $window = $workshop->application_window_status;
                     $userApplication = $applications->firstWhere('workshop_id', $workshop->id);
                 @endphp
-                <div class="bg-white rounded-3xl border {{ $userApplication ? ($userApplication->status === 'accepted' ? 'border-emerald-300/90 ring-1 ring-emerald-500/20' : ($userApplication->status === 'completed' ? 'border-purple-300/90 ring-1 ring-purple-500/20' : 'border-blue-300/90 ring-1 ring-blue-500/20')) : 'border-slate-200/90 hover:border-amber-400' }} p-6 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                <div x-show="matchesCohortFilter(@js($workshop->title), @js($workshop->track_label))"
+                     x-transition:enter="transition ease-out duration-150"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="bg-white rounded-3xl border {{ $userApplication ? ($userApplication->status === 'accepted' ? 'border-emerald-300/90 ring-1 ring-emerald-500/20' : ($userApplication->status === 'completed' ? 'border-purple-300/90 ring-1 ring-purple-500/20' : 'border-blue-300/90 ring-1 ring-blue-500/20')) : 'border-slate-200/90 hover:border-amber-400' }} p-6 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-3">
                             @if($userApplication)
@@ -480,6 +514,56 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             </a>
         </div>
 
+        <!-- Primary Institutional Credential: Official Certificate of Membership -->
+        <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white rounded-3xl border-2 border-amber-500/40 p-6 sm:p-7 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center p-2 shadow-md shrink-0">
+                        <x-brand-logo class="w-full h-full" />
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                Primary Institutional Credential
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                Good Standing &bull; CAC IT No. 7344471
+                            </span>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold font-serif-title text-white">
+                            Certificate of Foundation Membership
+                        </h3>
+                        <p class="text-xs text-slate-300 mt-1">
+                            Issued to <strong class="text-white">{{ $member->full_name }}</strong> &bull; {{ $member->category_label }} &bull; <span class="font-mono text-amber-400 font-bold">{{ $member->member_number }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 self-start lg:self-auto shrink-0">
+                    <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-md">
+                        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Download PDF Certificate</span>
+                    </a>
+                    <a href="{{ route('membership.certificate.preview', $member->qr_code_token) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <span>Preview Certificate</span>
+                    </a>
+                    <button type="button" @click="copyCertLink('{{ route('verify.certificate', $member->qr_code_token) }}')" class="inline-flex items-center gap-1 px-3 py-2.5 rounded-xl text-xs font-bold border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 transition-colors cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span x-text="copiedCertUrl === '{{ route('verify.certificate', $member->qr_code_token) }}' ? 'Copied!' : 'Copy Verification Link'">Copy Verification Link</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2">
+            <h3 class="text-sm font-bold text-slate-900 font-serif-title">Cohort &amp; Workshop Credentials of Achievement</h3>
+            <p class="text-xs text-slate-500">Earned certificates awarded upon successful cohort evaluation and graduation.</p>
+        </div>
+
         @if($certificates->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach($certificates as $cert)
@@ -591,14 +675,26 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
          class="space-y-6">
 
     <section id="applications" class="scroll-mt-24 space-y-5">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Application History</h2>
                 <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Track admission decisions, tuition verification, and cohort progression.</p>
             </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-xl font-mono">
-                {{ $applications->count() }} Total
-            </span>
+            <!-- Status Filter Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold">
+                <button type="button" @click="appStatusFilter = 'all'" :class="appStatusFilter === 'all' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">
+                    All ({{ $applications->count() }})
+                </button>
+                <button type="button" @click="appStatusFilter = 'accepted'" :class="appStatusFilter === 'accepted' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">
+                    Accepted ({{ $applications->where('status', 'accepted')->count() }})
+                </button>
+                <button type="button" @click="appStatusFilter = 'pending'" :class="appStatusFilter === 'pending' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">
+                    Under Review ({{ $applications->where('status', 'pending')->count() }})
+                </button>
+                <button type="button" @click="appStatusFilter = 'completed'" :class="appStatusFilter === 'completed' ? 'bg-slate-900 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer">
+                    Completed ({{ $applications->where('status', 'completed')->count() }})
+                </button>
+            </div>
         </div>
 
         <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm">
@@ -616,7 +712,11 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @foreach($applications as $app)
-                                <tr class="hover:bg-slate-50/60 transition-colors">
+                                <tr x-show="matchesAppFilter('{{ $app->status }}')"
+                                    x-transition:enter="transition ease-out duration-150"
+                                    x-transition:enter-start="opacity-0"
+                                    x-transition:enter-end="opacity-100"
+                                    class="hover:bg-slate-50/60 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="font-bold text-slate-900 text-sm font-serif-title">{{ $app->workshop->title }}</div>
                                         <div class="text-[11px] text-amber-700 font-semibold mt-0.5">{{ $app->workshop->track_label }}</div>
@@ -721,12 +821,12 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
                 <!-- Left Column: 3D Physical-Style ID Card (7 cols) -->
                 <div class="lg:col-span-7">
-                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border-2 border-amber-500/40 shadow-2xl card-preview-glow">
+                    <div id="digital-id-card-container" class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border-2 border-amber-500/40 shadow-2xl card-preview-glow">
                         <!-- Decorative background light and emblem watermark -->
                         <div class="absolute -right-16 -top-16 w-56 h-56 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
                         <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                        <!-- Top ID Card Header -->
+                        <!-- Top ID Card Header with 2-Sided Flip Trigger -->
                         <div class="flex items-center justify-between pb-5 border-b border-slate-800/80 relative z-10">
                             <div class="flex items-center gap-3">
                                 <x-brand-logo class="w-10 h-10 shrink-0 drop-shadow-md" />
@@ -735,65 +835,109 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                                     <p class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Nigeria Foundation &bull; CAC IT No. 7344471</p>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                {{ $member->category_label }}
-                            </span>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                    {{ $member->category_label }}
+                                </span>
+                                <button type="button" @click="cardSide = cardSide === 'front' ? 'back' : 'front'" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs">
+                                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                    <span x-text="cardSide === 'front' ? 'Flip to Back' : 'Flip to Front'">Flip to Back</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Card Body with Avatar and Details -->
-                        <div class="py-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 relative z-10">
-                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left min-w-0">
-                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center font-serif-title ring-4 ring-amber-500/30 shadow-lg shrink-0">
-                                    {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
-                                </div>
-                                <div class="min-w-0">
-                                    <h4 class="text-xl sm:text-2xl font-bold font-serif-title text-white tracking-tight truncate">
-                                        {{ $member->full_name }}
-                                    </h4>
-                                    <p class="text-xs text-amber-300/90 font-medium mt-0.5">
-                                        {{ $member->designation ?? 'Foundation Member' }}
-                                    </p>
-                                    <p class="text-[11px] text-slate-400 mt-1 truncate">
-                                        {{ $member->institution_or_company ?? 'Brands Academy Nigeria Foundation' }}
-                                    </p>
+                        <!-- Card Front Side -->
+                        <div x-show="cardSide === 'front'"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100">
+                            <!-- Card Body with Avatar and Details -->
+                            <div class="py-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 relative z-10">
+                                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left min-w-0">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center font-serif-title ring-4 ring-amber-500/30 shadow-lg shrink-0">
+                                        {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xl sm:text-2xl font-bold font-serif-title text-white tracking-tight truncate">
+                                            {{ $member->full_name }}
+                                        </h4>
+                                        <p class="text-xs text-amber-300/90 font-medium mt-0.5">
+                                            {{ $member->designation ?? 'Foundation Member' }}
+                                        </p>
+                                        <p class="text-[11px] text-slate-400 mt-1 truncate">
+                                            {{ $member->institution_or_company ?? 'Brands Academy Nigeria Foundation' }}
+                                        </p>
 
-                                    <!-- Member ID Callout with Copy -->
-                                    <div class="mt-3.5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80">
-                                        <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">ID:</span>
-                                        <span class="text-xs font-mono font-extrabold text-amber-400">{{ $member->member_number }}</span>
-                                        <button type="button" @click="copyMemberId()" class="ml-1 text-[10px] text-slate-400 hover:text-white transition-colors cursor-pointer" title="Copy ID">
-                                            <svg x-show="!copiedMemberId" class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                                            <svg x-show="copiedMemberId" x-cloak class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                        </button>
+                                        <!-- Member ID Callout with Copy -->
+                                        <div class="mt-3.5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80">
+                                            <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">ID:</span>
+                                            <span class="text-xs font-mono font-extrabold text-amber-400">{{ $member->member_number }}</span>
+                                            <button type="button" @click="copyMemberId()" class="ml-1 text-[10px] text-slate-400 hover:text-white transition-colors cursor-pointer" title="Copy ID">
+                                                <svg x-show="!copiedMemberId" class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                                <svg x-show="copiedMemberId" x-cloak class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Scannable 2D QR Code -->
+                                <div class="bg-white p-3 rounded-2xl border-2 border-amber-500/40 shadow-xl shrink-0 flex flex-col items-center">
+                                    <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+                                        {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(112)->generate(route('verify.certificate', $member->qr_code_token)) !!}
+                                    </div>
+                                    <span class="text-[9px] font-mono font-bold text-slate-800 mt-1 uppercase tracking-tight">Scan To Verify</span>
+                                </div>
                             </div>
 
-                            <!-- Scannable 2D QR Code -->
-                            <div class="bg-white p-3 rounded-2xl border-2 border-amber-500/40 shadow-xl shrink-0 flex flex-col items-center">
-                                <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-                                    {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(112)->generate(route('verify.certificate', $member->qr_code_token)) !!}
+                            <!-- Card Footer Details -->
+                            <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 relative z-10">
+                                <div>
+                                    <span class="block text-[9px] uppercase font-bold text-slate-400">Jurisdiction</span>
+                                    <span class="text-slate-200 font-semibold">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
                                 </div>
-                                <span class="text-[9px] font-mono font-bold text-slate-800 mt-1 uppercase tracking-tight">Scan To Verify</span>
+                                <div>
+                                    <span class="block text-[9px] uppercase font-bold text-slate-400">Member Status</span>
+                                    <span class="inline-flex items-center gap-1 text-emerald-400 font-bold text-xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                        Good Standing
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] uppercase font-bold text-slate-400">Issued</span>
+                                    <span class="text-slate-200 font-mono">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Card Footer Details -->
-                        <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 relative z-10">
-                            <div>
-                                <span class="block text-[9px] uppercase font-bold text-slate-400">Jurisdiction</span>
-                                <span class="text-slate-200 font-semibold">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
+                        <!-- Card Back Side (Linear Barcode & Foundation Governance) -->
+                        <div x-show="cardSide === 'back'" x-cloak
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             class="py-5 space-y-4 relative z-10">
+
+                            <!-- Authentic Code-128 Linear Barcode -->
+                            <div class="bg-white p-4 rounded-2xl border border-amber-500/30 text-center max-w-sm mx-auto shadow-md">
+                                <img src="{{ $memberBarcode }}" alt="Official Code-128 Linear Barcode" class="h-10 w-full object-contain mx-auto">
+                                <span class="block text-[10px] font-mono font-bold text-slate-800 mt-1 uppercase tracking-widest">{{ $member->member_number }}</span>
                             </div>
-                            <div>
-                                <span class="block text-[9px] uppercase font-bold text-slate-400">Member Status</span>
-                                <span class="inline-flex items-center gap-1 text-emerald-400 font-bold text-xs">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                    Good Standing
-                                </span>
+
+                            <!-- Statutory Notice & Legal Authority -->
+                            <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed text-center">
+                                <p class="text-amber-300 font-bold mb-1">Incorporated Trustee &bull; CAC IT No. 7344471</p>
+                                <p class="text-[10px] text-slate-400">This pass is the official property of Brands Academy Nigeria Foundation. Governed under CAMA CAP C20 LFN 2004. Authorised for professional identification and central verification registry queries.</p>
                             </div>
-                            <div>
-                                <span class="block text-[9px] uppercase font-bold text-slate-400">Issued</span>
-                                <span class="text-slate-200 font-mono">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+
+                            <!-- Emergency / Central Registry Contact & Trustee Signature -->
+                            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
+                                <div class="text-left">
+                                    <span class="block font-bold text-slate-300">Central Verification:</span>
+                                    <span class="font-mono text-amber-400">brandsacademy.org/verify</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block font-bold text-slate-300 font-serif-title italic">Dr. Sinan Ismaila Idris</span>
+                                    <span class="block text-[9px] text-amber-400">Director-General / Trustee</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -847,6 +991,16 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                                 </span>
                                 <span class="text-slate-400 text-[10px]">&nearr;</span>
                             </a>
+
+                            <!-- Print ID Card Slip -->
+                            <button type="button" @click="window.print()"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors flex items-center justify-between cursor-pointer border border-slate-200">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    <span>Print ID Card Slip</span>
+                                </span>
+                                <span class="text-[10px] font-mono text-slate-500">PRINT</span>
+                            </button>
 
                             <!-- Share on WhatsApp -->
                             @php
@@ -1073,6 +1227,47 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                 </div>
             </form>
         </div>
+
+        <!-- Account Security & Password Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-5">
+            <div>
+                <h3 class="text-base font-bold text-slate-900 font-serif-title">Account Security &amp; Access</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Change your member portal account login password.</p>
+            </div>
+
+            <form action="{{ route('member.password.update') }}" method="POST" class="space-y-4">
+                @csrf
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Current Password *</label>
+                        <input type="password" name="current_password" required autocomplete="current-password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+                        @error('current_password')
+                            <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">New Password *</label>
+                        <input type="password" name="password" required autocomplete="new-password" minlength="8" placeholder="At least 8 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+                        @error('password')
+                            <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Confirm New Password *</label>
+                        <input type="password" name="password_confirmation" required autocomplete="new-password" minlength="8" placeholder="Repeat new password" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <p class="text-[11px] text-slate-400">
+                        Use at least 8 characters with a mix of letters, numbers, and symbols.
+                    </p>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer self-start sm:self-auto">
+                        <span>Update Password</span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </section>
     </div>
 
@@ -1227,7 +1422,29 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             isSubmitting: false,
             copiedMemberId: false,
             copiedUrl: false,
+            cardSide: 'front',
+            cohortSearch: '',
+            cohortTrackFilter: 'all',
+            appStatusFilter: 'all',
             copiedCertUrl: '',
+
+            matchesCohortFilter(title, track) {
+                const q = (this.cohortSearch || '').toLowerCase().trim();
+                const matchesSearch = !q || (title || '').toLowerCase().includes(q) || (track || '').toLowerCase().includes(q);
+                let matchesTrack = true;
+                if (this.cohortTrackFilter !== 'all') {
+                    matchesTrack = (track || '').toLowerCase().includes(this.cohortTrackFilter.toLowerCase());
+                }
+                return matchesSearch && matchesTrack;
+            },
+
+            matchesAppFilter(status) {
+                if (this.appStatusFilter === 'all') return true;
+                if (this.appStatusFilter === 'accepted') return status === 'accepted';
+                if (this.appStatusFilter === 'pending') return status === 'pending';
+                if (this.appStatusFilter === 'completed') return status === 'completed';
+                return true;
+            },
 
             init() {
                 window.addEventListener('hashchange', () => {

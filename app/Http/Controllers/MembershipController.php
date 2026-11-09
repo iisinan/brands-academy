@@ -209,7 +209,11 @@ class MembershipController extends Controller
             ->orderBy('issued_at', 'desc')
             ->get();
 
-        return view('membership.dashboard', compact('member', 'openWorkshops', 'applications', 'certificates'));
+        $verifyUrl = route('verify.certificate', $member->qr_code_token);
+        $memberBarcode = BarcodeService::generateCode128Png($member->member_number ?? 'MEMBER', barWidth: 2, barHeight: 44, showText: true);
+        $memberQrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+
+        return view('membership.dashboard', compact('member', 'openWorkshops', 'applications', 'certificates', 'memberBarcode', 'memberQrCode', 'verifyUrl'));
     }
 
     /**
@@ -231,7 +235,28 @@ class MembershipController extends Controller
 
         $member->update($validated);
 
-        return back()->with('success', 'Your member profile has been updated successfully.');
+        return redirect()->to(route('member.dashboard').'#profile')
+            ->with('success', 'Your member profile has been updated successfully.');
+    }
+
+    /**
+     * Update member portal account password.
+     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()->to(route('member.dashboard').'#profile')
+            ->with('success', 'Your account password has been updated successfully.');
     }
 
     /**
