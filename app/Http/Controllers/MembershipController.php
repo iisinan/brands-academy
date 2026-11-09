@@ -327,7 +327,11 @@ class MembershipController extends Controller
     {
         $member = Member::where('qr_code_token', $token)->firstOrFail();
 
-        return view('membership.card', compact('member'));
+        $verifyUrl = route('verify.certificate', $member->qr_code_token);
+        $memberBarcode = BarcodeService::generateCode128Png($member->member_number ?? 'MEMBER', barWidth: 2, barHeight: 44, showText: true);
+        $memberQrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+
+        return view('membership.card', compact('member', 'memberBarcode', 'memberQrCode', 'verifyUrl'));
     }
 
     /**

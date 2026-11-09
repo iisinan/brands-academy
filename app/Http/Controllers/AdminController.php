@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -723,6 +724,26 @@ class AdminController extends Controller
             }
             fclose($handle);
         }, 200, $headers);
+    }
+
+    /**
+     * Dispatch high-resolution PDF certificate samples with barcodes to any email.
+     */
+    public function sendCertificateSample(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        try {
+            Artisan::call('certificate:send-sample', ['email' => $validated['email']]);
+
+            return back()->with('success', "Official Certificate of Achievement and Membership samples successfully dispatched to {$validated['email']}.");
+        } catch (\Throwable $e) {
+            Log::error('Failed to dispatch certificate sample: '.$e->getMessage());
+
+            return back()->with('error', 'Unable to send certificate samples: '.$e->getMessage());
+        }
     }
 
     /**

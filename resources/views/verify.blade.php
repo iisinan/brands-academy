@@ -159,6 +159,29 @@
                         </div>
                     </div>
 
+                    @if(!empty($barcode128) || !empty($qrCode))
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                @if(!empty($qrCode))
+                                    <div class="bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs shrink-0">
+                                        <img src="{{ $qrCode }}" alt="Verification QR Code" class="w-16 h-16 object-contain" />
+                                    </div>
+                                @endif
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Cryptographic Token</span>
+                                    <span class="font-mono text-xs font-bold text-slate-800 break-all">{{ $certificate->verification_token }}</span>
+                                    <span class="block text-[10px] text-emerald-600 font-semibold mt-0.5">&bull; Official Central Registry Record</span>
+                                </div>
+                            </div>
+                            @if(!empty($barcode128))
+                                <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shrink-0 w-full sm:w-auto">
+                                    <img src="{{ $barcode128 }}" alt="Code-128 Linear Barcode" class="h-9 max-w-[200px] mx-auto object-contain" />
+                                    <span class="block text-[9px] font-mono font-bold text-slate-700 mt-1 uppercase">{{ $certificate->certificate_number }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
                     <div class="p-4 rounded-2xl bg-slate-900 text-slate-300 text-xs space-y-1">
                         <div class="font-bold text-amber-400 uppercase tracking-wider text-[10px]">Ratifying Authority & Seal</div>
                         <div class="font-semibold text-white">Brands Academy Nigeria Foundation &bull; Incorporated Trustee (CAMA CAP C20 LFN 2004)</div>
@@ -252,6 +275,29 @@
                             </span>
                         </div>
                     </div>
+
+                    @if(!empty($barcode128) || !empty($qrCode))
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                @if(!empty($qrCode))
+                                    <div class="bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs shrink-0">
+                                        <img src="{{ $qrCode }}" alt="Member Verification QR Code" class="w-16 h-16 object-contain" />
+                                    </div>
+                                @endif
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Registry Member Pass</span>
+                                    <span class="font-mono text-xs font-bold text-amber-700">{{ $member->member_number }}</span>
+                                    <span class="block text-[10px] text-emerald-600 font-semibold mt-0.5">&bull; Active &amp; Validated Institutional Standing</span>
+                                </div>
+                            </div>
+                            @if(!empty($barcode128))
+                                <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shrink-0 w-full sm:w-auto">
+                                    <img src="{{ $barcode128 }}" alt="Official Code-128 Linear Barcode" class="h-9 max-w-[200px] mx-auto object-contain" />
+                                    <span class="block text-[9px] font-mono font-bold text-slate-700 mt-1 uppercase">{{ $member->member_number }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
 
                     <div class="flex flex-wrap items-center gap-3 pt-2">
                         <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs">

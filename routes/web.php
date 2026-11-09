@@ -115,6 +115,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Certificates & Email Dispatch
     Route::get('/certificates', [AdminController::class, 'certificates'])->name('certificates');
     Route::get('/certificates/export', [AdminController::class, 'exportCertificates'])->name('certificates.export');
+    Route::post('/certificates/send-sample', [AdminController::class, 'sendCertificateSample'])->name('certificates.send-sample');
     Route::post('/certificates/{token}/email', [CertificateController::class, 'email'])->name('certificates.email');
 
     // Institutional Partnerships & Inquiries

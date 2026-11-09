@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ApplicationAcceptedMail;
 use App\Mail\ApplicationReceivedMail;
 use App\Mail\CertificateIssuedMail;
+use App\Mail\CertificateSampleMail;
 use App\Mail\MemberWelcomeMail;
 use App\Models\Certificate;
 use App\Models\InstitutionalInquiry;
@@ -15,6 +16,7 @@ use App\Models\Workshop;
 use App\Models\WorkshopApplication;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -1679,5 +1681,107 @@ class PortalFeatureTest extends TestCase
         Mail::assertSent(CertificateIssuedMail::class, function ($mail) use ($application) {
             return $mail->hasTo($application->applicant_email);
         });
+    }
+
+    /**
+     * Test certificate:send-sample Artisan command renders barcodes and sends sample email.
+     */
+    public function test_certificate_send_sample_artisan_command_generates_and_emails_certificates(): void
+    {
+        Mail::fake();
+
+        $exitCode = Artisan::call('certificate:send-sample', [
+            'email' => 'sinanismailaidris@gmail.com',
+        ]);
+
+        $this->assertEquals(0, $exitCode);
+
+        Mail::assertSent(CertificateSampleMail::class, function (CertificateSampleMail $mail) {
+            return $mail->hasTo('sinanismailaidris@gmail.com')
+                && ! empty($mail->workshopPdfData)
+                && ! empty($mail->membershipPdfData);
+        });
+    }
+
+    /**
+     * Test admin can dispatch certificate samples via web route.
+     */
+    public function test_admin_can_dispatch_certificate_samples_via_web_route(): void
+    {
+        Mail::fake();
+
+        $admin = User::create([
+            'name' => 'Prof. Samaila Mande',
+            'email' => 'mande.admin@brandsacademy.org',
+            'password' => Hash::make('secret1234'),
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('admin.certificates.send-sample'), [
+            'email' => 'sinanismailaidris@gmail.com',
+        ]);
+
+        $response->assertSessionHas('success');
+        $response->assertRedirect();
+
+        Mail::assertSent(CertificateSampleMail::class);
+    }
+
+    /**
+     * Test public verify route renders scannable barcodes for certificate and member records.
+     */
+    public function test_verify_route_renders_scannable_barcodes_for_both_certificate_and_member(): void
+    {
+        $member = Member::create([
+            'member_number' => 'BANF-MBR-2024-TEST-BC',
+            'qr_code_token' => 'qr-token-test-bc-mbr',
+            'first_name' => 'Adamu',
+            'last_name' => 'Gwandu',
+            'email' => 'adamu@example.com',
+            'phone' => '+234 803 111 2233',
+            'category' => 'fellow',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'payment_status' => 'paid',
+            'joined_at' => now(),
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Brand Governance Masterclass',
+            'slug' => 'brand-gov-masterclass-'.Str::random(5),
+            'track_type' => 'masterclass',
+            'description' => 'Comprehensive masterclass on governance.',
+            'status' => 'published',
+            'starts_at' => now(),
+            'ends_at' => now()->addDays(5),
+            'application_starts_at' => now()->subMonth(),
+            'application_deadline' => now()->subDays(2),
+            'capacity' => 20,
+        ]);
+
+        $cert = Certificate::create([
+            'certificate_number' => 'BANF-CERT-2024-TEST-BC',
+            'verification_token' => 'cert-token-test-bc-99',
+            'workshop_id' => $workshop->id,
+            'recipient_name' => 'Adamu Gwandu',
+            'recipient_email' => 'adamu@example.com',
+            'course_title' => 'Brand Governance Masterclass',
+            'track_tier' => 'Tier 2: Executive Brand Strategist (EBS)',
+            'issued_at' => now(),
+            'email_status' => 'sent',
+        ]);
+
+        // 1. Verify certificate by token
+        $certResponse = $this->get(route('verify.certificate', $cert->verification_token));
+        $certResponse->assertStatus(200);
+        $certResponse->assertSee('BANF-CERT-2024-TEST-BC');
+        $certResponse->assertSee('data:image/png;base64,');
+
+        // 2. Verify member by token
+        $memberResponse = $this->get(route('verify.certificate', $member->qr_code_token));
+        $memberResponse->assertStatus(200);
+        $memberResponse->assertSee('BANF-MBR-2024-TEST-BC');
+        $memberResponse->assertSee('data:image/png;base64,');
     }
 }

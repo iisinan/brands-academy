@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificate;
 use App\Models\Member;
+use App\Services\BarcodeService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,8 @@ class VerificationController extends Controller
         $searchQuery = trim($token ?? $request->query('q', ''));
         $certificate = null;
         $member = null;
+        $barcode128 = null;
+        $qrCode = null;
         $hasSearched = ! empty($searchQuery);
 
         if ($hasSearched) {
@@ -34,8 +37,18 @@ class VerificationController extends Controller
                     ->orWhere('member_number', $searchQuery)
                     ->first();
             }
+
+            if ($certificate) {
+                $verifyUrl = route('verify.certificate', $certificate->verification_token);
+                $barcode128 = BarcodeService::generateCode128Png($certificate->certificate_number, barWidth: 2, barHeight: 44, showText: true);
+                $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+            } elseif ($member) {
+                $verifyUrl = route('verify.certificate', $member->qr_code_token);
+                $barcode128 = BarcodeService::generateCode128Png($member->member_number ?? 'MEMBER', barWidth: 2, barHeight: 44, showText: true);
+                $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
+            }
         }
 
-        return view('verify', compact('searchQuery', 'certificate', 'member', 'hasSearched'));
+        return view('verify', compact('searchQuery', 'certificate', 'member', 'hasSearched', 'barcode128', 'qrCode'));
     }
 }
