@@ -35,6 +35,7 @@
 @section('content')
 
 <div x-data="memberDashboardComponent({
+    initialTab: @js(request('tab', 'overview')),
     initialPhone: @js($member->phone),
     initialState: @js($member->state),
     initialCountry: @js($member->country ?? 'Nigeria'),
@@ -42,111 +43,234 @@
     memberNumber: @js($member->member_number),
     verificationUrl: @js(route('verify.certificate', $member->qr_code_token))
 })"
-@open-card-modal.window="showCardModal = true"
-class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+@open-card-modal.window="switchTab('digital-id')"
+class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <!-- ==================== 0. EXECUTIVE OVERVIEW CARD ==================== -->
-    <div id="overview" class="scroll-mt-24 relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
-        <!-- Ambient decorative glow -->
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- ==================== TAB 1: EXECUTIVE OVERVIEW ==================== -->
+    <div x-show="activeTab === 'overview'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-8">
 
-        <div class="relative z-10 space-y-6">
-            <!-- Top Profile & Identification Row -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <!-- Member Avatar with Gold Gradient Ring -->
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center shadow-lg font-serif-title ring-4 ring-amber-500/30 shrink-0">
-                        {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
-                    </div>
-                    <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-1.5">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                {{ $member->category_label }}
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                Active Member in Good Standing
-                            </span>
-                            @if(auth()->user()?->isAdmin())
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950">
-                                    Administrator View
-                                </span>
-                            @endif
+        <!-- Executive Hero Profile Card -->
+        <div id="overview" class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
+            <!-- Ambient decorative glow -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-6">
+                <!-- Top Profile & Identification Row -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                        <!-- Member Avatar with Gold Gradient Ring -->
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center shadow-lg font-serif-title ring-4 ring-amber-500/30 shrink-0">
+                            {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
                         </div>
-                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-serif-title tracking-tight text-white">
-                            {{ $member->full_name }}
-                        </h1>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-1 flex flex-wrap items-center gap-2">
-                            <span>{{ $member->designation ?? 'Foundation Member' }}</span>
-                            <span>&bull;</span>
-                            <span>{{ $member->institution_or_company ?? 'Brands Academy Nigeria Foundation' }}</span>
-                            <span>&bull;</span>
-                            <span class="text-slate-300">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Official Member ID Pill & Quick Credential Tools -->
-                <div class="flex flex-wrap items-center gap-3">
-                    @if(auth()->user()?->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-2.5 rounded-2xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors flex items-center gap-1.5 whitespace-nowrap shadow-xs">
-                            &larr; Admin Control Panel
-                        </a>
-                    @endif
-                    <div class="bg-white/10 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-white/15 flex items-center justify-between sm:justify-start gap-4 shadow-lg">
                         <div>
-                            <span class="block text-[9px] uppercase font-bold text-slate-400 tracking-wider">Official Member ID</span>
-                            <span class="text-sm sm:text-base font-extrabold font-mono text-amber-400">{{ $member->member_number }}</span>
+                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                    {{ $member->category_label }}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    Active Member in Good Standing
+                                </span>
+                                @if(auth()->user()?->isAdmin())
+                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors">
+                                        Administrator View &rarr;
+                                    </a>
+                                @endif
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-serif-title tracking-tight text-white">
+                                {{ $member->full_name }}
+                            </h1>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-1 flex flex-wrap items-center gap-2">
+                                <span>{{ $member->designation ?? 'Foundation Member' }}</span>
+                                <span>&bull;</span>
+                                <span>{{ $member->institution_or_company ?? 'Brands Academy Nigeria Foundation' }}</span>
+                                <span>&bull;</span>
+                                <span class="text-slate-300">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
+                            </p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <!-- Download Official Certificate PDF -->
-                            <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5 shadow-sm" title="Download Official Membership Certificate (PDF)">
-                                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                <span class="hidden sm:inline">Certificate PDF</span>
-                            </a>
-                            <!-- Quick View Modal Trigger -->
-                            <button type="button" @click="showCardModal = true" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                <span>Quick Credential</span>
-                            </button>
-                            <!-- Standalone Card Link -->
-                            <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank" class="p-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors" title="Open Full Digital Card">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </a>
+                    </div>
+
+                    <!-- Official Member ID Pill & Quick Credential Tools -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="bg-white/10 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-white/15 flex items-center justify-between sm:justify-start gap-4 shadow-lg">
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-slate-400 tracking-wider">Official Member ID</span>
+                                <span class="text-sm sm:text-base font-extrabold font-mono text-amber-400">{{ $member->member_number }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <!-- Download Official Certificate PDF -->
+                                <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5 shadow-sm" title="Download Official Membership Certificate (PDF)">
+                                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    <span class="hidden sm:inline">Certificate PDF</span>
+                                </a>
+                                <!-- Switch to Digital ID Tab -->
+                                <button type="button" @click="switchTab('digital-id')" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <span>Digital ID Tab</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Key Metrics Summary Strip -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
-                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
-                    <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Member Classification</span>
-                    <span class="text-base sm:text-lg font-extrabold text-white mt-1 block">{{ $member->category_label }}</span>
-                    <span class="text-[11px] text-emerald-400 font-semibold mt-0.5 block">&bull; Good Standing</span>
-                </div>
-                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
-                    <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Cohort Applications</span>
-                    <span class="text-base sm:text-lg font-extrabold text-amber-400 mt-1 block">{{ $applications->count() }} Submitted</span>
-                    <span class="text-[11px] text-slate-400 mt-0.5 block">25% Discount Applied</span>
-                </div>
-                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
-                    <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Earned Credentials</span>
-                    <span class="text-base sm:text-lg font-extrabold text-emerald-400 mt-1 block">{{ $certificates->count() }} Issued</span>
-                    <span class="text-[11px] text-slate-400 mt-0.5 block">Cryptographically Signed</span>
-                </div>
-                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
-                    <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Registered Since</span>
-                    <span class="text-base sm:text-lg font-extrabold text-slate-200 mt-1 block">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
-                    <span class="text-[11px] text-slate-400 mt-0.5 block font-mono">RC 7344471</span>
+                <!-- Key Metrics Summary Strip -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
+                    <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Member Classification</span>
+                        <span class="text-base sm:text-lg font-extrabold text-white mt-1 block">{{ $member->category_label }}</span>
+                        <span class="text-[11px] text-emerald-400 font-semibold mt-0.5 block">&bull; Good Standing</span>
+                    </div>
+                    <button type="button" @click="switchTab('applications')" class="bg-slate-800/60 hover:bg-slate-800 rounded-2xl p-4 border border-slate-700/60 text-left transition-colors cursor-pointer group">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Cohort Applications</span>
+                        <span class="text-base sm:text-lg font-extrabold text-amber-400 mt-1 block group-hover:underline">{{ $applications->count() }} Submitted &rarr;</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 block">25% Discount Applied</span>
+                    </button>
+                    <button type="button" @click="switchTab('certificates')" class="bg-slate-800/60 hover:bg-slate-800 rounded-2xl p-4 border border-slate-700/60 text-left transition-colors cursor-pointer group">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Earned Credentials</span>
+                        <span class="text-base sm:text-lg font-extrabold text-emerald-400 mt-1 block group-hover:underline">{{ $certificates->count() }} Issued &rarr;</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 block">Cryptographically Signed</span>
+                    </button>
+                    <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Registered Since</span>
+                        <span class="text-base sm:text-lg font-extrabold text-slate-200 mt-1 block">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 block font-mono">RC 7344471</span>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- 25% Member Benefit Banner -->
+        <div class="p-6 rounded-3xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <span class="w-12 h-12 rounded-2xl bg-slate-950 text-amber-400 font-extrabold text-xl flex items-center justify-center shrink-0 shadow-sm font-serif-title">
+                    %
+                </span>
+                <div>
+                    <h3 class="text-base sm:text-lg font-extrabold text-slate-950 font-serif-title">25% Automatic Member Tuition Reduction</h3>
+                    <p class="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">As an active member in good standing, you receive an automatic 25% discount across all professional Brand Academy cohorts.</p>
+                </div>
+            </div>
+            <button type="button" @click="switchTab('cohorts')" class="px-5 py-3 rounded-2xl text-xs font-bold bg-slate-950 hover:bg-slate-900 text-white transition-colors shrink-0 flex items-center justify-center gap-1.5 shadow-md cursor-pointer whitespace-nowrap">
+                <span>Browse Cohorts (25% Off)</span>
+                <span>&rarr;</span>
+            </button>
+        </div>
+
+        <!-- Member Navigation Hub: 4 Interactive Feature Tiles -->
+        <div>
+            <div class="mb-4">
+                <h3 class="text-base font-bold text-slate-900 font-serif-title">Member Navigation Hub</h3>
+                <p class="text-xs text-slate-500">Jump directly to any section of your membership workspace.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1: Workshop Cohorts -->
+                <button type="button" @click="switchTab('cohorts')" class="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left group cursor-pointer flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">25% Off</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">Workshop Cohorts</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Enroll in professional brand training with 25% member tuition discount.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">Browse Cohorts &rarr;</span>
+                </button>
+
+                <!-- Card 2: My Certificates -->
+                <button type="button" @click="switchTab('certificates')" class="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left group cursor-pointer flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 font-mono">{{ $certificates->count() }} Issued</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">My Certificates</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Download official PDF certificates &amp; cryptographic verification links.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">View Credentials &rarr;</span>
+                </button>
+
+                <!-- Card 3: Application History -->
+                <button type="button" @click="switchTab('applications')" class="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left group cursor-pointer flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 font-mono">{{ $applications->count() }} Total</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">Application History</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Track admission review status, admission offers, and portfolio submissions.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">Track Status &rarr;</span>
+                </button>
+
+                <!-- Card 4: Digital Member ID -->
+                <button type="button" @click="switchTab('digital-id')" class="p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all text-left group cursor-pointer flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Live QR</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">Digital Member ID</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">View and download your official 3D card slip with tamper-evident QR code.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">Open Digital ID &rarr;</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Application Activity Snapshot -->
+        @if($applications->isNotEmpty())
+            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-slate-900 font-serif-title">Recent Application Pipeline</h3>
+                    <button type="button" @click="switchTab('applications')" class="text-xs font-bold text-amber-600 hover:underline cursor-pointer">
+                        View All ({{ $applications->count() }}) &rarr;
+                    </button>
+                </div>
+
+                <div class="divide-y divide-slate-100">
+                    @foreach($applications->take(3) as $app)
+                        <div class="py-3 flex items-center justify-between gap-4">
+                            <div class="min-w-0">
+                                <span class="text-xs font-bold text-slate-900 block truncate">{{ $app->workshop->title }}</span>
+                                <span class="text-[10px] text-slate-400">Applied {{ $app->created_at->diffForHumans() }} &bull; {{ $app->workshop->track_label }}</span>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase shrink-0
+                                {{ $app->status === 'accepted' ? 'bg-emerald-100 text-emerald-800' :
+                                  ($app->status === 'completed' ? 'bg-purple-100 text-purple-800' :
+                                  ($app->status === 'waitlisted' ? 'bg-amber-100 text-amber-800' :
+                                  ($app->status === 'rejected' ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700'))) }}">
+                                {{ $app->status }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
     </div>
 
-    <!-- ==================== 1. WORKSHOP COHORTS SECTION ==================== -->
-    <section id="cohorts" class="scroll-mt-24 space-y-5">
+    <!-- ==================== TAB 2: WORKSHOP COHORTS ==================== -->
+    <div x-show="activeTab === 'cohorts'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-6">
+
+        <section id="cohorts" class="scroll-mt-24 space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <div class="flex items-center gap-2 mb-1">
@@ -264,7 +388,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                         </div>
 
                         @if($userApplication)
-                            @if($userApplication->status === 'accepted')
+                                @if($userApplication->status === 'accepted')
                                 <div class="flex items-center gap-2">
                                     <a href="{{ route('member.portfolio.create', $userApplication->id) }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -276,7 +400,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                                 </div>
                             @elseif($userApplication->status === 'pending')
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="navTo('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                                    <button type="button" @click="switchTab('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs">
                                         <svg class="w-3.5 h-3.5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                         <span>Already Applied</span>
                                     </button>
@@ -286,7 +410,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                                 </div>
                             @elseif($userApplication->status === 'completed')
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="navTo('certificates')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 transition-colors flex items-center gap-1.5 cursor-pointer">
+                                    <button type="button" @click="switchTab('certificates')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 transition-colors flex items-center gap-1.5 cursor-pointer">
                                         <svg class="w-3.5 h-3.5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"/></svg>
                                         <span>View Credential</span>
                                     </button>
@@ -296,7 +420,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                                 </div>
                             @else
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="navTo('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer">
+                                    <button type="button" @click="switchTab('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer">
                                         <span>Applied</span>
                                     </button>
                                     <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-2.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200">
@@ -329,8 +453,15 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             @endforelse
         </div>
     </section>
+    </div>
 
-    <!-- ==================== 2. MY EARNED CERTIFICATES SECTION ==================== -->
+    <!-- ==================== TAB 3: MY EARNED CERTIFICATES ==================== -->
+    <div x-show="activeTab === 'certificates'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-6">
+
     <section id="certificates" class="scroll-mt-24 space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
@@ -450,8 +581,15 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             </div>
         @endif
     </section>
+    </div>
 
-    <!-- ==================== 3. MY APPLICATION HISTORY SECTION ==================== -->
+    <!-- ==================== TAB 4: MY APPLICATION HISTORY ==================== -->
+    <div x-show="activeTab === 'applications'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-6">
+
     <section id="applications" class="scroll-mt-24 space-y-5">
         <div class="flex items-center justify-between">
             <div>
@@ -546,8 +684,206 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             @endif
         </div>
     </section>
+    </div>
 
-    <!-- ==================== 4. MEMBER PROFILE & REGISTRY SETTINGS ==================== -->
+    <!-- ==================== TAB 5: DIGITAL MEMBER ID CARD & VERIFICATION ==================== -->
+    <div x-show="activeTab === 'digital-id'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-6">
+
+        <section id="digital-id" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-800 border border-amber-500/30">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Cryptographic Credential Active
+                        </span>
+                        <span class="text-slate-400 text-xs hidden sm:inline">&bull;</span>
+                        <span class="text-slate-500 text-xs hidden sm:inline">CAC IT No. 7344471</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Digital Member ID &amp; Verification Card</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Your official institutional identification badge with tamper-evident live QR verification code.</p>
+                </div>
+
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-xs">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Download Certificate PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Digital Card Presentation Card -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+                <!-- Left Column: 3D Physical-Style ID Card (7 cols) -->
+                <div class="lg:col-span-7">
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border-2 border-amber-500/40 shadow-2xl card-preview-glow">
+                        <!-- Decorative background light and emblem watermark -->
+                        <div class="absolute -right-16 -top-16 w-56 h-56 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <!-- Top ID Card Header -->
+                        <div class="flex items-center justify-between pb-5 border-b border-slate-800/80 relative z-10">
+                            <div class="flex items-center gap-3">
+                                <x-brand-logo class="w-10 h-10 shrink-0 drop-shadow-md" />
+                                <div>
+                                    <h3 class="text-xs font-extrabold uppercase tracking-widest text-white font-serif-title">Brands Academy</h3>
+                                    <p class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Nigeria Foundation &bull; CAC IT No. 7344471</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                {{ $member->category_label }}
+                            </span>
+                        </div>
+
+                        <!-- Card Body with Avatar and Details -->
+                        <div class="py-6 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 relative z-10">
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left min-w-0">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center font-serif-title ring-4 ring-amber-500/30 shadow-lg shrink-0">
+                                    {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <h4 class="text-xl sm:text-2xl font-bold font-serif-title text-white tracking-tight truncate">
+                                        {{ $member->full_name }}
+                                    </h4>
+                                    <p class="text-xs text-amber-300/90 font-medium mt-0.5">
+                                        {{ $member->designation ?? 'Foundation Member' }}
+                                    </p>
+                                    <p class="text-[11px] text-slate-400 mt-1 truncate">
+                                        {{ $member->institution_or_company ?? 'Brands Academy Nigeria Foundation' }}
+                                    </p>
+
+                                    <!-- Member ID Callout with Copy -->
+                                    <div class="mt-3.5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80">
+                                        <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">ID:</span>
+                                        <span class="text-xs font-mono font-extrabold text-amber-400">{{ $member->member_number }}</span>
+                                        <button type="button" @click="copyMemberId()" class="ml-1 text-[10px] text-slate-400 hover:text-white transition-colors cursor-pointer" title="Copy ID">
+                                            <svg x-show="!copiedMemberId" class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                            <svg x-show="copiedMemberId" x-cloak class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scannable 2D QR Code -->
+                            <div class="bg-white p-3 rounded-2xl border-2 border-amber-500/40 shadow-xl shrink-0 flex flex-col items-center">
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+                                    {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(112)->generate(route('verify.certificate', $member->qr_code_token)) !!}
+                                </div>
+                                <span class="text-[9px] font-mono font-bold text-slate-800 mt-1 uppercase tracking-tight">Scan To Verify</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Details -->
+                        <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 relative z-10">
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-slate-400">Jurisdiction</span>
+                                <span class="text-slate-200 font-semibold">{{ $member->state }}, {{ $member->country ?? 'Nigeria' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-slate-400">Member Status</span>
+                                <span class="inline-flex items-center gap-1 text-emerald-400 font-bold text-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    Good Standing
+                                </span>
+                            </div>
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-slate-400">Issued</span>
+                                <span class="text-slate-200 font-mono">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Verification Tools & Quick Actions (5 cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-sm space-y-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-serif-title">Official Credential Actions</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Share or present your credentials to clients, employers, and academic institutions.</p>
+                        </div>
+
+                        <div class="space-y-2.5 text-xs font-semibold">
+                            <!-- Download PDF -->
+                            <a href="{{ route('membership.certificate.download', $member->qr_code_token) }}"
+                               class="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition-colors flex items-center justify-between shadow-xs">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    <span>Download Certificate PDF</span>
+                                </span>
+                                <span class="text-slate-950 font-mono">&darr;</span>
+                            </a>
+
+                            <!-- Copy Public Verification URL -->
+                            <button type="button" @click="copyVerificationUrl()"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition-colors flex items-center justify-between cursor-pointer shadow-xs">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                                    <span x-text="copiedUrl ? 'Verification URL Copied!' : 'Copy Public Verification Link'"></span>
+                                </span>
+                                <span class="text-[10px] font-mono text-slate-400" x-text="copiedUrl ? 'OK' : 'COPY'"></span>
+                            </button>
+
+                            <!-- Copy Member ID -->
+                            <button type="button" @click="copyMemberId()"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors flex items-center justify-between cursor-pointer border border-slate-200">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    <span x-text="copiedMemberId ? 'Member ID Copied!' : 'Copy Member ID (' + memberNumber + ')'"></span>
+                                </span>
+                                <span class="text-[10px] font-mono text-slate-500" x-text="copiedMemberId ? 'OK' : 'COPY'"></span>
+                            </button>
+
+                            <!-- High-Res Standalone Card View -->
+                            <a href="{{ route('membership.card', $member->qr_code_token) }}" target="_blank"
+                               class="w-full py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors flex items-center justify-between border border-slate-200">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    <span>Open Standalone High-Res Pass</span>
+                                </span>
+                                <span class="text-slate-400 text-[10px]">&nearr;</span>
+                            </a>
+
+                            <!-- Share on WhatsApp -->
+                            @php
+                                $whatsAppShareUrl = 'https://api.whatsapp.com/send?text=' . urlencode("Verify my official membership with Brands Academy Nigeria Foundation: " . route('verify.certificate', $member->qr_code_token));
+                            @endphp
+                            <a href="{{ $whatsAppShareUrl }}" target="_blank" rel="noopener noreferrer"
+                               class="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white transition-colors flex items-center justify-between shadow-xs">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.086.086-.177.18-.076.353.101.173.45 743 965 1.202.664.591 1.224.774 1.397.86.173.086.274.072.375-.043.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.043.072.043.419-.101.824z"/></svg>
+                                    <span>Share ID via WhatsApp</span>
+                                </span>
+                                <span class="text-white text-[10px]">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tamper-evident Security Registry Note -->
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-600 text-[11px] space-y-1.5 leading-relaxed">
+                        <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            <span>Cryptographic Central Registry Notice</span>
+                        </div>
+                        <p>This digital membership card is registered under CAC IT No. 7344471. Scanning the dynamic QR code immediately queries the live registry to verify active membership standing.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== TAB 6: MEMBER PROFILE & REGISTRY SETTINGS ==================== -->
+    <div x-show="activeTab === 'profile'" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="space-y-6">
+
     <section id="profile" class="scroll-mt-24 space-y-5">
         <div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Member Profile &amp; Registry Information</h2>
@@ -581,7 +917,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             </div>
 
             <!-- Profile Edit Form -->
-            <form action="{{ route('member.profile.update') }}" method="POST" @submit="isSubmitting = true" class="space-y-5">
+            <form action="{{ route('member.profile.update') }}#profile" method="POST" @submit="isSubmitting = true" class="space-y-5">
                 @csrf
 
                 <!-- Row 1: Phone Number & Country -->
@@ -738,6 +1074,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             </form>
         </div>
     </section>
+    </div>
 
     <!-- ==================== 5. DIGITAL CREDENTIAL MODAL ==================== -->
     <div x-show="showCardModal" x-cloak
@@ -868,7 +1205,18 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
 @push('scripts')
 <script>
     function memberDashboardComponent(config) {
+        const validTabs = ['overview', 'cohorts', 'certificates', 'applications', 'digital-id', 'profile'];
+        const getInitialTab = () => {
+            const hash = (window.location.hash || '').replace('#', '').trim();
+            if (validTabs.includes(hash)) return hash;
+            const params = new URLSearchParams(window.location.search);
+            const queryTab = params.get('tab');
+            if (validTabs.includes(queryTab)) return queryTab;
+            return config.initialTab || 'overview';
+        };
+
         return {
+            activeTab: getInitialTab(),
             phone: config.initialPhone || '',
             state: config.initialState || '',
             country: config.initialCountry || 'Nigeria',
@@ -880,6 +1228,40 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
             copiedMemberId: false,
             copiedUrl: false,
             copiedCertUrl: '',
+
+            init() {
+                window.addEventListener('hashchange', () => {
+                    const h = (window.location.hash || '').replace('#', '').trim();
+                    if (validTabs.includes(h) && this.activeTab !== h) {
+                        this.activeTab = h;
+                    }
+                });
+                window.addEventListener('tab-changed', (e) => {
+                    if (validTabs.includes(e.detail) && this.activeTab !== e.detail) {
+                        this.activeTab = e.detail;
+                    }
+                });
+            },
+
+            switchTab(tabName) {
+                if (!validTabs.includes(tabName)) return;
+                this.activeTab = tabName;
+                try {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, '', '#' + tabName);
+                    } else {
+                        window.location.hash = tabName;
+                    }
+                } catch (e) {
+                    window.location.hash = tabName;
+                }
+                window.dispatchEvent(new CustomEvent('tab-changed', { detail: tabName }));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            navTo(tabName) {
+                this.switchTab(tabName);
+            },
 
             nigerianStates: [
                 'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',

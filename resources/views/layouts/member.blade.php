@@ -162,87 +162,91 @@
                 </div>
 
                 <!-- 1. Overview -->
-                <button type="button" @click="navTo('overview')"
-                        :class="currentSection === 'overview' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                <button type="button" @click="switchTab('overview')"
+                        :class="activeTab === 'overview' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
                         class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                     <span class="flex items-center gap-3">
-                        <svg class="w-4 h-4" :class="currentSection === 'overview' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                        <svg class="w-4 h-4" :class="activeTab === 'overview' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                         <span>Dashboard Overview</span>
                     </span>
-                    <span class="text-[10px] font-mono opacity-60">&rarr;</span>
+                    <span class="text-[10px] font-mono" :class="activeTab === 'overview' ? 'text-slate-950 font-bold' : 'opacity-60'">&rarr;</span>
                 </button>
 
                 <!-- 2. Workshop Cohorts -->
-                <button type="button" @click="navTo('cohorts')"
-                        :class="currentSection === 'cohorts' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                <button type="button" @click="switchTab('cohorts')"
+                        :class="activeTab === 'cohorts' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
                         class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                     <span class="flex items-center gap-3">
-                        <svg class="w-4 h-4" :class="currentSection === 'cohorts' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <svg class="w-4 h-4" :class="activeTab === 'cohorts' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         <span>Workshop Cohorts</span>
                     </span>
                     <span class="flex items-center gap-1.5">
                         @if($openWorkshopsCount > 0)
-                            <span class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-amber-400 text-slate-950 font-mono">
+                            <span class="px-1.5 py-0.2 rounded-full text-[9px] font-extrabold font-mono"
+                                  :class="activeTab === 'cohorts' ? 'bg-slate-950 text-amber-400' : 'bg-amber-400 text-slate-950'">
                                 {{ $openWorkshopsCount }} Open
                             </span>
                         @endif
-                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold"
+                              :class="activeTab === 'cohorts' ? 'bg-slate-950/20 text-slate-950' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'">
                             25% Off
                         </span>
                     </span>
                 </button>
 
                 <!-- 3. Certificates -->
-                <button type="button" @click="navTo('certificates')"
-                        :class="currentSection === 'certificates' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                <button type="button" @click="switchTab('certificates')"
+                        :class="activeTab === 'certificates' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
                         class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                     <span class="flex items-center gap-3">
-                        <svg class="w-4 h-4" :class="currentSection === 'certificates' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <svg class="w-4 h-4" :class="activeTab === 'certificates' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         <span>My Certificates</span>
                     </span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
-                          :class="currentSection === 'certificates' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-400'">
+                          :class="activeTab === 'certificates' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-400'">
                         {{ $certificatesCount }}
                     </span>
                 </button>
 
                 <!-- 4. Applications -->
-                <button type="button" @click="navTo('applications')"
-                        :class="currentSection === 'applications' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                <button type="button" @click="switchTab('applications')"
+                        :class="activeTab === 'applications' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
                         class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                     <span class="flex items-center gap-3">
-                        <svg class="w-4 h-4" :class="currentSection === 'applications' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        <svg class="w-4 h-4" :class="activeTab === 'applications' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         <span>Application History</span>
                     </span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold"
-                          :class="currentSection === 'applications' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-400'">
+                          :class="activeTab === 'applications' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-400'">
                         {{ $applicationsCount }}
                     </span>
                 </button>
 
-                <!-- 5. Digital ID QR Modal -->
+                <!-- 5. Digital Member ID -->
                 @if($currentMember)
-                    <button type="button" @click="openCardModal()"
-                            class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-900 hover:text-amber-300 transition-all text-left cursor-pointer group">
+                    <button type="button" @click="switchTab('digital-id')"
+                            :class="activeTab === 'digital-id' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                            class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                         <span class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg class="w-4 h-4" :class="activeTab === 'digital-id' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             <span>Digital Member ID</span>
                         </span>
-                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-500/20 text-amber-400">
+                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold"
+                              :class="activeTab === 'digital-id' ? 'bg-slate-950 text-amber-400' : 'bg-amber-500/20 text-amber-400'">
                             Live QR
                         </span>
                     </button>
                 @endif
 
-                <!-- 6. Profile & Registry -->
-                <button type="button" @click="navTo('profile')"
-                        :class="currentSection === 'profile' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
+                <!-- 6. Profile & Settings -->
+                <button type="button" @click="switchTab('profile')"
+                        :class="activeTab === 'profile' ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white'"
                         class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer group">
                     <span class="flex items-center gap-3">
-                        <svg class="w-4 h-4" :class="currentSection === 'profile' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <svg class="w-4 h-4" :class="activeTab === 'profile' ? 'text-slate-950' : 'text-amber-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         <span>Profile &amp; Settings</span>
                     </span>
-                    <span class="text-[10px] font-mono opacity-60">&rarr;</span>
+                    <span class="text-[10px] font-mono" :class="activeTab === 'profile' ? 'text-slate-950 font-bold' : 'opacity-60'">&rarr;</span>
                 </button>
 
                 <!-- 25% Member Benefit Box in Sidebar -->
@@ -259,10 +263,10 @@
                                 </p>
                             </div>
                         </div>
-                        <a href="{{ route('workshops.index') }}" class="w-full py-2 px-3 rounded-xl text-[11px] font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center justify-center gap-1 shadow-xs">
+                        <button type="button" @click="switchTab('cohorts')" class="w-full py-2 px-3 rounded-xl text-[11px] font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center justify-center gap-1 shadow-xs cursor-pointer">
                             <span>Browse Cohorts</span>
                             <span>&rarr;</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -449,51 +453,58 @@
             <!-- Sticky Horizontal Section Navigation Tabs Strip -->
             <div class="sticky top-[57px] sm:top-[61px] z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-2">
                 <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold">
-                    <button type="button" @click="navTo('overview')"
-                            :class="currentSection === 'overview' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                    <!-- 1. Overview -->
+                    <button type="button" @click="switchTab('overview')"
+                            :class="activeTab === 'overview' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
                             class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                         <span>Overview</span>
                     </button>
 
-                    <button type="button" @click="navTo('cohorts')"
-                            :class="currentSection === 'cohorts' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                    <!-- 2. Workshop Cohorts -->
+                    <button type="button" @click="switchTab('cohorts')"
+                            :class="activeTab === 'cohorts' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
                             class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                         <span>Workshops</span>
-                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'cohorts' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-amber-100 text-amber-800 font-bold'">25% Off</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'cohorts' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-amber-100 text-amber-800 font-bold'">25% Off</span>
                     </button>
 
-                    <button type="button" @click="navTo('certificates')"
-                            :class="currentSection === 'certificates' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                    <!-- 3. Certificates -->
+                    <button type="button" @click="switchTab('certificates')"
+                            :class="activeTab === 'certificates' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
                             class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
                         <span>Certificates</span>
-                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'certificates' ? 'bg-emerald-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $certificatesCount }}</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'certificates' ? 'bg-emerald-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $certificatesCount }}</span>
                     </button>
 
-                    <button type="button" @click="navTo('applications')"
-                            :class="currentSection === 'applications' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                    <!-- 4. Applications -->
+                    <button type="button" @click="switchTab('applications')"
+                            :class="activeTab === 'applications' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
                             class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         <span>Applications</span>
-                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'applications' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $applicationsCount }}</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'applications' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $applicationsCount }}</span>
                     </button>
 
-                    <button type="button" @click="navTo('profile')"
-                            :class="currentSection === 'profile' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                    <!-- 5. Digital ID Tab -->
+                    @if($currentMember)
+                        <button type="button" @click="switchTab('digital-id')"
+                                :class="activeTab === 'digital-id' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                                class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <span>Digital ID</span>
+                            <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="activeTab === 'digital-id' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-amber-100 text-amber-800 font-bold'">Live QR</span>
+                        </button>
+                    @endif
+
+                    <!-- 6. Profile & Settings -->
+                    <button type="button" @click="switchTab('profile')"
+                            :class="activeTab === 'profile' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
                             class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        <span>Profile &amp; Registry</span>
-                    </button>
-
-                    <div class="h-4 w-px bg-slate-200 mx-1 hidden sm:block"></div>
-
-                    <!-- Digital ID Quick View Button -->
-                    <button type="button" @click="openCardModal()"
-                            class="px-3 py-1.5 rounded-xl text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ml-auto font-bold text-xs">
-                        <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        <span>Digital ID QR</span>
+                        <span>Profile &amp; Settings</span>
                     </button>
                 </nav>
             </div>
@@ -556,39 +567,39 @@
     <!-- Member Mobile Bottom Navigation Bar -->
     <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
         <div class="grid grid-cols-5 h-16 items-center px-1">
-            <!-- Overview -->
-            <button type="button" @click="navTo('overview')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer" :class="currentSection === 'overview' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+            <!-- 1. Overview -->
+            <button type="button" @click="switchTab('overview')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer" :class="activeTab === 'overview' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
                 <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                 <span class="text-[10px]">Overview</span>
             </button>
-            <!-- Workshops (25% off) -->
-            <button type="button" @click="navTo('cohorts')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'cohorts' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+            <!-- 2. Workshops (25% off) -->
+            <button type="button" @click="switchTab('cohorts')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="activeTab === 'cohorts' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
                 <span class="absolute top-1 right-2 px-1 py-0.2 rounded text-[8px] font-extrabold bg-amber-400 text-slate-950">-25%</span>
                 <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 <span class="text-[10px]">Cohorts</span>
             </button>
-            <!-- Certificates -->
-            <button type="button" @click="navTo('certificates')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'certificates' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+            <!-- 3. Certificates -->
+            <button type="button" @click="switchTab('certificates')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="activeTab === 'certificates' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
                 @if($certificatesCount > 0)
                     <span class="absolute top-1 right-3 w-4 h-4 rounded-full text-[9px] font-bold bg-emerald-500 text-white flex items-center justify-center">{{ $certificatesCount }}</span>
                 @endif
                 <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                <span class="text-[10px]">Certificates</span>
+                <span class="text-[10px]">Certs</span>
             </button>
-            <!-- Applications -->
-            <button type="button" @click="navTo('applications')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'applications' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+            <!-- 4. Applications -->
+            <button type="button" @click="switchTab('applications')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="activeTab === 'applications' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
                 @if($applicationsCount > 0)
                     <span class="absolute top-1 right-3 w-4 h-4 rounded-full text-[9px] font-bold bg-amber-400 text-slate-950 flex items-center justify-center">{{ $applicationsCount }}</span>
                 @endif
                 <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 <span class="text-[10px]">Applied</span>
             </button>
-            <!-- Digital ID QR Modal -->
-            <button type="button" @click="openCardModal()" class="flex flex-col items-center justify-center py-1 transition-colors text-amber-400 hover:text-amber-300 cursor-pointer">
-                <div class="w-5 h-5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center mb-0.5">
+            <!-- 5. Digital ID Tab -->
+            <button type="button" @click="switchTab('digital-id')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer" :class="activeTab === 'digital-id' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+                <div class="w-5 h-5 rounded flex items-center justify-center mb-0.5" :class="activeTab === 'digital-id' ? 'bg-amber-500 text-slate-950' : 'bg-amber-500/20 text-amber-400 border border-amber-500/40'">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
                 </div>
-                <span class="text-[10px] font-bold">Digital ID</span>
+                <span class="text-[10px]">Digital ID</span>
             </button>
         </div>
     </nav>
@@ -597,41 +608,51 @@
 
     <script>
         function memberLayoutComponent() {
+            const validTabs = ['overview', 'cohorts', 'certificates', 'applications', 'digital-id', 'profile'];
+            const getInitialTab = () => {
+                const hash = (window.location.hash || '').replace('#', '').trim();
+                if (validTabs.includes(hash)) return hash;
+                const params = new URLSearchParams(window.location.search);
+                const queryTab = params.get('tab');
+                if (validTabs.includes(queryTab)) return queryTab;
+                return 'overview';
+            };
+
             return {
                 sidebarOpen: false,
-                currentSection: 'overview',
+                activeTab: getInitialTab(),
                 copiedId: false,
                 copiedUrl: false,
 
                 init() {
-                    const sections = ['overview', 'cohorts', 'certificates', 'applications', 'profile'];
-                    if ('IntersectionObserver' in window) {
-                        const observer = new IntersectionObserver((entries) => {
-                            entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    this.currentSection = entry.target.id;
-                                }
-                            });
-                        }, { rootMargin: '-20% 0px -65% 0px' });
-
-                        this.$nextTick(() => {
-                            sections.forEach(id => {
-                                const el = document.getElementById(id);
-                                if (el) observer.observe(el);
-                            });
-                        });
-                    }
+                    window.addEventListener('hashchange', () => {
+                        const h = (window.location.hash || '').replace('#', '').trim();
+                        if (validTabs.includes(h) && this.activeTab !== h) {
+                            this.activeTab = h;
+                        }
+                    });
+                    window.addEventListener('tab-changed', (e) => {
+                        if (validTabs.includes(e.detail) && this.activeTab !== e.detail) {
+                            this.activeTab = e.detail;
+                        }
+                    });
                 },
 
-                navTo(sectionId) {
-                    this.currentSection = sectionId;
+                switchTab(tabName) {
+                    if (!validTabs.includes(tabName)) return;
+                    this.activeTab = tabName;
                     this.sidebarOpen = false;
-                    const el = document.getElementById(sectionId);
-                    if (el) {
-                        const yOffset = -80;
-                        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    try {
+                        if (window.history && window.history.replaceState) {
+                            window.history.replaceState(null, '', '#' + tabName);
+                        } else {
+                            window.location.hash = tabName;
+                        }
+                    } catch (e) {
+                        window.location.hash = tabName;
                     }
+                    window.dispatchEvent(new CustomEvent('tab-changed', { detail: tabName }));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
 
                 copyMemberId(memberId) {
@@ -651,8 +672,7 @@
                 },
 
                 openCardModal() {
-                    this.sidebarOpen = false;
-                    window.dispatchEvent(new CustomEvent('open-card-modal'));
+                    this.switchTab('digital-id');
                 }
             };
         }
