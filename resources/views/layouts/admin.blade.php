@@ -2,7 +2,11 @@
 <html lang="en" class="h-full bg-slate-100">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#020617">
     <title>@yield('title', 'Administration Portal') | Brands Academy Nigeria Foundation</title>
     <meta name="description" content="Operational Administration & Governance Portal for Brands Academy Nigeria Foundation (CAC IT No. 7344471).">
     
@@ -66,7 +70,7 @@
     <div class="flex min-h-screen">
         
         <!-- ======================= SIDEBAR ======================= -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-72 bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 admin-sidebar overflow-y-auto"
+        <aside class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 admin-sidebar overflow-y-auto"
                :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'">
             
             <!-- Sidebar Header / Brand Badge -->
@@ -424,12 +428,12 @@
             </div>
 
             <!-- Page Content Body -->
-            <main class="flex-1 pb-16">
+            <main class="flex-1 pb-24 lg:pb-16">
                 @yield('content')
             </main>
 
             <!-- Admin Footer -->
-            <footer class="px-4 sm:px-6 lg:px-8 py-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
+            <footer class="px-4 sm:px-6 lg:px-8 py-4 pb-20 lg:pb-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
                 <div>
                     <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee (CAMA CAP C20 LFN 2004) &bull; RC / IT No. 7344471
                 </div>
@@ -444,6 +448,45 @@
 
         </div>
     </div>
+
+    <!-- Admin Mobile Bottom Navigation Bar -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
+        <div class="grid grid-cols-5 h-16 items-center px-1">
+            <!-- Dashboard -->
+            <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('admin.dashboard') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="text-[10px]">Overview</span>
+            </a>
+            <!-- Workshops -->
+            <a href="{{ route('admin.workshops') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('admin.workshops*') || request()->routeIs('admin.applications*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                <span class="text-[10px]">Workshops</span>
+            </a>
+            <!-- Members -->
+            <a href="{{ route('admin.members') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('admin.members*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <span class="text-[10px]">Members</span>
+            </a>
+            <!-- Inquiries -->
+            <a href="{{ route('admin.inquiries') }}" class="flex flex-col items-center justify-center py-1 transition-colors relative {{ request()->routeIs('admin.inquiries*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                @php $newInqCount = \App\Models\InstitutionalInquiry::where('status', 'new')->count(); @endphp
+                @if($newInqCount > 0)
+                    <span class="absolute top-1.5 right-3 w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                @endif
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span class="text-[10px]">Inquiries</span>
+            </a>
+            <!-- Finance -->
+            <a href="{{ route('admin.finance') }}" class="flex flex-col items-center justify-center py-1 transition-colors relative {{ request()->routeIs('admin.finance*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                @php $pendingPayCount = \App\Models\MemberPayment::whereIn('status', ['pending', 'under_review'])->count() + \App\Models\Member::where('payment_status', 'under_review')->count(); @endphp
+                @if($pendingPayCount > 0)
+                    <span class="absolute top-1.5 right-3 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                @endif
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-[10px]">Finance</span>
+            </a>
+        </div>
+    </nav>
 
     @stack('scripts')
 </body>

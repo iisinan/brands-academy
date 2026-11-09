@@ -181,7 +181,25 @@ class MembershipController extends Controller
             ->orderBy('application_deadline', 'asc')
             ->get();
 
-        $applications = $member->applications()
+        if ($member) {
+            WorkshopApplication::whereNull('member_id')
+                ->where(function ($q) use ($user): void {
+                    $q->where('user_id', $user->id)
+                        ->orWhere('applicant_email', $user->email);
+                })
+                ->update(['member_id' => $member->id]);
+        }
+
+        $applications = WorkshopApplication::query()
+            ->where(function ($q) use ($user, $member): void {
+                if ($member) {
+                    $q->where('member_id', $member->id);
+                }
+                if ($user) {
+                    $q->orWhere('user_id', $user->id)
+                        ->orWhere('applicant_email', $user->email);
+                }
+            })
             ->with(['workshop', 'portfolioSubmissions'])
             ->orderBy('created_at', 'desc')
             ->get();

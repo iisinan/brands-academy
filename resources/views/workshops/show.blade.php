@@ -161,7 +161,7 @@
 
         <!-- Right 5 cols: Window Status & Application Form Box -->
         <div class="lg:col-span-5">
-            <div class="bg-white rounded-2xl border-2 border-slate-200 p-6 sm:p-8 shadow-lg sticky top-24">
+            <div id="application-card" class="bg-white rounded-2xl border-2 border-slate-200 p-6 sm:p-8 shadow-lg sticky top-24">
                 
                 <!-- Cohort Meta Summary -->
                 <div class="mb-6 pb-6 border-b border-slate-100">
@@ -543,6 +543,26 @@
 
                 <x-member-sidebar />
             </div>
+    @endif
+
+    <!-- Mobile Sticky Quick Apply Bar -->
+    @if(!$alreadyApplied && $workshop->isOpenForApplications())
+        <div class="lg:hidden fixed bottom-16 inset-x-0 z-30 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-3.5 flex items-center justify-between gap-3 shadow-2xl safe-pb">
+            <div>
+                <span class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Tuition</span>
+                @if(auth()->check() && auth()->user()->member && $workshop->fee_type !== 'free')
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-sm font-extrabold text-amber-400 font-mono">NGN {{ number_format($workshop->member_fee_amount) }}</span>
+                        <span class="text-[10px] line-through text-slate-500 font-mono">NGN {{ number_format($workshop->fee_amount) }}</span>
+                    </div>
+                @else
+                    <span class="text-sm font-extrabold text-white font-mono">{{ $workshop->fee_type == 'free' ? '100% Free' : 'NGN ' . number_format($workshop->fee_amount) }}</span>
+                @endif
+            </div>
+            <a href="#application-card" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-md flex items-center gap-1.5">
+                <span>Apply for Cohort</span>
+                <span>&darr;</span>
+            </a>
         </div>
     @endif
 </section>

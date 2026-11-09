@@ -106,7 +106,7 @@
 
     <!-- Members Table -->
     <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto touch-scroll">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
                     <tr>
@@ -260,7 +260,7 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="translate-x-full"
-             class="relative w-full max-w-xl bg-white min-h-screen shadow-2xl flex flex-col justify-between">
+             class="relative w-full max-w-full sm:max-w-xl bg-white min-h-screen shadow-2xl flex flex-col justify-between overflow-y-auto pb-20 lg:pb-0">
 
             <!-- Modal Header -->
             <div class="p-6 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">

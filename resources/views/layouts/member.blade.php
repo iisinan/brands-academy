@@ -2,7 +2,11 @@
 <html lang="en" class="h-full bg-slate-100">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#020617">
     <title>@yield('title', 'Member Dashboard') | Brands Academy Nigeria Foundation</title>
     <meta name="description" content="Official Member Portal & Governance Registry for Brands Academy Nigeria Foundation (CAC IT No. 7344471).">
 
@@ -69,7 +73,7 @@
     <div class="flex min-h-screen">
 
         <!-- ======================= PERMANENT FIXED LEFT SIDEBAR ======================= -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 member-sidebar-scroll overflow-y-auto"
+        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 member-sidebar-scroll overflow-y-auto"
                :class="sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'">
 
             <!-- Sidebar Header / Foundation Brand Badge -->
@@ -528,12 +532,12 @@
             </div>
 
             <!-- Page Content Body -->
-            <main class="flex-1 pb-16">
+            <main class="flex-1 pb-24 lg:pb-16">
                 @yield('content')
             </main>
 
             <!-- Member Portal Footer -->
-            <footer class="px-4 sm:px-6 lg:px-8 py-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
+            <footer class="px-4 sm:px-6 lg:px-8 py-4 pb-20 lg:pb-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
                 <div>
                     <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee &bull; CAC IT No. 7344471
                 </div>
@@ -548,6 +552,46 @@
 
         </div>
     </div>
+
+    <!-- Member Mobile Bottom Navigation Bar -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
+        <div class="grid grid-cols-5 h-16 items-center px-1">
+            <!-- Overview -->
+            <button type="button" @click="navTo('overview')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer" :class="currentSection === 'overview' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span class="text-[10px]">Overview</span>
+            </button>
+            <!-- Workshops (25% off) -->
+            <button type="button" @click="navTo('cohorts')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'cohorts' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+                <span class="absolute top-1 right-2 px-1 py-0.2 rounded text-[8px] font-extrabold bg-amber-400 text-slate-950">-25%</span>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span class="text-[10px]">Cohorts</span>
+            </button>
+            <!-- Certificates -->
+            <button type="button" @click="navTo('certificates')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'certificates' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+                @if($certificatesCount > 0)
+                    <span class="absolute top-1 right-3 w-4 h-4 rounded-full text-[9px] font-bold bg-emerald-500 text-white flex items-center justify-center">{{ $certificatesCount }}</span>
+                @endif
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span class="text-[10px]">Certificates</span>
+            </button>
+            <!-- Applications -->
+            <button type="button" @click="navTo('applications')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer relative" :class="currentSection === 'applications' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
+                @if($applicationsCount > 0)
+                    <span class="absolute top-1 right-3 w-4 h-4 rounded-full text-[9px] font-bold bg-amber-400 text-slate-950 flex items-center justify-center">{{ $applicationsCount }}</span>
+                @endif
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span class="text-[10px]">Applied</span>
+            </button>
+            <!-- Digital ID QR Modal -->
+            <button type="button" @click="openCardModal()" class="flex flex-col items-center justify-center py-1 transition-colors text-amber-400 hover:text-amber-300 cursor-pointer">
+                <div class="w-5 h-5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center mb-0.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                </div>
+                <span class="text-[10px] font-bold">Digital ID</span>
+            </button>
+        </div>
+    </nav>
 
     @stack('scripts')
 

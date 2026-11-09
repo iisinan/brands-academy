@@ -35,7 +35,7 @@
 
     <!-- Workshops Listing Table -->
     <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto touch-scroll">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
                     <tr>

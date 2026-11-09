@@ -168,14 +168,40 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($openWorkshops as $workshop)
-                @php $window = $workshop->application_window_status; @endphp
-                <div class="bg-white rounded-3xl border border-slate-200/90 hover:border-amber-400 p-6 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                @php
+                    $window = $workshop->application_window_status;
+                    $userApplication = $applications->firstWhere('workshop_id', $workshop->id);
+                @endphp
+                <div class="bg-white rounded-3xl border {{ $userApplication ? ($userApplication->status === 'accepted' ? 'border-emerald-300/90 ring-1 ring-emerald-500/20' : ($userApplication->status === 'completed' ? 'border-purple-300/90 ring-1 ring-purple-500/20' : 'border-blue-300/90 ring-1 ring-blue-500/20')) : 'border-slate-200/90 hover:border-amber-400' }} p-6 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-3">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border {{ $window['badge_class'] }}">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                {{ $window['label'] }}
-                            </span>
+                            @if($userApplication)
+                                @if($userApplication->status === 'accepted')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Enrolled &bull; Active
+                                    </span>
+                                @elseif($userApplication->status === 'pending')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                        Application Submitted
+                                    </span>
+                                @elseif($userApplication->status === 'completed')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300">
+                                        <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        Cohort Completed
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-300">
+                                        Application: {{ ucfirst($userApplication->status) }}
+                                    </span>
+                                @endif
+                            @else
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border {{ $window['badge_class'] }}">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    {{ $window['label'] }}
+                                </span>
+                            @endif
                             <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                                 {{ ucfirst($workshop->delivery_mode) }}
                             </span>
@@ -186,12 +212,45 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                         <div class="text-xs text-amber-700 font-semibold mb-3">
                             {{ $workshop->track_label }}
                         </div>
-                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-3 leading-relaxed">
                             {{ $workshop->tagline ?? $workshop->description }}
                         </p>
+
+                        @if($userApplication)
+                            <div class="mt-3 p-3 rounded-2xl {{ $userApplication->status === 'accepted' ? 'bg-emerald-50/80 border border-emerald-200/90 text-emerald-950' : ($userApplication->status === 'completed' ? 'bg-purple-50/80 border border-purple-200/90 text-purple-950' : 'bg-blue-50/80 border border-blue-200/90 text-blue-950') }} text-xs">
+                                <div class="flex items-center justify-between font-bold mb-1">
+                                    <span class="flex items-center gap-1.5">
+                                        @if($userApplication->status === 'accepted')
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                            <span>Admissions Confirmed</span>
+                                        @elseif($userApplication->status === 'pending')
+                                            <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                                            <span>Under Admissions Review</span>
+                                        @elseif($userApplication->status === 'completed')
+                                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                            <span>Cohort Completed</span>
+                                        @else
+                                            <span>Status: {{ ucfirst($userApplication->status) }}</span>
+                                        @endif
+                                    </span>
+                                    <span class="font-mono text-[10px] text-slate-500">{{ $userApplication->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <p class="text-[11px] leading-relaxed text-slate-600">
+                                    @if($userApplication->status === 'accepted')
+                                        Your application is accepted and active. You are enrolled in this training cohort.
+                                    @elseif($userApplication->status === 'pending')
+                                        You have already submitted your application for this cohort. It is currently under review by the admissions committee.
+                                    @elseif($userApplication->status === 'completed')
+                                        You have successfully graduated from this cohort. Your certificate is verified in your registry portfolio.
+                                    @else
+                                        Application record on file.
+                                    @endif
+                                </p>
+                            </div>
+                        @endif
                     </div>
 
-                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                         <div>
                             <span class="block text-[10px] uppercase font-bold text-slate-400">Member Tuition (25% Off)</span>
                             @if($workshop->fee_type == 'free')
@@ -203,10 +262,54 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                                 </div>
                             @endif
                         </div>
-                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1">
-                            <span>Apply Now</span>
-                            <span>&rarr;</span>
-                        </a>
+
+                        @if($userApplication)
+                            @if($userApplication->status === 'accepted')
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('member.portfolio.create', $userApplication->id) }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                        <span>Portfolio</span>
+                                    </a>
+                                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition-colors flex items-center gap-1">
+                                        <span>Enrolled &bull; View &rarr;</span>
+                                    </a>
+                                </div>
+                            @elseif($userApplication->status === 'pending')
+                                <div class="flex items-center gap-2">
+                                    <button type="button" @click="navTo('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                                        <svg class="w-3.5 h-3.5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Already Applied</span>
+                                    </button>
+                                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="p-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200" title="View Workshop Details">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    </a>
+                                </div>
+                            @elseif($userApplication->status === 'completed')
+                                <div class="flex items-center gap-2">
+                                    <button type="button" @click="navTo('certificates')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 transition-colors flex items-center gap-1.5 cursor-pointer">
+                                        <svg class="w-3.5 h-3.5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"/></svg>
+                                        <span>View Credential</span>
+                                    </button>
+                                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="p-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    </a>
+                                </div>
+                            @else
+                                <div class="flex items-center gap-2">
+                                    <button type="button" @click="navTo('applications')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer">
+                                        <span>Applied</span>
+                                    </button>
+                                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-2.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200">
+                                        <span>Details &nearr;</span>
+                                    </a>
+                                </div>
+                            @endif
+                        @else
+                            <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1">
+                                <span>Apply Now</span>
+                                <span>&rarr;</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
             @empty
@@ -362,7 +465,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
 
         <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm">
             @if($applications->count() > 0)
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto touch-scroll">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-50/90 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px] tracking-wider">
                             <tr>
@@ -652,8 +755,8 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
              @click="showCardModal = false"></div>
 
         <!-- Modal Dialog -->
-        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-            <div class="relative transform overflow-hidden rounded-3xl bg-slate-900 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl border border-amber-500/30 p-6 sm:p-8"
+        <div class="flex min-h-full items-center justify-center p-3 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-3xl bg-slate-900 text-left shadow-2xl transition-all my-4 sm:my-8 w-full max-w-xl max-h-[92vh] overflow-y-auto border border-amber-500/30 p-4 sm:p-8"
                  x-show="showCardModal"
                  x-transition:enter="ease-out duration-300"
                  x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -663,7 +766,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
                 <!-- Close Button -->
-                <button type="button" @click="showCardModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors cursor-pointer">
+                <button type="button" @click="showCardModal = false" class="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-white transition-colors cursor-pointer p-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
 

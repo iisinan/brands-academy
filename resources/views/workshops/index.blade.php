@@ -23,17 +23,17 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
     <!-- Filters -->
-    <div class="flex flex-wrap items-center gap-2 mb-8 border-b border-slate-200 pb-4">
-        <a href="{{ route('workshops.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $statusFilter == 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+    <div class="flex items-center gap-2 overflow-x-auto touch-scroll no-scrollbar mb-8 border-b border-slate-200 pb-4">
+        <a href="{{ route('workshops.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             All Programmes ({{ $counts['all'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'open']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $statusFilter == 'open' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white text-emerald-800 hover:bg-emerald-50 border border-emerald-200' }}">
+        <a href="{{ route('workshops.index', ['status' => 'open']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'open' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white text-emerald-800 hover:bg-emerald-50 border border-emerald-200' }}">
             Applications Open Now ({{ $counts['open'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'upcoming']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $statusFilter == 'upcoming' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white text-amber-800 hover:bg-amber-50 border border-amber-200' }}">
+        <a href="{{ route('workshops.index', ['status' => 'upcoming']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'upcoming' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white text-amber-800 hover:bg-amber-50 border border-amber-200' }}">
             Opening Soon ({{ $counts['upcoming'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'closed']) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all {{ $statusFilter == 'closed' ? 'bg-slate-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+        <a href="{{ route('workshops.index', ['status' => 'closed']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'closed' ? 'bg-slate-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Applications Closed ({{ $counts['closed'] }})
         </a>
     </div>
@@ -41,14 +41,34 @@
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @forelse($workshops as $workshop)
-            @php $window = $workshop->application_window_status; @endphp
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group">
+            @php
+                $window = $workshop->application_window_status;
+                $userApp = null;
+                if (auth()->check()) {
+                    $userApp = \App\Models\WorkshopApplication::where('workshop_id', $workshop->id)
+                        ->where(function ($q) {
+                            $q->where('user_id', auth()->id())
+                                ->orWhere('applicant_email', auth()->user()->email);
+                            if (auth()->user()->member) {
+                                $q->orWhere('member_id', auth()->user()->member->id);
+                            }
+                        })->first();
+                }
+            @endphp
+            <div class="bg-white rounded-2xl border {{ $userApp ? 'border-emerald-300 ring-1 ring-emerald-500/20' : 'border-slate-200' }} p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group">
                 <div>
                     <!-- Top Window Banner -->
                     <div class="flex items-center justify-between gap-2 mb-4">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
-                            {{ $window['label'] }}
-                        </span>
+                        @if($userApp)
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold {{ $userApp->status === 'accepted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800 border border-blue-300' }}">
+                                <span class="w-1.5 h-1.5 rounded-full {{ $userApp->status === 'accepted' ? 'bg-emerald-500' : 'bg-blue-500 animate-pulse' }}"></span>
+                                {{ $userApp->status === 'accepted' ? 'Enrolled' : 'Applied' }}
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
+                                {{ $window['label'] }}
+                            </span>
+                        @endif
                         <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                             {{ $workshop->delivery_mode }}
                         </span>
@@ -107,9 +127,16 @@
                         @endif
                     </div>
 
-                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="inline-flex items-center px-4 py-2.5 rounded-xl text-xs font-bold {{ $window['state'] == 'open' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-xs' : 'bg-slate-900 hover:bg-slate-800 text-white' }} transition-colors">
-                        {{ $window['state'] == 'open' ? 'Apply Now' : 'View Details' }}
-                    </a>
+                    @if($userApp)
+                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold {{ $userApp->status === 'accepted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800 border border-blue-300' }} transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>{{ $userApp->status === 'accepted' ? 'Enrolled • View' : 'Applied • View' }}</span>
+                        </a>
+                    @else
+                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="inline-flex items-center px-4 py-2.5 rounded-xl text-xs font-bold {{ $window['state'] == 'open' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-xs' : 'bg-slate-900 hover:bg-slate-800 text-white' }} transition-colors">
+                            {{ $window['state'] == 'open' ? 'Apply Now' : 'View Details' }}
+                        </a>
+                    @endif
                 </div>
             </div>
         @empty

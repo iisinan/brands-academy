@@ -44,7 +44,7 @@
     </div>
 
     <!-- 4 Core Pillars KPI Metric Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         
         <!-- Pillar 1: Workshops & Training -->
         <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:shadow-md transition-shadow relative overflow-hidden group">
@@ -215,7 +215,7 @@
             </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto touch-scroll">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
                     <tr>
@@ -316,7 +316,7 @@
             </a>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto touch-scroll">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
                     <tr>

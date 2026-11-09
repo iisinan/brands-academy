@@ -2,7 +2,11 @@
 <html lang="en" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#090d16">
     <title>@yield('title', 'Brands Academy Nigeria Foundation') | Institutional Portal</title>
     <meta name="description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
     
@@ -250,7 +254,7 @@
     </div>
 
     <!-- Main Content Slot -->
-    <main class="flex-1">
+    <main class="flex-1 pb-20 lg:pb-0">
         @yield('content')
     </main>
 
@@ -329,6 +333,47 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile App Bottom Navigation Bar -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
+        <div class="grid grid-cols-5 h-16 items-center px-1">
+            <!-- Home -->
+            <a href="{{ route('home') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('home') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="text-[10px]">Home</span>
+            </a>
+            <!-- Workshops -->
+            <a href="{{ route('workshops.index') }}" class="flex flex-col items-center justify-center py-1 transition-colors relative {{ request()->routeIs('workshops.*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <span class="absolute top-1.5 right-3 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span class="text-[10px]">Workshops</span>
+            </a>
+            <!-- Verify -->
+            <a href="{{ route('verify.certificate') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('verify.*') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span class="text-[10px]">Verify</span>
+            </a>
+            <!-- Membership -->
+            <a href="{{ route('membership.register') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('membership.register') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                <span class="text-[10px]">Join</span>
+            </a>
+            <!-- Portal / Sign In -->
+            @auth
+                <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('member.dashboard') }}" class="flex flex-col items-center justify-center py-1 transition-colors text-amber-400 font-bold">
+                    <div class="w-5 h-5 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center text-[10px] font-black mb-0.5">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                    <span class="text-[10px]">Portal</span>
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="flex flex-col items-center justify-center py-1 transition-colors {{ request()->routeIs('login') ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white' }}">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                    <span class="text-[10px]">Sign In</span>
+                </a>
+            @endauth
+        </div>
+    </nav>
 
     <script>
         const mobileMenuButton = document.getElementById('mobile-menu-button');

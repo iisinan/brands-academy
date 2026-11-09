@@ -63,17 +63,17 @@
                 </div>
 
                 <!-- Primary CTA Row -->
-                <div class="flex flex-wrap items-center gap-3.5">
-                    <a href="{{ route('membership.register') }}" class="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20 transition-all hover:-translate-y-0.5 flex items-center gap-2 group whitespace-nowrap">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3.5 w-full">
+                    <a href="{{ route('membership.register') }}" class="w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 group">
                         <span>Join Foundation Membership</span>
                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-slate-950 text-amber-400">24/7/365</span>
                         <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
-                    <a href="{{ route('workshops.index') }}" class="px-5 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700/80 transition-all flex items-center gap-2 whitespace-nowrap">
+                    <a href="{{ route('workshops.index') }}" class="w-full sm:w-auto px-5 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700/80 transition-all flex items-center justify-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>View Training Cohorts ({{ $openWorkshops->count() }} Open)</span>
                     </a>
-                    <a href="{{ route('verify.certificate') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-amber-300 transition-colors py-2 px-1">
+                    <a href="{{ route('verify.certificate') }}" class="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-amber-300 transition-colors py-2 px-1">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         <span>Verify Credential</span>
                     </a>
@@ -311,15 +311,35 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @forelse($allWorkshops as $workshop)
-            @php $window = $workshop->application_window_status; @endphp
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow">
+            @php
+                $window = $workshop->application_window_status;
+                $userApp = null;
+                if (auth()->check()) {
+                    $userApp = \App\Models\WorkshopApplication::where('workshop_id', $workshop->id)
+                        ->where(function ($q) {
+                            $q->where('user_id', auth()->id())
+                                ->orWhere('applicant_email', auth()->user()->email);
+                            if (auth()->user()->member) {
+                                $q->orWhere('member_id', auth()->user()->member->id);
+                            }
+                        })->first();
+                }
+            @endphp
+            <div class="bg-white rounded-2xl border {{ $userApp ? 'border-emerald-300 ring-1 ring-emerald-500/20' : 'border-slate-200' }} p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow">
                 <div>
                     <!-- Status & Track Badges -->
                     <div class="flex items-center justify-between gap-2 mb-4">
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
-                                {{ $window['label'] }}
-                            </span>
+                            @if($userApp)
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold {{ $userApp->status === 'accepted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800 border border-blue-300' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ $userApp->status === 'accepted' ? 'bg-emerald-500' : 'bg-blue-500 animate-pulse' }}"></span>
+                                    {{ $userApp->status === 'accepted' ? 'Enrolled' : 'Applied' }}
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border {{ $window['badge_class'] }}">
+                                    {{ $window['label'] }}
+                                </span>
+                            @endif
                             @if($workshop->is_featured)
                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
                                     <span>&#11088; Featured</span>
@@ -360,9 +380,16 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('workshops.show', $workshop->slug) }}" class="w-full inline-flex justify-center items-center py-2.5 px-4 rounded-xl text-xs font-bold {{ $window['state'] == 'open' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950' : 'bg-slate-100 hover:bg-slate-200 text-slate-700' }} transition-colors">
-                        {{ $window['state'] == 'open' ? 'Apply for this Cohort' : 'View Syllabus & Status' }}
-                    </a>
+                    @if($userApp)
+                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="w-full inline-flex justify-center items-center gap-1.5 py-2.5 px-4 rounded-xl text-xs font-bold {{ $userApp->status === 'accepted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800 border border-blue-300' }} transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>{{ $userApp->status === 'accepted' ? 'Enrolled • View Cohort' : 'Already Applied • View Status' }}</span>
+                        </a>
+                    @else
+                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="w-full inline-flex justify-center items-center py-2.5 px-4 rounded-xl text-xs font-bold {{ $window['state'] == 'open' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950' : 'bg-slate-100 hover:bg-slate-200 text-slate-700' }} transition-colors">
+                            {{ $window['state'] == 'open' ? 'Apply for this Cohort' : 'View Syllabus & Status' }}
+                        </a>
+                    @endif
                 </div>
             </div>
         @empty

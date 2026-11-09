@@ -164,7 +164,7 @@
             <span class="text-[11px] text-slate-400 font-medium">Automatic NIBSS &amp; Gateway reconciliation</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto touch-scroll">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
                     <tr>
@@ -330,7 +330,7 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="opacity-100 scale-100"
              x-transition:leave-end="opacity-0 scale-95"
-             class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+             class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] overflow-y-auto">
 
             <!-- Modal Header -->
             <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">

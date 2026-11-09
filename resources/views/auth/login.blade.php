@@ -38,7 +38,7 @@
     <div 
         x-data="loginPortalForm()"
         x-init="if (email) checkRole()"
-        class="w-full max-w-md bg-white rounded-3xl border border-slate-200 p-7 sm:p-10 shadow-2xl relative z-10"
+        class="w-full max-w-md bg-white rounded-3xl border border-slate-200 p-5 sm:p-10 shadow-2xl relative z-10"
     >
         <!-- Top accent gradient line -->
         <div class="h-1.5 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-500 absolute top-0 left-0 rounded-t-3xl"></div>
