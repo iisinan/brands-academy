@@ -43,18 +43,20 @@
     verificationUrl: @js(route('verify.certificate', $member->qr_code_token))
 })"
 @open-card-modal.window="showCardModal = true"
-class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
 
-    <!-- Member Executive Welcome Card -->
-    <div id="overview" class="scroll-mt-20 relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
+    <!-- ==================== 0. EXECUTIVE OVERVIEW CARD ==================== -->
+    <div id="overview" class="scroll-mt-24 relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 border border-slate-800 shadow-xl">
         <!-- Ambient decorative glow -->
         <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10">
+        <div class="relative z-10 space-y-6">
+            <!-- Top Profile & Identification Row -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-bold text-2xl sm:text-3xl flex items-center justify-center shadow-lg font-serif-title ring-4 ring-amber-500/20 shrink-0">
+                    <!-- Member Avatar with Gold Gradient Ring -->
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-2xl sm:text-3xl flex items-center justify-center shadow-lg font-serif-title ring-4 ring-amber-500/30 shrink-0">
                         {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
                     </div>
                     <div>
@@ -85,16 +87,16 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     </div>
                 </div>
 
-                <!-- Member ID Pill & Quick Actions -->
+                <!-- Official Member ID Pill & Quick Credential Tools -->
                 <div class="flex flex-wrap items-center gap-3">
                     @if(auth()->user()?->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-2.5 rounded-2xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors flex items-center gap-1.5 whitespace-nowrap shadow-xs">
                             &larr; Admin Control Panel
                         </a>
                     @endif
-                    <div class="bg-white/10 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/15 flex items-center justify-between sm:justify-start gap-4 shadow-lg">
+                    <div class="bg-white/10 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-white/15 flex items-center justify-between sm:justify-start gap-4 shadow-lg">
                         <div>
-                            <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Official Member ID</span>
+                            <span class="block text-[9px] uppercase font-bold text-slate-400 tracking-wider">Official Member ID</span>
                             <span class="text-sm sm:text-base font-extrabold font-mono text-amber-400">{{ $member->member_number }}</span>
                         </div>
                         <div class="flex items-center gap-2">
@@ -118,410 +120,523 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             </div>
 
             <!-- Key Metrics Summary Strip -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800/80">
-                <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/60">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
+                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
                     <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Member Classification</span>
-                    <span class="text-sm sm:text-base font-extrabold text-white mt-0.5 block">{{ $member->category_label }}</span>
+                    <span class="text-base sm:text-lg font-extrabold text-white mt-1 block">{{ $member->category_label }}</span>
+                    <span class="text-[11px] text-emerald-400 font-semibold mt-0.5 block">&bull; Good Standing</span>
                 </div>
-                <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/60">
+                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
                     <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Cohort Applications</span>
-                    <span class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5 block">{{ $applications->count() }} Submitted</span>
+                    <span class="text-base sm:text-lg font-extrabold text-amber-400 mt-1 block">{{ $applications->count() }} Submitted</span>
+                    <span class="text-[11px] text-slate-400 mt-0.5 block">25% Discount Applied</span>
                 </div>
-                <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/60">
+                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
                     <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Earned Credentials</span>
-                    <span class="text-sm sm:text-base font-extrabold text-emerald-400 mt-0.5 block">{{ $certificates->count() }} Issued</span>
+                    <span class="text-base sm:text-lg font-extrabold text-emerald-400 mt-1 block">{{ $certificates->count() }} Issued</span>
+                    <span class="text-[11px] text-slate-400 mt-0.5 block">Cryptographically Signed</span>
                 </div>
-                <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/60">
+                <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
                     <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Registered Since</span>
-                    <span class="text-sm sm:text-base font-extrabold text-slate-200 mt-0.5 block">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+                    <span class="text-base sm:text-lg font-extrabold text-slate-200 mt-1 block">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
+                    <span class="text-[11px] text-slate-400 mt-0.5 block font-mono">RC 7344471</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 1. Currently Open Cohorts Fast-Apply Section -->
-    <div id="cohorts" class="scroll-mt-28">
-        <div class="flex items-center justify-between mb-4">
+    <!-- ==================== 1. WORKSHOP COHORTS SECTION ==================== -->
+    <section id="cohorts" class="scroll-mt-24 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-800 border border-amber-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        25% Member Benefit Automatically Applied
+                    </span>
+                    <span class="text-slate-400 text-xs hidden sm:inline">&bull;</span>
+                    <span class="text-slate-500 text-xs hidden sm:inline">No Promo Code Required</span>
+                </div>
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Cohorts Open for Applications</h2>
-                <p class="text-xs sm:text-sm text-slate-500">Apply during active windows with your verified Member ID.</p>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Enroll during active application windows with your verified Member ID.</p>
             </div>
-            <a href="{{ route('workshops.index') }}" class="text-xs sm:text-sm font-bold text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-1">
-                <span>View all cohorts</span>
+            <a href="{{ route('workshops.index') }}" class="text-xs sm:text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 self-start sm:self-auto hover:underline">
+                <span>View Full Curriculum &amp; Faculty</span>
                 <span>&rarr;</span>
             </a>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse($openWorkshops as $workshop)
+                @php $window = $workshop->application_window_status; @endphp
+                <div class="bg-white rounded-3xl border border-slate-200/90 hover:border-amber-400 p-6 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Cohorts Open for Applications</h2>
-                        <p class="text-xs sm:text-sm text-slate-500">Apply during active windows with your verified Member ID.</p>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border {{ $window['badge_class'] }}">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                {{ $window['label'] }}
+                            </span>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                                {{ ucfirst($workshop->delivery_mode) }}
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-amber-600 transition-colors leading-snug font-serif-title">
+                            {{ $workshop->title }}
+                        </h3>
+                        <div class="text-xs text-amber-700 font-semibold mb-3">
+                            {{ $workshop->track_label }}
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+                            {{ $workshop->tagline ?? $workshop->description }}
+                        </p>
                     </div>
-                    <a href="{{ route('workshops.index') }}" class="text-xs sm:text-sm font-bold text-amber-600 hover:text-amber-700 hover:underline flex items-center gap-1">
-                        <span>View all cohorts</span>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-slate-400">Member Tuition (25% Off)</span>
+                            @if($workshop->fee_type == 'free')
+                                <span class="text-xs sm:text-sm font-extrabold text-emerald-700">100% Free Track</span>
+                            @else
+                                <div class="flex items-baseline gap-1.5">
+                                    <span class="text-xs sm:text-sm font-extrabold text-slate-900 font-mono">NGN {{ number_format($workshop->member_fee_amount) }}</span>
+                                    <span class="text-[10px] text-slate-400 line-through">NGN {{ number_format($workshop->fee_amount) }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center gap-1">
+                            <span>Apply Now</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full bg-white p-8 sm:p-10 rounded-3xl border border-dashed border-slate-300 text-center shadow-xs">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base mb-1 font-serif-title">Admissions Windows Currently Evaluated</h4>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-lg mx-auto leading-relaxed">
+                        All active cohorts are currently in session. The Academy faculty is preparing the upcoming enrollment cycle. You will be notified via email when the next cohort opens.
+                    </p>
+                    <a href="{{ route('workshops.index') }}" class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors">
+                        <span>Browse Workshop Archive</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+    <!-- ==================== 2. MY EARNED CERTIFICATES SECTION ==================== -->
+    <section id="certificates" class="scroll-mt-24 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        Verifiable Credentials Registry &bull; CAC IT No. 7344471
+                    </span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Earned Certificates</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Official, verifiable credentials awarded upon completing Academy cohorts.</p>
+            </div>
+            <a href="{{ route('verify.certificate') }}" target="_blank" class="text-xs sm:text-sm font-bold text-slate-600 hover:text-amber-700 flex items-center gap-1 self-start sm:self-auto hover:underline">
+                <span>Public Verification Search</span>
+                <span>&nearr;</span>
+            </a>
+        </div>
+
+        @if($certificates->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach($certificates as $cert)
+                    <div class="bg-white rounded-3xl border-2 border-amber-500/40 p-6 sm:p-7 shadow-md relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    Verified Credential
+                                </span>
+                                <span class="text-xs font-mono font-bold text-slate-600">{{ $cert->certificate_number }}</span>
+                            </div>
+
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-1 font-serif-title">
+                                {{ $cert->course_title }}
+                            </h3>
+                            <div class="text-xs font-semibold text-amber-700 mb-2">
+                                {{ $cert->track_tier }}
+                            </div>
+                            <p class="text-xs text-slate-500 mb-4">
+                                Issued on {{ $cert->issued_at->format('F d, Y') }} &bull; Brands Academy Nigeria Foundation
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
+                            <a href="{{ route('certificates.download', $cert->verification_token) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-xs">
+                                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span>Download PDF</span>
+                            </a>
+                            <a href="{{ route('verify.certificate', $cert->verification_token) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                <span>Verify Online</span>
+                            </a>
+                            <button type="button" @click="copyCertLink('{{ route('verify.certificate', $cert->verification_token) }}')" class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer">
+                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span x-text="copiedCertUrl === '{{ route('verify.certificate', $cert->verification_token) }}' ? 'Copied!' : 'Copy Link'">Copy Link</span>
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <!-- Distinguished Credential Journey Roadmap (Polished Empty State) -->
+            <div class="bg-gradient-to-br from-white via-amber-50/20 to-white rounded-3xl border border-amber-500/30 p-6 sm:p-8 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-amber-500/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center shrink-0 shadow-md">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        </div>
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-900 border border-amber-500/30 mb-1">
+                                Foundation Credential Pathway
+                            </span>
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-900 font-serif-title">Your Verifiable Certification Portfolio</h3>
+                            <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+                                Verifiable Certificates of Achievement with cryptographic tokens and live QR validation are automatically minted upon cohort graduation and portfolio review.
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ route('workshops.index') }}" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs flex items-center justify-center gap-1.5 shrink-0 self-start md:self-auto">
+                        <span>Browse Cohorts (25% Off)</span>
                         <span>&rarr;</span>
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse($openWorkshops as $workshop)
-                        @php $window = $workshop->application_window_status; @endphp
-                        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-                            <div>
-                                <div class="flex items-center justify-between gap-2 mb-3">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border {{ $window['badge_class'] }}">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        {{ $window['label'] }}
-                                    </span>
-                                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                                        {{ ucfirst($workshop->delivery_mode) }}
-                                    </span>
-                                </div>
-                                <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-1 group-hover:text-amber-600 transition-colors leading-snug">
-                                    {{ $workshop->title }}
-                                </h3>
-                                <div class="text-xs text-amber-700 font-semibold mb-3">
-                                    {{ $workshop->track_label }}
-                                </div>
-                                <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
-                                    {{ $workshop->tagline ?? $workshop->description }}
-                                </p>
-                            </div>
-                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                                <div>
-                                    <span class="block text-[10px] uppercase font-bold text-slate-400">Member Tuition (25% Off)</span>
-                                    @if($workshop->fee_type == 'free')
-                                        <span class="text-xs sm:text-sm font-extrabold text-emerald-700">100% Free Track</span>
-                                    @else
-                                        <div class="flex items-baseline gap-1.5">
-                                            <span class="text-xs sm:text-sm font-extrabold text-slate-900 font-mono">NGN {{ number_format($workshop->member_fee_amount) }}</span>
-                                            <span class="text-[10px] text-slate-400 line-through">NGN {{ number_format($workshop->fee_amount) }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                <a href="{{ route('workshops.show', $workshop->slug) }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs">
-                                    Apply Now &rarr;
-                                </a>
-                            </div>
+                <!-- 3-Step Milestone Graphic -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-extrabold text-xs flex items-center justify-center">1</span>
+                            <h4 class="text-xs font-bold text-slate-900">Cohort Enrollment</h4>
                         </div>
-                    @empty
-                        <div class="col-span-3 bg-white p-8 rounded-2xl border border-dashed border-slate-200 text-center">
-                            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            </div>
-                            <h4 class="font-bold text-slate-800 text-sm mb-1">No Cohorts Currently Open</h4>
-                            <p class="text-xs text-slate-500 max-w-md mx-auto">
-                                All cohort application windows are currently closed for admissions evaluation. Check back soon for the next enrollment schedule.
-                            </p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- 2. My Earned Certificates & Digital Badges -->
-            <div id="certificates" class="scroll-mt-28">
-                <div class="mb-4">
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Earned Certificates</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Official, verifiable credentials awarded upon completing Academy cohorts.</p>
-                </div>
-
-                @if($certificates->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @foreach($certificates as $cert)
-                            <div class="bg-white rounded-2xl border-2 border-amber-500/30 p-6 shadow-md relative overflow-hidden flex flex-col justify-between">
-                                <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-amber-500/10 rounded-full blur-xl pointer-events-none"></div>
-                                <div>
-                                    <div class="flex items-center justify-between gap-2 mb-3">
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                            <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                            Verified Credential
-                                        </span>
-                                        <span class="text-xs font-mono font-bold text-slate-500">{{ $cert->certificate_number }}</span>
-                                    </div>
-
-                                    <h3 class="text-lg font-bold text-slate-900 mb-1 font-serif-title">
-                                        {{ $cert->course_title }}
-                                    </h3>
-                                    <div class="text-xs font-semibold text-amber-700 mb-2">
-                                        {{ $cert->track_tier }}
-                                    </div>
-                                    <p class="text-xs text-slate-500 mb-4">
-                                        Issued on {{ $cert->issued_at->format('F d, Y') }} &bull; Brands Academy Nigeria Foundation
-                                    </p>
-                                </div>
-
-                                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
-                                    <a href="{{ route('certificates.download', $cert->verification_token) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-xs">
-                                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                        Download PDF
-                                    </a>
-                                    <a href="{{ route('verify.certificate', $cert->verification_token) }}" target="_blank" class="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                        Verify Online
-                                    </a>
-                                    <!-- 1-Click Copy Verification URL -->
-                                    <button type="button" @click="copyCertLink('{{ route('verify.certificate', $cert->verification_token) }}')" class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors">
-                                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                                        <span x-text="copiedCertUrl === '{{ route('verify.certificate', $cert->verification_token) }}' ? 'Copied!' : 'Copy Link'">Copy Link</span>
-                                    </button>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="bg-white p-8 sm:p-10 rounded-2xl border border-dashed border-slate-200 text-center">
-                        <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-3">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <h4 class="font-bold text-slate-800 text-sm sm:text-base mb-1">No Certificates Issued Yet</h4>
-                        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-                            Once you apply for and successfully complete an academy cohort or workshop, your verifiable Certificate of Achievement will appear here with cryptographic validation.
+                        <p class="text-[11px] text-slate-500 leading-relaxed">
+                            Apply with your 25% member tuition discount automatically applied without promo codes.
                         </p>
                     </div>
-                @endif
-            </div>
 
-            <!-- 3. My Submitted Applications History -->
-            <div id="applications" class="scroll-mt-28">
-                <div class="mb-4">
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Application History</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Track admission decisions and cohort progression.</p>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-                    @if($applications->count() > 0)
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px]">
-                                    <tr>
-                                        <th class="px-6 py-4">Programme / Workshop</th>
-                                        <th class="px-6 py-4">Submission Date</th>
-                                        <th class="px-6 py-4">Tuition Type</th>
-                                        <th class="px-6 py-4">Admissions Status</th>
-                                        <th class="px-6 py-4 text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100">
-                                    @foreach($applications as $app)
-                                        <tr class="hover:bg-slate-50/60 transition-colors">
-                                            <td class="px-6 py-4">
-                                                <div class="font-bold text-slate-900 text-sm">{{ $app->workshop->title }}</div>
-                                                <div class="text-[11px] text-amber-700 font-semibold">{{ $app->workshop->track_label }}</div>
-                                            </td>
-                                            <td class="px-6 py-4 text-slate-600">
-                                                {{ $app->created_at->format('M d, Y') }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                @if($app->scholarship_requested)
-                                                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">
-                                                        Subsidy Requested
-                                                    </span>
-                                                @else
-                                                    <span class="text-slate-700 font-semibold uppercase text-[10px]">
-                                                        {{ $app->workshop->fee_type }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                @if($app->status === 'accepted')
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                                        Accepted &bull; Active
-                                                    </span>
-                                                @elseif($app->status === 'pending')
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                                        Under Admissions Review
-                                                    </span>
-                                                @elseif($app->status === 'completed')
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-                                                        <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                                        Cohort Completed
-                                                    </span>
-                                                @else
-                                                    <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold {{ $app->status_badge['class'] }}">
-                                                        {{ $app->status_badge['label'] }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-right space-x-2">
-                                                @if(in_array($app->status, ['accepted', 'completed']))
-                                                    <a href="{{ route('member.portfolio.create', $app->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                                        {{ $app->portfolioSubmissions->count() > 0 ? 'Portfolio (' . $app->portfolioSubmissions->count() . ')' : 'Submit Portfolio' }}
-                                                    </a>
-                                                @endif
-                                                <a href="{{ route('workshops.show', $app->workshop->slug) }}" class="font-bold text-slate-600 hover:text-amber-600 text-xs">
-                                                    View Cohort &rarr;
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-slate-900 text-amber-400 font-extrabold text-xs flex items-center justify-center">2</span>
+                            <h4 class="text-xs font-bold text-slate-900">Curriculum &amp; Portfolio</h4>
                         </div>
-                    @else
-                        <div class="p-8 text-center text-xs sm:text-sm text-slate-500">
-                            You have not applied for any training cohorts yet. Check the open cohorts section above to apply!
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- 4. Member Profile & Contact Information -->
-            <div id="profile" class="scroll-mt-28 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                <div class="mb-6">
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Member Profile & Registry Information</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Keep your professional affiliations and contact records up to date.</p>
-                </div>
-
-                <form action="{{ route('member.profile.update') }}" method="POST" @submit="isSubmitting = true" class="space-y-4">
-                    @csrf
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Phone Number with Nigerian & International Carrier Detection -->
-                        <div>
-                            <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-bold text-slate-700 uppercase">Phone Number *</label>
-                                <div class="flex items-center gap-1.5">
-                                    <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span x-text="phoneCarrier"></span>
-                                    </span>
-                                    <span x-show="isPhoneValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        </span>
-                                        <span>Valid</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <input type="text" name="phone" x-model="phone" @blur="formatPhone()" required
-                                   class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive focus:outline-none"
-                                   :class="isPhoneValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'"
-                                   placeholder="e.g. +234 803 123 4567">
-                        </div>
-
-                        <!-- Country Selection -->
-                        <div>
-                            <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-bold text-slate-700 uppercase">Country *</label>
-                                <span x-show="isCountryValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                        <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                    </span>
-                                    <span>Country Set</span>
-                                </span>
-                            </div>
-                            <select name="country" x-model="country" @change="onCountryChange()" required
-                                    class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive bg-white focus:outline-none"
-                                    :class="isCountryValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
-                                <optgroup label="Primary Country">
-                                    <option value="Nigeria">Nigeria</option>
-                                </optgroup>
-                                <optgroup label="Neighboring &amp; West African Countries">
-                                    <option value="Benin">Benin Republic</option>
-                                    <option value="Cameroon">Cameroon</option>
-                                    <option value="Chad">Chad</option>
-                                    <option value="Niger">Niger Republic</option>
-                                    <option value="Ghana">Ghana</option>
-                                    <option value="Togo">Togo</option>
-                                    <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-                                    <option value="Senegal">Senegal</option>
-                                    <option value="Sierra Leone">Sierra Leone</option>
-                                    <option value="Liberia">Liberia</option>
-                                    <option value="The Gambia">The Gambia</option>
-                                    <option value="Mali">Mali</option>
-                                    <option value="Guinea">Guinea</option>
-                                    <option value="Burkina Faso">Burkina Faso</option>
-                                </optgroup>
-                                <optgroup label="Other African Nations">
-                                    <option value="Kenya">Kenya</option>
-                                    <option value="Rwanda">Rwanda</option>
-                                    <option value="South Africa">South Africa</option>
-                                    <option value="Egypt">Egypt</option>
-                                    <option value="Uganda">Uganda</option>
-                                    <option value="Tanzania">Tanzania</option>
-                                    <option value="Ethiopia">Ethiopia</option>
-                                </optgroup>
-                                <optgroup label="Diaspora &amp; International">
-                                    <option value="United Kingdom">United Kingdom</option>
-                                    <option value="United States">United States</option>
-                                    <option value="Canada">Canada</option>
-                                    <option value="United Arab Emirates">United Arab Emirates</option>
-                                    <option value="Other">Other International</option>
-                                </optgroup>
-                            </select>
-                        </div>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">
+                            Complete live modules with experienced faculty and submit your practical portfolio.
+                        </p>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- State of Residence (Dropdown for Nigeria, Interactive input for Neighbors/International) -->
-                        <div>
-                            <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-bold text-slate-700 uppercase" x-text="country === 'Nigeria' ? 'State of Residence *' : 'State / Province / Region *'"></label>
-                                <span x-show="isStateValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                        <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                    </span>
-                                    <span x-text="country === 'Nigeria' ? 'State Set' : 'Region Set'"></span>
-                                </span>
-                            </div>
-
-                            <!-- If Nigeria: Dropdown with ALL 36 Nigerian States + FCT Abuja -->
-                            <template x-if="country === 'Nigeria'">
-                                <select name="state" x-model="state" required
-                                        class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive bg-white focus:outline-none"
-                                        :class="isStateValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
-                                    <option value="" disabled>-- Select Nigerian State --</option>
-                                    <template x-for="st in nigerianStates" :key="st">
-                                        <option :value="st" x-text="st" :selected="state === st"></option>
-                                    </template>
-                                </select>
-                            </template>
-
-                            <!-- If Neighboring / International: Region / Province input with datalist -->
-                            <template x-if="country !== 'Nigeria'">
-                                <div>
-                                    <input type="text" name="state" x-model="state" list="dashboard-regions" required
-                                           class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive focus:outline-none"
-                                           :class="isStateValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'"
-                                           :placeholder="getRegionPlaceholder()">
-                                    <datalist id="dashboard-regions">
-                                        <template x-for="rg in currentCountryRegions" :key="rg">
-                                            <option :value="rg"></option>
-                                        </template>
-                                    </datalist>
-                                </div>
-                            </template>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-extrabold text-xs flex items-center justify-center">3</span>
+                            <h4 class="text-xs font-bold text-slate-900">Verifiable Credential</h4>
                         </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Organization or Institution</label>
-                            <input type="text" name="institution_or_company" value="{{ old('institution_or_company', $member->institution_or_company) }}" placeholder="e.g. Veritas Design Studio / Ahmadu Bello University" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Designation / Role</label>
-                            <input type="text" name="designation" value="{{ old('designation', $member->designation) }}" placeholder="e.g. Senior Brand Strategist / Marketing Fellow" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        </div>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">
+                            Receive your official cryptographic certificate, digital badge, and public registry token.
+                        </p>
                     </div>
+                </div>
+            </div>
+        @endif
+    </section>
 
+    <!-- ==================== 3. MY APPLICATION HISTORY SECTION ==================== -->
+    <section id="applications" class="scroll-mt-24 space-y-5">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Application History</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Track admission decisions, tuition verification, and cohort progression.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-xl font-mono">
+                {{ $applications->count() }} Total
+            </span>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm">
+            @if($applications->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50/90 border-b border-slate-200 text-slate-500 uppercase font-bold text-[10px] tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">Programme / Workshop Cohort</th>
+                                <th class="px-6 py-4">Submission Date</th>
+                                <th class="px-6 py-4">Tuition Type</th>
+                                <th class="px-6 py-4">Admissions Status</th>
+                                <th class="px-6 py-4 text-right">Cohort Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @foreach($applications as $app)
+                                <tr class="hover:bg-slate-50/60 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="font-bold text-slate-900 text-sm font-serif-title">{{ $app->workshop->title }}</div>
+                                        <div class="text-[11px] text-amber-700 font-semibold mt-0.5">{{ $app->workshop->track_label }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-600 font-mono text-[11px]">
+                                        {{ $app->created_at->format('M d, Y') }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if($app->scholarship_requested)
+                                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                                Subsidized
+                                            </span>
+                                        @else
+                                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">
+                                                Member Rate (25% Applied)
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if($app->status === 'accepted')
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                Accepted &bull; Active
+                                            </span>
+                                        @elseif($app->status === 'pending')
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                                Under Admissions Review
+                                            </span>
+                                        @elseif($app->status === 'completed')
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                                                <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                Cohort Completed
+                                            </span>
+                                        @else
+                                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold {{ $app->status_badge['class'] }}">
+                                                {{ $app->status_badge['label'] }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        @if(in_array($app->status, ['accepted', 'completed']))
+                                            <a href="{{ route('member.portfolio.create', $app->id) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                {{ $app->portfolioSubmissions->count() > 0 ? 'Portfolio (' . $app->portfolioSubmissions->count() . ')' : 'Submit Portfolio' }}
+                                            </a>
+                                        @endif
+                                        <a href="{{ route('workshops.show', $app->workshop->slug) }}" class="font-bold text-slate-700 hover:text-amber-600 text-xs inline-flex items-center gap-1 hover:underline">
+                                            <span>View Cohort</span>
+                                            <span>&rarr;</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="p-10 text-center text-xs sm:text-sm text-slate-500">
+                    <p>You have not applied for any training cohorts yet.</p>
+                    <a href="{{ route('workshops.index') }}" class="mt-3 inline-flex items-center gap-1 text-amber-600 hover:underline font-bold">
+                        Browse active cohort application windows &rarr;
+                    </a>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    <!-- ==================== 4. MEMBER PROFILE & REGISTRY SETTINGS ==================== -->
+    <section id="profile" class="scroll-mt-24 space-y-5">
+        <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Member Profile &amp; Registry Information</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Keep your official membership directory details, jurisdictional record, and professional affiliations current.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
+
+            <!-- Read-only Official Registry Summary Banner -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 font-extrabold text-sm flex items-center justify-center font-serif-title shrink-0">
+                        {{ substr($member->first_name, 0, 1) }}{{ substr($member->last_name, 0, 1) }}
+                    </div>
                     <div>
-                        <div class="flex items-center justify-between mb-1">
-                            <label class="block text-xs font-bold text-slate-700 uppercase">Professional Bio / Focus</label>
-                            <span class="text-[11px] text-slate-400" x-text="`${1000 - bio.length} characters left`"></span>
-                        </div>
-                        <textarea name="bio" x-model="bio" maxlength="1000" rows="3" placeholder="Brief statement regarding your practice, expertise, and institutional focus..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                        <span class="block text-[10px] uppercase font-bold text-slate-400">Registered Name &bull; {{ $member->category_label }}</span>
+                        <span class="text-sm font-bold text-slate-900">{{ $member->full_name }}</span>
                     </div>
-
-                    <div class="pt-2">
-                        <button type="submit" :disabled="isSubmitting" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors flex items-center gap-2 shadow-xs disabled:opacity-70">
-                            <svg x-show="isSubmitting" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            <span>Save Profile Changes</span>
-                        </button>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-mono">
+                    <div>
+                        <span class="block text-[9px] uppercase font-bold text-slate-400">Member ID</span>
+                        <span class="font-extrabold text-amber-700">{{ $member->member_number }}</span>
                     </div>
-                </form>
+                    <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+                    <div>
+                        <span class="block text-[9px] uppercase font-bold text-slate-400">Official Email</span>
+                        <span class="text-slate-700 font-sans">{{ $member->email }}</span>
+                    </div>
+                </div>
             </div>
 
-    <!-- Digital Credential Modal -->
+            <!-- Profile Edit Form -->
+            <form action="{{ route('member.profile.update') }}" method="POST" @submit="isSubmitting = true" class="space-y-5">
+                @csrf
+
+                <!-- Row 1: Phone Number & Country -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <!-- Phone Number with Nigerian & International Carrier Detection -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Phone Number *</label>
+                            <div class="flex items-center gap-1.5">
+                                <span x-show="phoneCarrier" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    <span x-text="phoneCarrier"></span>
+                                </span>
+                                <span x-show="isPhoneValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                        <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    </span>
+                                    <span>Valid</span>
+                                </span>
+                            </div>
+                        </div>
+                        <input type="text" name="phone" x-model="phone" @blur="formatPhone()" required
+                               class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive focus:outline-none"
+                               :class="isPhoneValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'"
+                               placeholder="e.g. +234 803 123 4567">
+                    </div>
+
+                    <!-- Country Selection -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Country *</label>
+                            <span x-show="isCountryValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                    <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                </span>
+                                <span>Country Set</span>
+                            </span>
+                        </div>
+                        <select name="country" x-model="country" @change="onCountryChange()" required
+                                class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive bg-white focus:outline-none"
+                                :class="isCountryValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                            <optgroup label="Primary Country">
+                                <option value="Nigeria">Nigeria</option>
+                            </optgroup>
+                            <optgroup label="Neighboring &amp; West African Countries">
+                                <option value="Benin">Benin Republic</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Niger">Niger Republic</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="The Gambia">The Gambia</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                            </optgroup>
+                            <optgroup label="Other African Nations">
+                                <option value="Kenya">Kenya</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                            </optgroup>
+                            <optgroup label="Diaspora &amp; International">
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="Other">Other International</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 2: State of Residence & Organization -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <!-- State of Residence (Dropdown for Nigeria, Interactive input for Neighbors/International) -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider" x-text="country === 'Nigeria' ? 'State of Residence *' : 'State / Province / Region *'"></label>
+                            <span x-show="isStateValid" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
+                                    <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                </span>
+                                <span x-text="country === 'Nigeria' ? 'State Set' : 'Region Set'"></span>
+                            </span>
+                        </div>
+
+                        <!-- If Nigeria: Dropdown with ALL 36 Nigerian States + FCT Abuja -->
+                        <template x-if="country === 'Nigeria'">
+                            <select name="state" x-model="state" required
+                                    class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive bg-white focus:outline-none"
+                                    :class="isStateValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'">
+                                <option value="" disabled>-- Select Nigerian State --</option>
+                                <template x-for="st in nigerianStates" :key="st">
+                                    <option :value="st" x-text="st" :selected="state === st"></option>
+                                </template>
+                            </select>
+                        </template>
+
+                        <!-- If Neighboring / International: Region / Province input with datalist -->
+                        <template x-if="country !== 'Nigeria'">
+                            <div>
+                                <input type="text" name="state" x-model="state" list="dashboard-regions" required
+                                       class="w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm field-interactive focus:outline-none"
+                                       :class="isStateValid ? 'border-emerald-500/80 ring-2 ring-emerald-500/15 bg-emerald-50/10' : 'border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20'"
+                                       :placeholder="getRegionPlaceholder()">
+                                <datalist id="dashboard-regions">
+                                    <template x-for="rg in currentCountryRegions" :key="rg">
+                                        <option :value="rg"></option>
+                                    </template>
+                                </datalist>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Organization / Institution -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Organization or Institution</label>
+                        <input type="text" name="institution_or_company" value="{{ old('institution_or_company', $member->institution_or_company) }}" placeholder="e.g. Veritas Design Studio / Ahmadu Bello University" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+                    </div>
+                </div>
+
+                <!-- Row 3: Designation / Professional Title -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Designation / Professional Title</label>
+                    <input type="text" name="designation" value="{{ old('designation', $member->designation) }}" placeholder="e.g. Senior Brand Strategist / Marketing Fellow" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+                </div>
+
+                <!-- Row 4: Professional Bio -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Professional Bio / Institutional Focus</label>
+                        <span class="text-[11px] text-slate-400 font-mono" x-text="`${1000 - bio.length} chars left`"></span>
+                    </div>
+                    <textarea name="bio" x-model="bio" maxlength="1000" rows="3" placeholder="Brief statement regarding your practice, expertise, and institutional focus..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 leading-relaxed"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-between">
+                    <p class="text-[11px] text-slate-400">
+                        Changes update your official foundation registry file and verify certificates.
+                    </p>
+                    <button type="submit" :disabled="isSubmitting" class="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors flex items-center gap-2 shadow-xs disabled:opacity-70 cursor-pointer">
+                        <svg x-show="isSubmitting" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span>Save Profile Changes</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==================== 5. DIGITAL CREDENTIAL MODAL ==================== -->
     <div x-show="showCardModal" x-cloak
          class="fixed inset-0 z-50 overflow-y-auto"
          role="dialog" aria-modal="true">
@@ -548,7 +663,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
                 <!-- Close Button -->
-                <button type="button" @click="showCardModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors">
+                <button type="button" @click="showCardModal = false" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
 
@@ -612,13 +727,13 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     </a>
 
                     <!-- 1-Click Copy Member ID -->
-                    <button type="button" @click="copyMemberId()" class="py-2.5 px-4 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors flex items-center justify-center gap-2">
+                    <button type="button" @click="copyMemberId()" class="py-2.5 px-4 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors flex items-center justify-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         <span x-text="copiedMemberId ? 'Member ID Copied!' : 'Copy Member ID'"></span>
                     </button>
 
                     <!-- 1-Click Copy Verification URL -->
-                    <button type="button" @click="copyVerificationUrl()" class="py-2.5 px-4 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors flex items-center justify-center gap-2">
+                    <button type="button" @click="copyVerificationUrl()" class="py-2.5 px-4 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors flex items-center justify-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                         <span x-text="copiedUrl ? 'Verification Link Copied!' : 'Copy Verification Link'"></span>
                     </button>
@@ -662,19 +777,6 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             copiedMemberId: false,
             copiedUrl: false,
             copiedCertUrl: '',
-            activeSection: 'cohorts',
-            mobileSidebarOpen: false,
-
-            scrollTo(sectionId) {
-                this.activeSection = sectionId;
-                this.mobileSidebarOpen = false;
-                const el = document.getElementById(sectionId);
-                if (el) {
-                    const yOffset = -90;
-                    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                }
-            },
 
             nigerianStates: [
                 'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',

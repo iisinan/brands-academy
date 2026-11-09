@@ -442,6 +442,58 @@
 
             </header>
 
+            <!-- Sticky Horizontal Section Navigation Tabs Strip -->
+            <div class="sticky top-[57px] sm:top-[61px] z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-2">
+                <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold">
+                    <button type="button" @click="navTo('overview')"
+                            :class="currentSection === 'overview' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                            class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Overview</span>
+                    </button>
+
+                    <button type="button" @click="navTo('cohorts')"
+                            :class="currentSection === 'cohorts' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                            class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span>Workshops</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'cohorts' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-amber-100 text-amber-800 font-bold'">25% Off</span>
+                    </button>
+
+                    <button type="button" @click="navTo('certificates')"
+                            :class="currentSection === 'certificates' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                            class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        <span>Certificates</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'certificates' ? 'bg-emerald-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $certificatesCount }}</span>
+                    </button>
+
+                    <button type="button" @click="navTo('applications')"
+                            :class="currentSection === 'applications' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                            class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        <span>Applications</span>
+                        <span class="px-1.5 py-0.2 text-[10px] rounded-full" :class="currentSection === 'applications' ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-slate-100 text-slate-600 font-bold'">{{ $applicationsCount }}</span>
+                    </button>
+
+                    <button type="button" @click="navTo('profile')"
+                            :class="currentSection === 'profile' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'"
+                            class="px-3 py-1.5 rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <span>Profile &amp; Registry</span>
+                    </button>
+
+                    <div class="h-4 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+
+                    <!-- Digital ID Quick View Button -->
+                    <button type="button" @click="openCardModal()"
+                            class="px-3 py-1.5 rounded-xl text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ml-auto font-bold text-xs">
+                        <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <span>Digital ID QR</span>
+                    </button>
+                </nav>
+            </div>
+
             <!-- Alerts & Flash Notifications -->
             <div class="px-4 sm:px-6 lg:px-8 pt-4">
                 @if(session('success'))
@@ -506,6 +558,26 @@
                 currentSection: 'overview',
                 copiedId: false,
                 copiedUrl: false,
+
+                init() {
+                    const sections = ['overview', 'cohorts', 'certificates', 'applications', 'profile'];
+                    if ('IntersectionObserver' in window) {
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    this.currentSection = entry.target.id;
+                                }
+                            });
+                        }, { rootMargin: '-20% 0px -65% 0px' });
+
+                        this.$nextTick(() => {
+                            sections.forEach(id => {
+                                const el = document.getElementById(id);
+                                if (el) observer.observe(el);
+                            });
+                        });
+                    }
+                },
 
                 navTo(sectionId) {
                     this.currentSection = sectionId;
