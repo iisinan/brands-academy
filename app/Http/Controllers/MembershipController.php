@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConferenceDelegate;
+use App\Models\CourseEnrollment;
+use App\Models\JournalArticle;
 use App\Models\Member;
 use App\Models\PortfolioSubmission;
 use App\Models\User;
+use App\Models\WebinarRegistration;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
 use App\Services\BarcodeService;
@@ -213,7 +217,51 @@ class MembershipController extends Controller
         $memberBarcode = BarcodeService::generateCode128Png($member->member_number ?? 'MEMBER', barWidth: 2, barHeight: 44, showText: true);
         $memberQrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 5, quietZone: 3);
 
-        return view('membership.dashboard', compact('member', 'openWorkshops', 'applications', 'certificates', 'memberBarcode', 'memberQrCode', 'verifyUrl'));
+        $courseEnrollments = $user->courseEnrollments()
+            ->with(['course.modules.lessons'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $webinarRegistrations = WebinarRegistration::where('user_id', $user->id)
+            ->orWhere('email', $user->email)
+            ->with('webinar')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $conferenceDelegates = ConferenceDelegate::where('user_id', $user->id)
+            ->orWhere('email', $user->email)
+            ->with(['conference', 'ticket'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $serviceFilings = $user->serviceFilings()
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $userThreads = $user->forumThreads()
+            ->with('channel')
+            ->latest('last_activity_at')
+            ->take(3)
+            ->get();
+
+        return view('membership.dashboard', compact(
+            'member',
+            'openWorkshops',
+            'applications',
+            'certificates',
+            'memberBarcode',
+            'memberQrCode',
+            'verifyUrl',
+            'courseEnrollments',
+            'webinarRegistrations',
+            'conferenceDelegates',
+            'serviceFilings',
+            'userThreads'
+        ));
     }
 
     /**
@@ -360,6 +408,117 @@ class MembershipController extends Controller
         $pdf = $this->renderCertificatePdf($member);
 
         return $pdf->stream("Brands_Academy_Membership_Certificate_{$member->member_number}.pdf");
+    }
+
+    /**
+     * Official Continuing Professional Development (CPD) Transcript & Dossier.
+     */
+    public function transcript(Request $request): View|RedirectResponse
+    {
+        $user = Auth::user();
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        $member = $user->member;
+        if (! $member || ! $member->isPaid()) {
+            return redirect()->route('membership.payment')->with('warning', 'Active paid membership is required to access your official CPD transcript.');
+        }
+
+        $cpdData = $this->getMemberCpdData($member, $user);
+
+        return view('membership.transcript', array_merge($cpdData, [
+            'member' => $member,
+            'user' => $user,
+        ]));
+    }
+
+    /**
+     * Download the official CPD transcript as an archival PDF document.
+     */
+    public function downloadTranscriptPdf(): Response|RedirectResponse
+    {
+        $user = Auth::user();
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        $member = $user->member;
+        if (! $member || ! $member->isPaid()) {
+            return redirect()->route('membership.payment')->with('warning', 'Active paid membership is required to download your official CPD transcript.');
+        }
+
+        $cpdData = $this->getMemberCpdData($member, $user);
+
+        $verifyUrl = route('registry.show', $member->member_number);
+        $qrCode = BarcodeService::generateQrCodePng($verifyUrl, moduleSize: 4, quietZone: 2);
+
+        $pdf = Pdf::loadView('membership.transcript-pdf', array_merge($cpdData, [
+            'member' => $member,
+            'user' => $user,
+            'verifyUrl' => $verifyUrl,
+            'qrCode' => $qrCode,
+        ]));
+
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOption(['isRemoteEnabled' => true, 'isHtml5ParserEnabled' => true]);
+
+        $filename = 'BANF-CPD-Transcript-'.Str::slug($member->member_number).'.pdf';
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Retrieve aggregated CPD records and credit totals across the ecosystem.
+     *
+     * @return array<string, mixed>
+     */
+    protected function getMemberCpdData(Member $member, User $user): array
+    {
+        $completedCourses = CourseEnrollment::where('user_id', $user->id)
+            ->whereIn('status', ['active', 'completed'])
+            ->where('progress_percentage', 100)
+            ->with(['course', 'certificate'])
+            ->get();
+
+        $webinarsAttended = WebinarRegistration::where('user_id', $user->id)
+            ->with('webinar')
+            ->get();
+
+        $conferencesAttended = ConferenceDelegate::where('user_id', $user->id)
+            ->with(['conference', 'ticket'])
+            ->get();
+
+        $publishedArticles = JournalArticle::where('submitted_by_user_id', $user->id)
+            ->where('submission_status', JournalArticle::STATUS_PUBLISHED)
+            ->with('issue.volume')
+            ->get();
+
+        $workshopCertificates = $member->certificates()
+            ->whereNotNull('workshop_id')
+            ->with('workshop')
+            ->get();
+
+        $courseUnits = $completedCourses->count() * 10;
+        $webinarUnits = $webinarsAttended->count() * 2;
+        $conferenceUnits = $conferencesAttended->count() * 15;
+        $articleUnits = $publishedArticles->count() * 20;
+        $workshopUnits = $workshopCertificates->count() * 25;
+        $totalCpdUnits = $courseUnits + $webinarUnits + $conferenceUnits + $articleUnits + $workshopUnits;
+
+        return compact(
+            'completedCourses',
+            'webinarsAttended',
+            'conferencesAttended',
+            'publishedArticles',
+            'workshopCertificates',
+            'courseUnits',
+            'webinarUnits',
+            'conferenceUnits',
+            'articleUnits',
+            'workshopUnits',
+            'totalCpdUnits'
+        );
     }
 
     /**

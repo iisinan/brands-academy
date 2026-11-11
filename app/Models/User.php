@@ -52,6 +52,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Check if user is an approved and paid foundation member.
+     */
+    public function isApprovedMember(): bool
+    {
+        return $this->member !== null && $this->member->status === 'active' && $this->member->payment_status === 'paid';
+    }
+
+    /**
      * Check if user has one of the specified roles.
      *
      * @param  UserRole|string|array<UserRole|string>  $roles
@@ -151,5 +159,69 @@ class User extends Authenticatable implements MustVerifyEmail
     public function applications(): HasMany
     {
         return $this->hasMany(WorkshopApplication::class);
+    }
+
+    /**
+     * Course enrollments made by the user.
+     */
+    public function courseEnrollments(): HasMany
+    {
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    /**
+     * Webinar registrations made by the user.
+     */
+    public function webinarRegistrations(): HasMany
+    {
+        return $this->hasMany(WebinarRegistration::class);
+    }
+
+    /**
+     * Legal service and IP filings made by the user.
+     */
+    public function serviceFilings(): HasMany
+    {
+        return $this->hasMany(ServiceFiling::class);
+    }
+
+    /**
+     * Conference delegate registrations.
+     */
+    public function conferenceDelegates(): HasMany
+    {
+        return $this->hasMany(ConferenceDelegate::class);
+    }
+
+    /**
+     * Call for papers submitted by the user.
+     */
+    public function submittedPapers(): HasMany
+    {
+        return $this->hasMany(CallForPaper::class);
+    }
+
+    /**
+     * Journal articles submitted by the user.
+     */
+    public function journalArticles(): HasMany
+    {
+        return $this->hasMany(JournalArticle::class, 'submitted_by_user_id');
+    }
+
+    /**
+     * Forum discussion threads created by the user.
+     */
+    public function forumThreads(): HasMany
+    {
+        return $this->hasMany(ForumThread::class, 'user_id');
+    }
+
+    /**
+     * Forum replies posted by the user.
+     */
+    public function forumReplies(): HasMany
+    {
+        return $this->hasMany(ForumReply::class, 'user_id');
     }
 }

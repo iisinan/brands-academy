@@ -6,12 +6,23 @@ use App\Mail\ApplicationAcceptedMail;
 use App\Mail\ApplicationStatusUpdatedMail;
 use App\Mail\MemberWelcomeMail;
 use App\Mail\PortfolioEvaluatedMail;
+use App\Models\CallForPaper;
 use App\Models\Certificate;
+use App\Models\Conference;
+use App\Models\ConferenceDelegate;
+use App\Models\Course;
+use App\Models\CourseEnrollment;
+use App\Models\ForumReply;
+use App\Models\ForumThread;
 use App\Models\InstitutionalInquiry;
+use App\Models\JournalArticle;
 use App\Models\Member;
 use App\Models\MemberPayment;
 use App\Models\PortfolioSubmission;
+use App\Models\ServiceFiling;
 use App\Models\User;
+use App\Models\Webinar;
+use App\Models\WebinarRegistration;
 use App\Models\Workshop;
 use App\Models\WorkshopApplication;
 use Carbon\Carbon;
@@ -49,6 +60,19 @@ class AdminController extends Controller
             'total_users' => User::count(),
             'admin_users' => User::where('role', 'admin')->count(),
             'member_users' => User::where('role', 'member')->count(),
+            'total_courses' => Course::count(),
+            'total_enrollments' => CourseEnrollment::count(),
+            'total_webinars' => Webinar::count(),
+            'total_webinar_rsvps' => WebinarRegistration::count(),
+            'total_conferences' => Conference::count(),
+            'total_delegates' => ConferenceDelegate::count(),
+            'total_cfp' => CallForPaper::count(),
+            'total_articles' => JournalArticle::count(),
+            'pending_articles' => JournalArticle::where('submission_status', JournalArticle::STATUS_SUBMITTED)->count(),
+            'total_filings' => ServiceFiling::count(),
+            'pending_filings' => ServiceFiling::whereIn('status', [ServiceFiling::STATUS_SUBMITTED, ServiceFiling::STATUS_SEARCH_IN_PROGRESS, ServiceFiling::STATUS_LODGED_AT_REGISTRY])->count(),
+            'total_threads' => ForumThread::count(),
+            'total_replies' => ForumReply::count(),
         ];
 
         $recentApplications = WorkshopApplication::with(['workshop', 'member'])
@@ -58,7 +82,17 @@ class AdminController extends Controller
 
         $workshops = Workshop::latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentApplications', 'workshops'));
+        $recentFilings = ServiceFiling::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentPapers = CallForPaper::with('conference')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'recentApplications', 'workshops', 'recentFilings', 'recentPapers'));
     }
 
     /**

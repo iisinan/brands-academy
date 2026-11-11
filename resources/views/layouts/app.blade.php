@@ -105,8 +105,29 @@
                             Live
                         </span>
                     </a>
+                    <a href="{{ route('courses.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('courses.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Short Courses
+                    </a>
+                    <a href="{{ route('webinars.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('webinars.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Webinars
+                    </a>
+                    <a href="{{ route('services.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('services.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        CAC &amp; IP Desk
+                    </a>
+                    <a href="{{ route('conferences.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('conferences.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Conferences
+                    </a>
+                    <a href="{{ route('journal.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('journal.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Journal
+                    </a>
+                    <a href="{{ route('forum.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('forum.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Community
+                    </a>
                     <a href="{{ route('membership.register') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('membership.register') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                         Membership
+                    </a>
+                    <a href="{{ route('registry.index') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('registry.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        Registry
                     </a>
                     <a href="{{ route('partnerships') }}" class="px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('partnerships') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                         Partnerships
@@ -116,6 +137,18 @@
                 <!-- Right Action Buttons -->
                 <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                     @auth
+                        @php
+                            $navUnreadCount = auth()->user()->unreadNotifications()->count();
+                        @endphp
+                        <a href="{{ route('notifications.index') }}" class="relative p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors" title="Notifications">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            @if($navUnreadCount > 0)
+                                <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-bold text-white font-mono animate-pulse">
+                                    {{ $navUnreadCount > 9 ? '9+' : $navUnreadCount }}
+                                </span>
+                            @endif
+                        </a>
+
                         @if(auth()->user()?->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors shadow-xs whitespace-nowrap">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -173,8 +206,29 @@
                 <span>Workshops & Cohorts</span>
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Live</span>
             </a>
+            <a href="{{ route('courses.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('courses.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Short Courses &amp; LMS
+            </a>
+            <a href="{{ route('webinars.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('webinars.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Webinars &amp; Masterclasses
+            </a>
+            <a href="{{ route('services.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('services.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                CAC &amp; Brand IP Desk
+            </a>
+            <a href="{{ route('conferences.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('conferences.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Conferences &amp; Summits
+            </a>
+            <a href="{{ route('journal.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('journal.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Journal (JBSM)
+            </a>
+            <a href="{{ route('forum.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('forum.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Community &amp; Discussions
+            </a>
             <a href="{{ route('membership.register') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('membership.register') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
                 Ongoing Membership (24/7)
+            </a>
+            <a href="{{ route('registry.index') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('registry.*') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
+                Certified Practitioners Register
             </a>
             <a href="{{ route('partnerships') }}" class="block px-3 py-2.5 rounded-xl text-sm font-semibold {{ request()->routeIs('partnerships') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:bg-slate-50' }}">
                 Institutional Partnerships
@@ -185,6 +239,18 @@
 
             @auth
                 <div class="pt-4 border-t border-slate-100 flex flex-col gap-2">
+                    <a href="{{ route('notifications.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold bg-blue-50 text-blue-900 border border-blue-200">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            <span>Notifications</span>
+                        </span>
+                        @if($navUnreadCount > 0)
+                            <span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-600 text-white font-mono font-bold">
+                                {{ $navUnreadCount }} unread
+                            </span>
+                        @endif
+                    </a>
+
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="block text-center py-2.5 rounded-xl text-xs font-bold bg-slate-900 text-amber-400">
                             Admin Control Panel

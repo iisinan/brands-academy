@@ -400,6 +400,149 @@
     </div>
 </section>
 
+<!-- Integrated Foundation Ecosystem Section -->
+<section class="bg-slate-950 text-white py-20 border-t border-slate-800 relative overflow-hidden">
+    <div class="absolute inset-0 bg-radial-gradient from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                Integrated Academic &amp; Enterprise Infrastructure
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-serif-title text-white tracking-tight">
+                A Unified Digital Campus for Brand Science
+            </h2>
+            <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+                Beyond scheduled cohort intakes, Brands Academy provides self-paced virtual learning, live masterclasses, legal IP filing operations, annual academic summits, and empirical journal publications.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- 1. LMS Short Courses -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-blue-400">Self-Paced LMS</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Short Courses &amp; Quizzes</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Study modular brand curriculum at your own speed with automated grading, 1-on-1 mentor office hours, and instant verifiable certificates.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">Video &amp; Assessments</span>
+                    <a href="{{ route('courses.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Explore Courses &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. Virtual Webinars -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400">Live Masterclasses</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Webinars &amp; Live Video</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Join interactive live sessions with visiting fellows and industry leaders using integrated Google Meet and Zoom conferencing with automated calendar sync.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">1-Click RSVP &amp; .ICS</span>
+                    <a href="{{ route('webinars.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Upcoming Sessions &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. Legal Desk (CAC & IP) -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Legal Protection</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">CAC, Trademark &amp; IP Desk</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Seamlessly register your business name with CAC, file multi-class trademark protections, and safeguard proprietary brand intellectual property.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-emerald-400">25% Member Discount</span>
+                    <a href="{{ route('services.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        File Services &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. Conferences & Summits -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Flagship Events</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Brand Summits &amp; Conferences</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Nigeria's premier annual brand leadership summit. Secure tiered passes, download cryptographic digital delegate badges, and submit papers.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">Call for Papers (CFP)</span>
+                    <a href="{{ route('conferences.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        View Summits &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 5. Academic Journal (JBSM) -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-rose-400">Peer-Reviewed Research</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">JBSM Academic Journal</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Journal of Brand Science &amp; Management. Open-access empirical research, digital DOI archives, and instant APA 7th / Harvard / BibTeX citations.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">ISSN &bull; Peer-Reviewed</span>
+                    <a href="{{ route('journal.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Read Articles &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 6. Community Chatboard -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Peer Exchange</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Community Discussion Board</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Engage in rigorous practitioner debates, pose regulatory questions, exchange case studies, and mark accepted solutions with fellow brand fellows.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">Member Advisory Circles</span>
+                    <a href="{{ route('forum.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Join Discussion &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 <!-- The 3-Tier Certification Framework -->
 <section class="bg-slate-100 py-20 border-y border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

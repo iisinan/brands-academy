@@ -22,6 +22,7 @@ class Certificate extends Model
         'certificate_number',
         'verification_token',
         'workshop_id',
+        'course_id',
         'workshop_application_id',
         'member_id',
         'recipient_name',
@@ -72,6 +73,14 @@ class Certificate extends Model
     public function workshop(): BelongsTo
     {
         return $this->belongsTo(Workshop::class);
+    }
+
+    /**
+     * Associated LMS course.
+     */
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
     }
 
     /**

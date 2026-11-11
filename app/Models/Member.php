@@ -129,6 +129,14 @@ class Member extends Model
     }
 
     /**
+     * Service and IP filings by this member.
+     */
+    public function serviceFilings(): HasMany
+    {
+        return $this->hasMany(ServiceFiling::class);
+    }
+
+    /**
      * Check if membership dues are paid and active.
      */
     public function isPaid(): bool

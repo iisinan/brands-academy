@@ -197,6 +197,139 @@
                     </div>
                 </div>
 
+                <!-- Section: LMS Short Courses & Webinars -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            LMS &amp; Webinars
+                        </span>
+                        <a href="{{ route('admin.lms.courses.create') }}" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-0.5" title="New Course">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                            <span>Add</span>
+                        </a>
+                    </div>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.lms.courses') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.lms.courses*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.lms.courses*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                <span>Short Courses &amp; LMS</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.lms.courses*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\Course::count() }}
+                            </span>
+                        </a>
+
+                        <a href="{{ route('admin.webinars') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.webinars*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.webinars*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span>Live Webinars</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.webinars*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\Webinar::count() }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Section: Legal & CAC Desk -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Legal &amp; IP Desk
+                        </span>
+                        <a href="{{ route('admin.filings.export') }}" class="text-[10px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-0.5" title="Export Filings">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            <span>CSV</span>
+                        </a>
+                    </div>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.filings') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.filings*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.filings*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span>CAC &amp; IP Filings</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.filings*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\ServiceFiling::count() }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Section: Conferences & Brand Summits -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Conferences &amp; Summits
+                        </span>
+                        <a href="{{ route('admin.conferences') }}" class="text-[10px] font-bold text-amber-400 hover:text-amber-300" title="Manage Summits">
+                            <span>Open</span>
+                        </a>
+                    </div>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.conferences') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.conferences*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.conferences*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                <span>Summits &amp; CFP</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.conferences*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\Conference::count() }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Section: Journal (JBSM) Editorial Desk -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Journal Editorial Desk
+                        </span>
+                        <a href="{{ route('admin.journal') }}" class="text-[10px] font-bold text-amber-400 hover:text-amber-300" title="JBSM Desk">
+                            <span>Open</span>
+                        </a>
+                    </div>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.journal') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.journal*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.journal*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                <span>JBSM Articles</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.journal*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\JournalArticle::count() }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Section: Community Forum Moderation -->
+                <div>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Community Moderation
+                        </span>
+                        <a href="{{ route('admin.forum') }}" class="text-[10px] font-bold text-amber-400 hover:text-amber-300" title="Forum Desk">
+                            <span>Open</span>
+                        </a>
+                    </div>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.forum') }}"
+                           class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.forum*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 {{ request()->routeIs('admin.forum*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                <span>Discussions &amp; Threads</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full {{ request()->routeIs('admin.forum*') ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400' }}">
+                                {{ \App\Models\ForumThread::count() }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Section 2: Members Directory -->
                 <div>
                     <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">

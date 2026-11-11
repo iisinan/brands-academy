@@ -124,10 +124,21 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                                     <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                     <span class="hidden sm:inline">Certificate PDF</span>
                                 </a>
+                                <!-- CPD Official Transcript -->
+                                <a href="{{ route('member.transcript') }}" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5 shadow-sm" title="View Official Continuing Professional Development (CPD) Transcript">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    <span class="hidden sm:inline">CPD Transcript</span>
+                                </a>
+                                @if($member->member_number)
+                                    <a href="{{ route('registry.show', $member->member_number) }}" target="_blank" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-colors flex items-center gap-1.5 shadow-sm" title="View My Public Certified Practitioner Dossier">
+                                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                        <span class="hidden sm:inline">Registry Profile</span>
+                                    </a>
+                                @endif
                                 <!-- Switch to Digital ID Tab -->
                                 <button type="button" @click="switchTab('digital-id')" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    <span>Digital ID Tab</span>
+                                    <span>Digital ID</span>
                                 </button>
                             </div>
                         </div>
@@ -276,6 +287,168 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                 </div>
             </div>
         @endif
+
+        <!-- Ecosystem Services & Activities Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- 1. LMS Learning Hub Snapshot -->
+            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-900 font-serif-title">LMS Classroom &amp; Short Courses</h3>
+                    </div>
+                    <a href="{{ route('member.courses.index') }}" class="text-xs font-bold text-amber-600 hover:underline">
+                        My Classroom &rarr;
+                    </a>
+                </div>
+
+                @if($courseEnrollments->isNotEmpty())
+                    <div class="divide-y divide-slate-100">
+                        @foreach($courseEnrollments as $enrollment)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-slate-900 block truncate">{{ $enrollment->course->title }}</span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <div class="w-24 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                            <div class="bg-amber-500 h-1.5 rounded-full" style="width: {{ $enrollment->progress_percent }}%"></div>
+                                        </div>
+                                        <span class="text-[10px] text-slate-500 font-mono">{{ $enrollment->progress_percent }}%</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('member.courses.learn', $enrollment->course->slug) }}" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shrink-0">
+                                    Continue
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">Explore self-paced masterclasses with automated verifiable certificates.</p>
+                        <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-blue-600 hover:underline">
+                            Browse Online Courses &rarr;
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+            <!-- 2. CAC & Brand IP Legal Filings Snapshot -->
+            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-900 font-serif-title">CAC, Trademark &amp; IP Desk</h3>
+                    </div>
+                    <a href="{{ route('member.filings.index') }}" class="text-xs font-bold text-amber-600 hover:underline">
+                        Case Room &rarr;
+                    </a>
+                </div>
+
+                @if($serviceFilings->isNotEmpty())
+                    <div class="divide-y divide-slate-100">
+                        @foreach($serviceFilings as $filing)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-slate-900 block truncate">{{ $filing->proposed_name }}</span>
+                                    <span class="text-[10px] text-slate-500">{{ $filing->service_label }} &bull; Ref: {{ $filing->tracking_code }}</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase shrink-0 {{ $filing->status === 'completed' ? 'bg-emerald-100 text-emerald-800' : ($filing->status === 'query_raised' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800') }}">
+                                    {{ $filing->status_label }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">Protect your enterprise identity with CAC business registration and Trademark filings.</p>
+                        <a href="{{ route('services.wizard') }}" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-emerald-600 hover:underline">
+                            File New Service (25% Member Discount) &rarr;
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+            <!-- 3. Masterclasses & Upcoming Webinars Snapshot -->
+            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-900 font-serif-title">Live Webinars &amp; Masterclasses</h3>
+                    </div>
+                    <a href="{{ route('webinars.index') }}" class="text-xs font-bold text-amber-600 hover:underline">
+                        Browse Hub &rarr;
+                    </a>
+                </div>
+
+                @if($webinarRegistrations->isNotEmpty())
+                    <div class="divide-y divide-slate-100">
+                        @foreach($webinarRegistrations as $reg)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-slate-900 block truncate">{{ $reg->webinar->title }}</span>
+                                    <span class="text-[10px] text-slate-500">{{ $reg->webinar->starts_at->format('M d, Y @ h:i A') }}</span>
+                                </div>
+                                <a href="{{ route('webinars.calendar', $reg->webinar->slug) }}" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 shrink-0">
+                                    .ICS Invite
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">Participate in live masterclasses with industry CMOs and brand researchers.</p>
+                        <a href="{{ route('webinars.index') }}" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-purple-600 hover:underline">
+                            View Webinar Schedule &rarr;
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+            <!-- 4. Conferences & Summits Passes Snapshot -->
+            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-900 font-serif-title">Summit Passes &amp; CFP</h3>
+                    </div>
+                    <a href="{{ route('conferences.index') }}" class="text-xs font-bold text-amber-600 hover:underline">
+                        Summits &rarr;
+                    </a>
+                </div>
+
+                @if($conferenceDelegates->isNotEmpty())
+                    <div class="divide-y divide-slate-100">
+                        @foreach($conferenceDelegates as $del)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-slate-900 block truncate">{{ $del->conference->title }}</span>
+                                    <span class="text-[10px] text-slate-500">{{ $del->ticket->name }} &bull; Pass #{{ $del->badge_code }}</span>
+                                </div>
+                                <a href="{{ route('conferences.badge', $del->badge_code) }}" target="_blank" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 shrink-0">
+                                    Digital Pass
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">Access annual brand leadership summits and submit empirical research papers.</p>
+                        <a href="{{ route('conferences.index') }}" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-amber-600 hover:underline">
+                            Explore Upcoming Summits &rarr;
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+        </div>
 
     </div>
 

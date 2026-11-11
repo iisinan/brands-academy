@@ -195,6 +195,64 @@
         </a>
     </div>
 
+    <!-- Expansion Operations & Services Strip -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 shadow-xs space-y-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 font-serif-title">Platform Expansion &amp; Digital Infrastructure</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Live monitoring for Virtual Campus, Legal Desks, Academic Conferences, Journal, and Community.</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                Integrated
+            </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-2">
+            <!-- LMS Courses -->
+            <a href="{{ route('admin.lms.courses') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">LMS Courses</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_courses'] }}</span>
+                <span class="text-[11px] text-blue-600 font-semibold mt-1 block">{{ $stats['total_enrollments'] }} Enrolled</span>
+            </a>
+
+            <!-- Webinars -->
+            <a href="{{ route('admin.webinars') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Webinars</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_webinars'] }}</span>
+                <span class="text-[11px] text-purple-600 font-semibold mt-1 block">{{ $stats['total_webinar_rsvps'] }} Attendees</span>
+            </a>
+
+            <!-- CAC & IP Filings -->
+            <a href="{{ route('admin.filings') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Legal Desk</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_filings'] }}</span>
+                <span class="text-[11px] text-emerald-600 font-semibold mt-1 block">{{ $stats['pending_filings'] }} Processing</span>
+            </a>
+
+            <!-- Conferences & Summits -->
+            <a href="{{ route('admin.conferences') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Conferences</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_conferences'] }}</span>
+                <span class="text-[11px] text-amber-600 font-semibold mt-1 block">{{ $stats['total_delegates'] }} Delegates</span>
+            </a>
+
+            <!-- Journal Articles -->
+            <a href="{{ route('admin.journal') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">JBSM Journal</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_articles'] }}</span>
+                <span class="text-[11px] text-rose-600 font-semibold mt-1 block">{{ $stats['pending_articles'] }} Under Review</span>
+            </a>
+
+            <!-- Community Discussions -->
+            <a href="{{ route('admin.forum') }}" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/70 transition-all group">
+                <span class="text-[10px] font-bold uppercase text-slate-400 block">Community</span>
+                <span class="text-xl font-black text-slate-900 font-serif-title block mt-0.5">{{ $stats['total_threads'] }}</span>
+                <span class="text-[11px] text-indigo-600 font-semibold mt-1 block">{{ $stats['total_replies'] }} Replies</span>
+            </a>
+        </div>
+    </div>
+
     <!-- Cohort Application Windows -->
     <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
