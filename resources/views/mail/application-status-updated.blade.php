@@ -1,9 +1,6 @@
 @php
-    $appUrl = config('app.url');
-    if (empty($appUrl) || str_contains($appUrl, 'localhost') || str_contains($appUrl, '127.0.0.1')) {
-        $appUrl = 'https://ecoenergy-ltd.com';
-    }
-    $logoUrl = rtrim($appUrl, '/') . '/images/logo/bran-logo-128.png';
+    $appUrl = rtrim(config('app.url') ?: url('/'), '/');
+    $logoUrl = $appUrl . '/images/logo/bran-logo-128.png';
 @endphp
 <!DOCTYPE html>
 <html lang="en">
