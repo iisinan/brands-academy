@@ -8,22 +8,22 @@
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* Soft, bright warm accent (replaces the loud amber/orange defaults) */
-    --color-amber-50: #fffbf2;
-    --color-amber-100: #fef3dc;
-    --color-amber-200: #fde6b8;
-    --color-amber-300: #fbd68f;
-    --color-amber-400: #f8c470;
-    --color-amber-500: #f4b45e;
-    --color-amber-600: #c98221;
-    --color-amber-700: #a5671a;
-    --color-amber-800: #85521a;
-    --color-amber-900: #6a4219;
+    /* Vivid yet bright warm accent */
+    --color-amber-50: #fff8e6;
+    --color-amber-100: #ffefc2;
+    --color-amber-200: #ffe08a;
+    --color-amber-300: #ffcf52;
+    --color-amber-400: #ffbe2e;
+    --color-amber-500: #ffa91a;
+    --color-amber-600: #ec8b00;
+    --color-amber-700: #bd6a00;
+    --color-amber-800: #94530a;
+    --color-amber-900: #6f410d;
 
-    --color-orange-400: #f7b07a;
-    --color-orange-500: #f19a5c;
-    --color-orange-600: #d9803f;
-    --color-orange-700: #b3642f;
+    --color-orange-400: #ff9d52;
+    --color-orange-500: #ff8533;
+    --color-orange-600: #ec6a14;
+    --color-orange-700: #c2540e;
 }
 
 /* ========================================================
@@ -94,7 +94,7 @@ html, body {
     [class*="from-slate-800"], [class*="via-slate-800"], [class*="to-slate-800"],
     [class*="from-black"], [class*="to-black"], [class*="via-[#0"]
 ) {
-    background-color: #f1f6fc;
+    background-color: #e4f0fd;
     color: #1e293b;
 }
 
@@ -115,26 +115,26 @@ nav[class~="bg-slate-950"] {
 }
 
 /* Gradient stops */
-.from-slate-950, .from-slate-900, .from-slate-800, .from-black { --tw-gradient-from: #fbfdff; }
-.via-slate-950, .via-slate-900, .via-slate-800, .via-black { --tw-gradient-via: #f3f8fd; }
-.to-slate-950, .to-slate-900, .to-slate-800, .to-black { --tw-gradient-to: #e9f1fa; }
-[class*="via-[#0a0f1d]"] { --tw-gradient-via: #f3f8fd; }
+.from-slate-950, .from-slate-900, .from-slate-800, .from-black { --tw-gradient-from: #f2f8ff; }
+.via-slate-950, .via-slate-900, .via-slate-800, .via-black { --tw-gradient-via: #e4f0fd; }
+.to-slate-950, .to-slate-900, .to-slate-800, .to-black { --tw-gradient-to: #d3e6fb; }
+[class*="via-[#0a0f1d]"] { --tw-gradient-via: #e4f0fd; }
 .from-slate-950\/90, .from-slate-900\/90, .from-slate-950\/80, .from-slate-900\/80 { --tw-gradient-from: rgba(255, 255, 255, 0.92); }
 
 /* Hover surfaces that used to turn dark */
 .hover\:bg-slate-950:hover, .hover\:bg-slate-900:hover, .hover\:bg-slate-800:hover,
 .hover\:bg-gray-900:hover, .hover\:bg-gray-800:hover, .hover\:bg-black:hover {
-    background-color: #e6eff9;
+    background-color: #d3e6fb;
     color: #0f172a;
 }
 
 /* Borders that were dark-on-dark */
 [class*="border-slate-700"], [class*="border-slate-800"], [class*="border-slate-900"],
 [class*="border-gray-700"], [class*="border-gray-800"], [class*="border-zinc-800"] {
-    border-color: #dbe6f1;
+    border-color: #c3d9f0;
 }
 [class*="divide-slate-800"] > :not(:last-child), [class*="divide-slate-700"] > :not(:last-child) {
-    border-color: #dbe6f1;
+    border-color: #c3d9f0;
 }
 
 /* ---- 2. Text contrast inside the (now light) surfaces ---- */
@@ -163,7 +163,7 @@ nav[class~="bg-slate-950"] {
     & .text-slate-400, & .text-gray-400 { color: #526072; }
 
     & .text-amber-200, & .text-amber-300, & .text-amber-400, & .text-amber-500,
-    & .text-yellow-300, & .text-yellow-400, & .text-orange-300, & .text-orange-400 { color: #a5671a; }
+    & .text-yellow-300, & .text-yellow-400, & .text-orange-300, & .text-orange-400 { color: #bd6a00; }
     & .text-emerald-300, & .text-emerald-400, & .text-green-300, & .text-green-400 { color: #047857; }
     & .text-rose-300, & .text-rose-400, & .text-red-300, & .text-red-400 { color: #be123c; }
     & .text-blue-300, & .text-blue-400, & .text-sky-300, & .text-sky-400 { color: #1d4ed8; }
@@ -198,4 +198,4 @@ nav[class~="bg-slate-950"] {
 }
 
 /* Softer glow on amber shadows */
-[class*="shadow-amber"] { --tw-shadow-color: rgba(244, 180, 94, 0.25); }
+[class*="shadow-amber"] { --tw-shadow-color: rgba(255, 169, 26, 0.35); }
