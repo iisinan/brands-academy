@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'CAC & Trademark Statutory Fee Calculator | Brands Academy Legal Desk')
+@section('page_title', 'Statutory Fee Calculator')
 
 @section('content')
 <!-- Hero -->
