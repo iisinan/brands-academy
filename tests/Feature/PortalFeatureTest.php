@@ -912,7 +912,8 @@ class PortalFeatureTest extends TestCase
         // Verify workshop detail view reflects existing application
         $showResponse = $this->actingAs($user)->get(route('workshops.show', $workshop->slug));
         $showResponse->assertStatus(200);
-        $showResponse->assertSee('Application Under Review');
+        $showResponse->assertSee('Application Submitted!');
+        $showResponse->assertSee('Status: Pending');
     }
 
     /**
