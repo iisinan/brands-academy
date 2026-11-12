@@ -77,7 +77,7 @@
                                             Certificate of Achievement
                                         </div>
                                         <div style="font-size: 13px; color: #64748b; margin-top: 2px; margin-bottom: 14px;">
-                                            Accredited Professional Track: <strong>Tier 1: Certified Brand Associate (CBA)</strong>
+                                            Certified Professional Track: <strong>Tier 1: Certified Brand Associate (CBA)</strong>
                                         </div>
 
                                         <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 12.5px; color: #475569; line-height: 1.6; border-top: 1px solid #e2e8f0; padding-top: 10px;">

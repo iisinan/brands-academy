@@ -22,18 +22,38 @@
 <!-- Filter Tabs & Listing -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-    <!-- Filters -->
+    <!-- Track Filter Bar -->
+    <div class="flex items-center gap-2 overflow-x-auto touch-scroll no-scrollbar mb-4">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2 shrink-0">Framework:</span>
+        <a href="{{ route('workshops.index', array_filter(['status' => $statusFilter !== 'all' ? $statusFilter : null])) }}" class="px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $trackFilter == 'all' ? 'bg-slate-900 text-amber-400 shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+            All Tracks
+        </a>
+        <a href="{{ route('workshops.index', array_filter(['track' => 'cba', 'status' => $statusFilter !== 'all' ? $statusFilter : null])) }}" class="px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $trackFilter == 'cba' ? 'bg-slate-900 text-amber-400 shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+            Tier 1: CBA (Associate)
+        </a>
+        <a href="{{ route('workshops.index', array_filter(['track' => 'cbs', 'status' => $statusFilter !== 'all' ? $statusFilter : null])) }}" class="px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $trackFilter == 'cbs' ? 'bg-slate-900 text-amber-400 shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+            Tier 2: CBS (Strategist)
+        </a>
+        <a href="{{ route('workshops.index', array_filter(['track' => 'cbe', 'status' => $statusFilter !== 'all' ? $statusFilter : null])) }}" class="px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $trackFilter == 'cbe' ? 'bg-slate-900 text-amber-400 shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+            Tier 3: CBE (Executive &bull; 2027)
+        </a>
+        <a href="{{ route('certifications') }}" class="ml-auto text-xs font-bold text-amber-700 hover:text-amber-800 whitespace-nowrap shrink-0 inline-flex items-center gap-1">
+            <span>Framework Details &amp; Prerequisites &rarr;</span>
+        </a>
+    </div>
+
+    <!-- Status Filters -->
     <div class="flex items-center gap-2 overflow-x-auto touch-scroll no-scrollbar mb-8 border-b border-slate-200 pb-4">
-        <a href="{{ route('workshops.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+        <a href="{{ route('workshops.index', array_filter(['track' => $trackFilter !== 'all' ? $trackFilter : null])) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             All Programmes ({{ $counts['all'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'open']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'open' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white text-emerald-800 hover:bg-emerald-50 border border-emerald-200' }}">
+        <a href="{{ route('workshops.index', array_filter(['status' => 'open', 'track' => $trackFilter !== 'all' ? $trackFilter : null])) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'open' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white text-emerald-800 hover:bg-emerald-50 border border-emerald-200' }}">
             Applications Open Now ({{ $counts['open'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'upcoming']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'upcoming' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white text-amber-800 hover:bg-amber-50 border border-amber-200' }}">
+        <a href="{{ route('workshops.index', array_filter(['status' => 'upcoming', 'track' => $trackFilter !== 'all' ? $trackFilter : null])) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'upcoming' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white text-amber-800 hover:bg-amber-50 border border-amber-200' }}">
             Opening Soon ({{ $counts['upcoming'] }})
         </a>
-        <a href="{{ route('workshops.index', ['status' => 'closed']) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'closed' ? 'bg-slate-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+        <a href="{{ route('workshops.index', array_filter(['status' => 'closed', 'track' => $trackFilter !== 'all' ? $trackFilter : null])) }}" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all {{ $statusFilter == 'closed' ? 'bg-slate-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Applications Closed ({{ $counts['closed'] }})
         </a>
     </div>
@@ -74,15 +94,16 @@
                         </span>
                     </div>
 
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-extrabold uppercase tracking-wide mb-2 {{ $workshop->track_type === 'cba' ? 'bg-blue-50 text-blue-800 border border-blue-200' : ($workshop->track_type === 'cbs' ? 'bg-amber-50 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-800 border border-slate-200') }}">
+                        <span class="w-1.5 h-1.5 rounded-full {{ $workshop->track_type === 'cba' ? 'bg-blue-600' : ($workshop->track_type === 'cbs' ? 'bg-amber-600' : 'bg-slate-600') }}"></span>
+                        {{ $workshop->track_label }}
+                    </div>
+
                     <h2 class="text-xl font-bold text-slate-900 group-hover:text-amber-600 transition-colors mb-2 leading-snug">
                         <a href="{{ route('workshops.show', $workshop->slug) }}">
                             {{ $workshop->title }}
                         </a>
                     </h2>
-
-                    <div class="text-xs font-bold text-amber-700 mb-3">
-                        {{ $workshop->track_label }}
-                    </div>
 
                     <p class="text-sm text-slate-600 line-clamp-3 mb-6 leading-relaxed">
                         {{ $workshop->tagline ?? $workshop->description }}
@@ -140,11 +161,59 @@
                 </div>
             </div>
         @empty
-            <div class="col-span-3 text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
-                <svg class="w-10 h-10 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <p class="text-slate-700 font-bold mb-1">No programmes match this filter</p>
-                <p class="text-slate-500 text-xs">Try selecting 'All Programmes' to view active and upcoming cohorts.</p>
-            </div>
+            @if($trackFilter === 'cbe')
+                <div class="col-span-1 md:col-span-2 lg:col-span-3 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="max-w-2xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-4">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            Executive Track &bull; Launching 2027
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold font-serif-title text-white mb-3">
+                            Certified Brand Executive (CBE) — Inaugural Cohort
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">
+                            The CBE track is an exclusive executive residential retreat and strategic boardroom masterclass designed for C-Suite leaders, Managing Directors, Permanent Secretaries, and Agency Founders.
+                            The Board of Trustees is scheduling the inaugural cohort for 2027 in Abuja.
+                        </p>
+                        <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 mb-6 text-xs text-slate-300 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Target Candidates:</span>
+                                <span class="font-bold text-white">CEOs, CMOs, Directors, Public Administrators</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Prerequisites:</span>
+                                <span class="font-bold text-white">10+ Years Executive Practice or CBS Credential</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Delivery Format:</span>
+                                <span class="font-bold text-amber-400">3-Day Executive Residential Retreat</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <a href="{{ route('certifications') }}#waitlist" class="px-6 py-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md shadow-amber-500/20 inline-flex items-center gap-2">
+                                <span>Register Interest for 2027 Cohort</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </a>
+                            <a href="{{ route('certifications') }}#cbe" class="px-5 py-3 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition-colors">
+                                View Executive Syllabus
+                            </a>
+                            <a href="{{ route('workshops.index') }}" class="text-xs font-semibold text-slate-400 hover:text-slate-200">
+                                View All Available Cohorts &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
+                    <svg class="w-10 h-10 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <p class="text-slate-700 font-bold mb-1">No programmes match this filter</p>
+                    <p class="text-slate-500 text-xs mb-4">Try selecting 'All Tracks' or 'All Programmes' to view active and upcoming cohorts.</p>
+                    <a href="{{ route('workshops.index') }}" class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800">
+                        Reset Filters
+                    </a>
+                </div>
+            @endif
         @endforelse
     </div>
 

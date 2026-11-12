@@ -20,6 +20,7 @@ class WorkshopController extends Controller
     public function index(Request $request): View
     {
         $statusFilter = $request->query('status', 'all');
+        $trackFilter = $request->query('track', 'all');
 
         $query = Workshop::query()->where('status', 'published');
 
@@ -32,16 +33,23 @@ class WorkshopController extends Controller
             $query->where('application_deadline', '<', now());
         }
 
+        if (in_array($trackFilter, ['cba', 'cbs', 'cbe', 'community', 'executive', 'workshop'])) {
+            $query->where('track_type', $trackFilter);
+        }
+
         $workshops = $query->orderBy('application_deadline', 'asc')->get();
 
+        $baseCountQuery = fn () => Workshop::where('status', 'published')
+            ->when(in_array($trackFilter, ['cba', 'cbs', 'cbe', 'community', 'executive', 'workshop']), fn ($q) => $q->where('track_type', $trackFilter));
+
         $counts = [
-            'all' => Workshop::where('status', 'published')->count(),
-            'open' => Workshop::where('status', 'published')->where('application_starts_at', '<=', now())->where('application_deadline', '>=', now())->count(),
-            'upcoming' => Workshop::where('status', 'published')->where('application_starts_at', '>', now())->count(),
-            'closed' => Workshop::where('status', 'published')->where('application_deadline', '<', now())->count(),
+            'all' => $baseCountQuery()->count(),
+            'open' => $baseCountQuery()->where('application_starts_at', '<=', now())->where('application_deadline', '>=', now())->count(),
+            'upcoming' => $baseCountQuery()->where('application_starts_at', '>', now())->count(),
+            'closed' => $baseCountQuery()->where('application_deadline', '<', now())->count(),
         ];
 
-        return view('workshops.index', compact('workshops', 'statusFilter', 'counts'));
+        return view('workshops.index', compact('workshops', 'statusFilter', 'trackFilter', 'counts'));
     }
 
     /**

@@ -15,7 +15,7 @@
                 National Register of Brand Builders &amp; Fellows
             </h1>
             <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light mb-8">
-                Verify accredited brand consultants, chief marketing officers, intellectual property attorneys, and Fellows recognized by the Brands Academy Nigeria Foundation.
+                Verify registered brand consultants, chief marketing officers, intellectual property attorneys, and Fellows recognized by the Brands Academy Nigeria Foundation.
             </p>
             <div class="flex items-center gap-6 text-xs text-slate-400">
                 <div class="flex items-center gap-2">

@@ -185,7 +185,7 @@
                     <div class="p-4 rounded-2xl bg-slate-900 text-slate-300 text-xs space-y-1">
                         <div class="font-bold text-amber-400 uppercase tracking-wider text-[10px]">Ratifying Authority & Seal</div>
                         <div class="font-semibold text-white">Brands Academy Nigeria Foundation &bull; Incorporated Trustee (Companies and Allied Matters Act 2020, Part F)</div>
-                        <div class="text-slate-400">CAC/IT/No. 7344471 &bull; Federal Republic of Nigeria &bull; Board of Trustees Accredited</div>
+                        <div class="text-slate-400">CAC/IT/No. 7344471 &bull; Federal Republic of Nigeria &bull; Ratified by the Board of Trustees</div>
                     </div>
 
                     <!-- Professional Credential Actions -->

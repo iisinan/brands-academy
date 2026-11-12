@@ -201,7 +201,7 @@
                     </div>
                     <div>
                         <span class="text-slate-400 block text-[10px]">Registry Status</span>
-                        <span class="font-bold text-emerald-700">Accredited &amp; Financial</span>
+                        <span class="font-bold text-emerald-700">In Good Standing &amp; Financial</span>
                     </div>
                 </div>
 

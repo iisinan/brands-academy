@@ -565,10 +565,10 @@
                     <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">National Accredited Directory</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Official Register Directory</span>
                     <h3 class="text-lg font-bold text-white mt-1 mb-2">Certified Practitioners Register</h3>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                        Public dossier of accredited Fellows (FBA), Brand Strategists, and Associates with jurisdiction filters, digital credentials, and good-standing badges.
+                        Public register of certified Fellows (FBA), Brand Strategists, and Associates with jurisdiction filters, digital credentials, and good-standing badges.
                     </p>
                 </div>
                 <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
@@ -618,42 +618,76 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Tier 1 -->
-            <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-xs relative">
-                <div class="w-10 h-10 rounded-full bg-slate-900 text-amber-400 font-bold flex items-center justify-center text-sm mb-4">1</div>
-                <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Foundation Track</div>
-                <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Associate (CBA)</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                    Designed for early-career professionals, undergraduates, and designers mastering brand architecture, terminology, positioning, and portfolio design.
-                </p>
-                <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                    Portfolio assessment & guided mentorship included.
+            <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-xs relative flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 rounded-full bg-slate-900 text-amber-400 font-bold flex items-center justify-center text-sm mb-4">1</div>
+                    <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Foundation Track</div>
+                    <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Associate (CBA)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Designed for early-career professionals, undergraduates, and designers mastering brand architecture, terminology, positioning, and portfolio design.
+                    </p>
+                    <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100 mb-6">
+                        Portfolio assessment &amp; guided mentorship included.
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <a href="{{ route('certifications') }}#cba" class="text-xs font-bold text-amber-600 hover:text-amber-700 inline-flex items-center gap-1.5">
+                        <span>Syllabus &amp; Prerequisites</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="{{ route('workshops.index', ['track' => 'cba']) }}" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-amber-400">
+                        View Cohorts
+                    </a>
                 </div>
             </div>
 
             <!-- Tier 2 -->
-            <div class="bg-white rounded-2xl p-8 border-2 border-amber-500 shadow-md relative">
-                <div class="absolute -top-3.5 right-6 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Most Popular</div>
-                <div class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-sm mb-4">2</div>
-                <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Practitioner Track</div>
-                <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Strategist (CBS)</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                    For practicing marketers, brand managers, and communications specialists executing multi-channel brand campaigns and strategic audits.
-                </p>
-                <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                    Live client brief defense & case analysis.
+            <div class="bg-white rounded-2xl p-8 border-2 border-amber-500 shadow-md relative flex flex-col justify-between">
+                <div>
+                    <div class="absolute -top-3.5 right-6 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Most Popular</div>
+                    <div class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-sm mb-4">2</div>
+                    <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Practitioner Track</div>
+                    <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Strategist (CBS)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        For practicing marketers, brand managers, and communications specialists executing multi-channel brand campaigns and strategic audits.
+                    </p>
+                    <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100 mb-6">
+                        Live client brief defense &amp; case analysis.
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <a href="{{ route('certifications') }}#cbs" class="text-xs font-bold text-amber-600 hover:text-amber-700 inline-flex items-center gap-1.5">
+                        <span>Syllabus &amp; Prerequisites</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="{{ route('workshops.index', ['track' => 'cbs']) }}" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold">
+                        View Cohorts
+                    </a>
                 </div>
             </div>
 
             <!-- Tier 3 -->
-            <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-xs relative">
-                <div class="w-10 h-10 rounded-full bg-slate-900 text-amber-400 font-bold flex items-center justify-center text-sm mb-4">3</div>
-                <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Executive Track</div>
-                <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Executive (CBE)</h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                    For business leaders, directors, and public-sector administrators managing organizational reputation, crisis communications, and brand equity.
-                </p>
-                <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                    Executive retreat & strategic advisory modules.
+            <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-xs relative flex flex-col justify-between">
+                <div>
+                    <div class="absolute -top-3.5 right-6 bg-slate-900 text-amber-400 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-slate-700">Launching 2027</div>
+                    <div class="w-10 h-10 rounded-full bg-slate-900 text-amber-400 font-bold flex items-center justify-center text-sm mb-4">3</div>
+                    <div class="text-xs font-bold text-amber-600 uppercase tracking-wide">Executive Track</div>
+                    <h3 class="text-xl font-extrabold text-slate-900 mt-1 mb-2">Certified Brand Executive (CBE)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        For business leaders, directors, and public-sector administrators managing organizational reputation, crisis communications, and brand equity.
+                    </p>
+                    <div class="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100 mb-6">
+                        Executive residential retreat &amp; strategic advisory modules.
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <a href="{{ route('certifications') }}#cbe" class="text-xs font-bold text-amber-600 hover:text-amber-700 inline-flex items-center gap-1.5">
+                        <span>Executive Pathway</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="{{ route('certifications') }}#waitlist" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-800 border border-slate-300 transition-colors">
+                        Register Interest
+                    </a>
                 </div>
             </div>
         </div>
@@ -674,7 +708,7 @@
                 License the Foundation Curriculum or Commission an Executive Retreat
             </h2>
             <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-                From federal ministries to top African universities, Brands Academy Nigeria Foundation licenses accredited brand management syllabi, certifies communications teams, and establishes institutional branding chairs.
+                From federal ministries to top African universities, Brands Academy Nigeria Foundation licenses professional brand management syllabi, certifies communications teams, and establishes institutional branding chairs.
             </p>
 
             <div class="flex flex-wrap items-center gap-4">

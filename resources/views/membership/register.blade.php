@@ -742,7 +742,7 @@
                 <x-brand-logo class="w-12 h-12 mb-4 drop-shadow-md" />
                 <h3 class="text-lg font-bold font-serif-title mb-1.5">Member Privileges</h3>
                 <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-5 font-light">
-                    As an official member of Brands Academy Nigeria Foundation, you become part of an accredited pan-African branding ecosystem.
+                    As an official member of Brands Academy Nigeria Foundation, you become part of an established pan-African branding ecosystem.
                 </p>
 
                 <ul class="space-y-3 text-xs sm:text-sm">

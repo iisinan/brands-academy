@@ -61,7 +61,7 @@
     <!-- Mobile Sidebar Backdrop Overlay -->
     <div x-show="sidebarOpen" x-cloak
          @click="sidebarOpen = false"
-         class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-xs lg:hidden transition-opacity"
+         class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-xs md:hidden transition-opacity"
          x-transition:enter="ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
@@ -73,8 +73,8 @@
     <div class="flex min-h-screen">
 
         <!-- ======================= PERMANENT FIXED LEFT SIDEBAR ======================= -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 member-sidebar-scroll overflow-y-auto"
-               :class="sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'">
+        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out md:translate-x-0 member-sidebar-scroll overflow-y-auto"
+               :class="sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'">
 
             <!-- Sidebar Header / Foundation Brand Badge -->
             <div class="p-5 border-b border-slate-800/80 bg-slate-950/90 sticky top-0 z-10 backdrop-blur-md">
@@ -92,7 +92,7 @@
                     </a>
 
                     <!-- Close button on mobile -->
-                    <button @click="sidebarOpen = false" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" title="Close Sidebar">
+                    <button @click="sidebarOpen = false" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" title="Close Sidebar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
@@ -446,14 +446,14 @@
         </aside>
 
         <!-- ======================= MAIN CONTENT WRAPPER ======================= -->
-        <div class="flex-1 lg:pl-80 flex flex-col min-h-screen">
+        <div class="flex-1 md:pl-72 lg:pl-80 flex flex-col min-h-screen">
 
             <!-- Top Sticky Member Bar -->
             <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
 
                 <div class="flex items-center gap-3">
                     <!-- Mobile Hamburger -->
-                    <button @click="sidebarOpen = true" class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer" title="Open Member Sidebar">
+                    <button @click="sidebarOpen = true" class="md:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer" title="Open Member Sidebar">
                         <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
 
@@ -551,6 +551,7 @@
 
             </header>
 
+            @if(request()->routeIs('member.dashboard'))
             <!-- Sticky Horizontal Section Navigation Tabs Strip -->
             <div class="sticky top-[57px] sm:top-[61px] z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-2">
                 <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 text-xs font-semibold">
@@ -609,6 +610,30 @@
                     </button>
                 </nav>
             </div>
+            @else
+            <!-- Portal Sub-Header Navigation Strip for Sub-Pages -->
+            <div class="sticky top-[57px] sm:top-[61px] z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3 text-xs font-semibold">
+                <div class="flex items-center gap-2 min-w-0">
+                    <a href="{{ route('member.dashboard') }}" class="text-amber-700 hover:text-amber-800 transition-colors flex items-center gap-1 shrink-0 font-bold">
+                        <span>&larr;</span>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <span class="text-slate-300">/</span>
+                    <span class="text-slate-900 font-bold truncate">@yield('page_title', 'Member Portal')</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a href="{{ route('member.dashboard') }}#cohorts" class="hidden sm:inline-flex px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                        Workshops (25% Off)
+                    </a>
+                    <a href="{{ route('member.dashboard') }}#certificates" class="hidden sm:inline-flex px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                        Certificates
+                    </a>
+                    <a href="{{ route('member.dashboard') }}#applications" class="hidden sm:inline-flex px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                        Applications
+                    </a>
+                </div>
+            </div>
+            @endif
 
             <!-- Alerts & Flash Notifications -->
             <div class="px-4 sm:px-6 lg:px-8 pt-4">

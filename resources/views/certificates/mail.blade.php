@@ -71,7 +71,7 @@
                                 <tr>
                                     <td style="padding: 18px 20px;">
                                         <div style="font-size: 11px; color: #b45309; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px;">
-                                            Accredited Programme Completed
+                                            Certified Programme Completed
                                         </div>
                                         <div style="font-size: 19px; font-weight: 800; color: #0f172a; letter-spacing: 0.3px;">
                                             {{ $certificate->course_title }}

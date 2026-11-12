@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 // Public Institutional Pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/certifications', [HomeController::class, 'certifications'])->name('certifications');
+Route::post('/certifications/interest', [HomeController::class, 'registerInterest'])->name('certifications.interest');
 Route::get('/partnerships', [PartnershipController::class, 'index'])->name('partnerships');
 Route::post('/partnerships', [PartnershipController::class, 'store'])->name('partnerships.store');
 Route::get('/faculty', [PartnershipController::class, 'faculty'])->name('faculty');

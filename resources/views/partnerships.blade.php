@@ -15,7 +15,7 @@
                 Institutional Partnerships & Corporate Solutions
             </h1>
             <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-light">
-                Brands Academy Nigeria Foundation partners with universities, government agencies, and corporate organizations to deliver accredited branding curricula, staff capacity building, and strategic advisory.
+                Brands Academy Nigeria Foundation partners with universities, government agencies, and corporate organizations to deliver professional branding curricula, staff capacity building, and strategic advisory.
             </p>
         </div>
     </div>
@@ -41,7 +41,7 @@
                     </div>
                     <h3 class="font-bold text-slate-900 text-base mb-2">Curriculum Licensing</h3>
                     <p class="text-xs text-slate-600 leading-relaxed">
-                        Curriculum licences for universities, polytechnics, and colleges to deliver Academy-accredited branding certifications under institutional supervision.
+                        Curriculum licences for universities, polytechnics, and colleges to deliver Foundation-certified branding programmes under institutional supervision.
                     </p>
                 </div>
 
@@ -131,7 +131,7 @@
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Solution of Interest *</label>
                     <select name="solution_interest" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
                         <option value="staff_training">Staff Capacity-Building & Team Licensing</option>
-                        <option value="curriculum_licensing">Academic Curriculum Licensing & Accreditation</option>
+                        <option value="curriculum_licensing">Academic Curriculum Licensing & Integration</option>
                         <option value="strategic_advisory">Brand Strategy & Executive Advisory</option>
                         <option value="community_sponsorship">Community Outreach & CSR Free-Training Sponsorship</option>
                     </select>

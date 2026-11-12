@@ -269,7 +269,7 @@
                         <span class="bio-val">{{ $member->full_name }}</span>
                     </td>
                     <td class="bio-cell">
-                        <span class="bio-label">Accreditation Tier</span>
+                        <span class="bio-label">Professional Tier</span>
                         <span class="bio-val" style="color: #1d4ed8;">
                             {{ $member->category === 'fellow' ? 'Fellow of Brands Academy (FBA)' : ucwords($member->category) }}
                         </span>
@@ -408,7 +408,7 @@
                     </td>
                     <td class="attestation-cell">
                         <strong style="color: #0f172a; display: block; margin-bottom: 2pt;">Official Statutory Attestation:</strong>
-                        This academic and professional record has been verified and registered by Brands Academy Nigeria Foundation under Incorporated Trustees Act (CAC IT No. 7344471). All CPD units represent accredited hours approved for statutory compliance, academic tenure review, and certified corporate board qualification.
+                        This academic and professional record has been verified and registered by Brands Academy Nigeria Foundation under the Companies and Allied Matters Act 2020, Part F (CAC/IT/No. 7344471). All CPD units represent certified hours approved for professional development, academic tenure review, and corporate governance qualification.
                         <div style="margin-top: 4pt; font-family: monospace; font-size: 6.5pt; color: #1d4ed8;">
                             Verification URL: {{ $verifyUrl }}
                         </div>

@@ -8,7 +8,7 @@
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                Accredited Legal & IP Operations Desk
+                Corporate Services & IP Desk
             </div>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
                 Brand Intellectual Property & CAC Business Registration
@@ -81,7 +81,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="text-center max-w-3xl mx-auto mb-14">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
-            Accredited Legal & IP Protection Tracks
+            Statutory Legal & IP Filing Tracks
         </h2>
         <p class="text-sm sm:text-base text-slate-600">
             End-to-end statutory representation managed by certified legal practitioners. Transparent pricing, no hidden costs.

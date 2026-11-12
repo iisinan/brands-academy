@@ -99,30 +99,30 @@
     <!-- Main Navigation Bar -->
     <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20 gap-4">
+            <div class="flex justify-between items-center h-20 gap-2 xl:gap-4">
                 
                 <!-- Logo & Brand -->
-                <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0 group">
-                    <x-brand-logo class="w-12 h-12 drop-shadow-xs group-hover:scale-105 transition-transform" />
+                <a href="{{ route('home') }}" class="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
+                    <x-brand-logo class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-xs group-hover:scale-105 transition-transform" />
                     <div class="leading-none">
-                        <div class="font-serif-title font-bold text-slate-950 tracking-tight text-base sm:text-lg uppercase">
+                        <div class="font-serif-title font-bold text-slate-950 tracking-tight text-sm sm:text-base xl:text-lg uppercase">
                             Brands Academy
                         </div>
-                        <div class="text-[10px] font-extrabold tracking-widest text-amber-600 uppercase mt-0.5">
+                        <div class="text-[9px] xl:text-[10px] font-extrabold tracking-widest text-amber-600 uppercase mt-0.5">
                             Nigeria Foundation
                         </div>
                     </div>
                 </a>
 
                 <!-- Desktop Navigation Links (6 Consolidated Groups) -->
-                <div class="hidden lg:flex items-center gap-1 xl:gap-2">
-                    <a href="{{ route('home') }}" class="px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('home') ? 'text-amber-700 bg-amber-500/10' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                <div class="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
+                    <a href="{{ route('home') }}" class="px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('home') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                         Home
                     </a>
 
                     <!-- 1. Programmes Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('workshops.*', 'courses.*', 'webinars.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('workshops.*', 'courses.*', 'webinars.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>Programmes</span>
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -135,27 +135,27 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute left-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('workshops.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">W</div>
+                            <a href="{{ route('workshops.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('workshops.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('workshops.*') ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">W</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800 flex items-center gap-1.5">
+                                    <div class="text-xs font-bold {{ request()->routeIs('workshops.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }} flex items-center gap-1.5">
                                         <span>Workshops &amp; Cohorts</span>
                                         <span class="px-1.5 py-0.2 rounded-full text-[9px] bg-emerald-100 text-emerald-800 font-extrabold uppercase">Live</span>
                                     </div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Scheduled certification cohorts</div>
                                 </div>
                             </a>
-                            <a href="{{ route('courses.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">C</div>
+                            <a href="{{ route('courses.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('courses.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('courses.*') ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">C</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Executive Short Courses</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('courses.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Executive Short Courses</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Self-paced video modules &amp; LMS</div>
                                 </div>
                             </a>
-                            <a href="{{ route('webinars.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">M</div>
+                            <a href="{{ route('webinars.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('webinars.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('webinars.*') ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">M</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Webinars &amp; Masterclasses</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('webinars.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Webinars &amp; Masterclasses</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Live sessions with industry fellows</div>
                                 </div>
                             </a>
@@ -163,8 +163,8 @@
                     </div>
 
                     <!-- 2. Certification Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('registry.*', 'verify.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('registry.*', 'verify.*', 'certifications') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>Certification</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -176,24 +176,24 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute left-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('workshops.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
+                            <a href="{{ route('certifications') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('certifications') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
                                 <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">3T</div>
                                 <div>
                                     <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">3-Tier Certification Tracks</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">CBA &bull; CBS &bull; CBE pathway</div>
                                 </div>
                             </a>
-                            <a href="{{ route('verify.certificate') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</div>
+                            <a href="{{ route('verify.certificate') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('verify.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('verify.*') ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">✓</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Verify Credential</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('verify.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Verify Credential</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Instant certificate &amp; ID verification</div>
                                 </div>
                             </a>
-                            <a href="{{ route('registry.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">R</div>
+                            <a href="{{ route('registry.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('registry.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('registry.*') ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-900 text-amber-400 font-bold' }} flex items-center justify-center shrink-0 mt-0.5 text-xs">R</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Practitioners Register</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('registry.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Practitioners Register</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Official BANF certified directory</div>
                                 </div>
                             </a>
@@ -201,8 +201,8 @@
                     </div>
 
                     <!-- 3. Membership Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('membership.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('membership.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>Membership</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -214,10 +214,10 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute left-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('membership.register') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
+                            <a href="{{ route('membership.register') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('membership.register') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
                                 <div class="w-7 h-7 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">+</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Join Foundation (24/7)</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('membership.register') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Join Foundation (24/7)</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Student, Professional &amp; Fellow tracks</div>
                                 </div>
                             </a>
@@ -239,8 +239,8 @@
                     </div>
 
                     <!-- 4. For Institutions Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('partnerships', 'services.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('partnerships', 'services.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>For Institutions</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -252,24 +252,24 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute left-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('partnerships') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">🏛</div>
+                            <a href="{{ route('partnerships') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('partnerships') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('partnerships') ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">🏛</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Institutional Partnerships</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('partnerships') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Institutional Partnerships</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">University licensing &amp; corporate training</div>
                                 </div>
                             </a>
-                            <a href="{{ route('services.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">§</div>
+                            <a href="{{ route('services.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('services.index', 'services.desk') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('services.index', 'services.desk') ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">§</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">CAC &amp; Brand IP Desk</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('services.index', 'services.desk') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">CAC &amp; Brand IP Desk</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Business name, LTD &amp; trademark filing</div>
                                 </div>
                             </a>
-                            <a href="{{ route('services.calculator') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">₦</div>
+                            <a href="{{ route('services.calculator') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('services.calculator') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('services.calculator') ? 'bg-amber-600 text-white' : 'bg-amber-100 text-amber-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">₦</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Statutory Fee Calculator</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('services.calculator') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Statutory Fee Calculator</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Transparent fee &amp; Nice class tool</div>
                                 </div>
                             </a>
@@ -277,8 +277,8 @@
                     </div>
 
                     <!-- 5. About Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>About</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -290,17 +290,17 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute left-0 mt-1 w-60 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('about') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">A</div>
+                            <a href="{{ route('about') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('about') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('about') ? 'bg-amber-600 text-white' : 'bg-amber-100 text-amber-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">A</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">About the Foundation</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('about') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">About the Foundation</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Mission, charter &amp; governance</div>
                                 </div>
                             </a>
-                            <a href="{{ route('faculty') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">F</div>
+                            <a href="{{ route('faculty') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('faculty') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('faculty') ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">F</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Faculty &amp; Trustees</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('faculty') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Faculty &amp; Trustees</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Board of Trustees &amp; Fellows</div>
                                 </div>
                             </a>
@@ -315,8 +315,8 @@
                     </div>
 
                     <!-- 6. Resources Dropdown -->
-                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('journal.*', 'conferences.*', 'forum.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('journal.*', 'conferences.*', 'forum.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>Resources</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -328,24 +328,24 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
                              class="absolute right-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
-                            <a href="{{ route('journal.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">J</div>
+                            <a href="{{ route('journal.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('journal.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('journal.*') ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">J</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">NJBSM Journal</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('journal.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">NJBSM Journal</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Nigerian Journal of Brand Strategy</div>
                                 </div>
                             </a>
-                            <a href="{{ route('conferences.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">S</div>
+                            <a href="{{ route('conferences.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('conferences.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('conferences.*') ? 'bg-amber-600 text-white' : 'bg-amber-100 text-amber-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">S</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Conferences &amp; Summits</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('conferences.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Conferences &amp; Summits</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Nigeria Brand Leadership Summit</div>
                                 </div>
                             </a>
-                            <a href="{{ route('forum.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group">
-                                <div class="w-7 h-7 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">C</div>
+                            <a href="{{ route('forum.index') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('forum.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
+                                <div class="w-7 h-7 rounded-lg {{ request()->routeIs('forum.*') ? 'bg-teal-600 text-white' : 'bg-teal-100 text-teal-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">C</div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Community Forum</div>
+                                    <div class="text-xs font-bold {{ request()->routeIs('forum.*') ? 'text-amber-900' : 'text-slate-900 group-hover:text-amber-800' }}">Community Forum</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">Practitioner discussions &amp; debates</div>
                                 </div>
                             </a>
@@ -354,7 +354,7 @@
                 </div>
 
                 <!-- Right Action Buttons -->
-                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div class="flex items-center gap-2 xl:gap-3 shrink-0">
                     @auth
                         @php
                             $navUnreadCount = auth()->user()->unreadNotifications()->count();
@@ -369,13 +369,14 @@
                         </a>
 
                         @if(auth()->user()?->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors shadow-xs whitespace-nowrap">
+                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors shadow-xs whitespace-nowrap">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                <span>Admin Panel</span>
+                                <span class="hidden xl:inline">Admin Panel</span>
+                                <span class="xl:hidden">Admin</span>
                             </a>
-                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs whitespace-nowrap">
+                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs whitespace-nowrap">
                                 <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                                <span>Member Dashboard</span>
+                                <span class="hidden sm:inline">Member Dashboard</span>
                             </a>
                         @else
                             <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs whitespace-nowrap">
@@ -391,12 +392,12 @@
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="hidden sm:inline-block px-3 py-2 text-xs xl:text-sm font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100/70 rounded-xl transition-colors whitespace-nowrap">
+                        <a href="{{ route('login') }}" class="hidden sm:inline-block px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100/70 rounded-xl transition-colors whitespace-nowrap">
                             Sign In
                         </a>
-                        <a href="{{ route('membership.register') }}" class="inline-flex items-center gap-2 px-4 xl:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm hover:shadow-md transition-all whitespace-nowrap group">
+                        <a href="{{ route('membership.register') }}" class="inline-flex items-center gap-1.5 xl:gap-2 px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm hover:shadow-md transition-all whitespace-nowrap group">
                             <span>Join Foundation</span>
-                            <svg class="w-4 h-4 text-slate-950 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <svg class="w-3.5 xl:w-4 h-3.5 xl:h-4 text-slate-950 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     @endauth
 
@@ -437,6 +438,10 @@
             <div class="pt-2 border-t border-slate-100">
                 <div class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Certification &amp; Registry</div>
                 <div class="space-y-0.5">
+                    <a href="{{ route('certifications') }}" class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold {{ request()->routeIs('certifications') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                        <span>3-Tier Certification Framework</span>
+                        <span class="text-amber-600 font-bold text-[10px]">CBA &bull; CBS &bull; CBE</span>
+                    </a>
                     <a href="{{ route('verify.certificate') }}" class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold {{ request()->routeIs('verify.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
                         <span>Verify Digital Credential</span>
                         <span class="text-amber-600 font-bold text-[10px]">&check; Verify</span>
@@ -614,10 +619,10 @@
                 <div>
                     <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-4">Certification Tracks</h4>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Tier 1: CBA (Associate)</a></li>
-                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Tier 2: CBS (Strategist)</a></li>
-                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Tier 3: CBE (Executive)</a></li>
-                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Community Free-Access Track</a></li>
+                        <li><a href="{{ route('certifications') }}#cba" class="hover:text-amber-400 transition-colors">Tier 1: CBA (Associate)</a></li>
+                        <li><a href="{{ route('certifications') }}#cbs" class="hover:text-amber-400 transition-colors">Tier 2: CBS (Strategist)</a></li>
+                        <li><a href="{{ route('certifications') }}#cbe" class="hover:text-amber-400 transition-colors">Tier 3: CBE (Executive)</a></li>
+                        <li><a href="{{ route('workshops.index') }}" class="hover:text-amber-400 transition-colors">Cohort Application Windows</a></li>
                         <li><a href="{{ route('partnerships') }}" class="hover:text-amber-400 transition-colors">Institutional Licensing</a></li>
                     </ul>
                 </div>
