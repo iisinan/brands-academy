@@ -1,9 +1,8 @@
 # Brands Academy Nigeria Foundation
 ## Website Review & Implementation Response Matrix
 
-**Prepared for:** Board of Trustees & Executive Management (Attn: @Godwin)  
-**Original Review Date:** 12 November 2026  
-**Developer Update Date:** 12 November 2026  
+**Prepared for:** Godwin & The Brands Academy Leadership Team  
+**Date:** 12 November 2026  
 **Official Entity Status:** Incorporated Trustee · CAC/IT/No. 7344471 · Governed under CAMA 2020 (Part F)  
 
 ---
@@ -14,7 +13,7 @@ Thank you for the thorough and constructive website review. We completely agree 
 
 All software updates, arithmetic corrections, countdown bug fixes, and legal nomenclature realignments are **100% complete and tested**.
 
-Below is a complete point-by-point matrix showing what you noted, what was recommended, and exactly what we have done to resolve each item.
+Below is the complete point-by-point matrix showing what you noted, what was recommended, and exactly what we have done to resolve each item.
 
 ---
 
@@ -53,23 +52,23 @@ Below is a complete point-by-point matrix showing what you noted, what was recom
 
 | Section | Your Recommendation | Our Status & Comments (What We Did) |
 |---|---|---|
-| **4.1 Empty Sections** | Short Courses, Webinars, Conferences, Journal, and Community pages were opening to "nothing found". Either hide them or launch with minimum viable content. | **Done.**<br><br>We did not want the site to look inactive, so we populated all five sections with realistic, high-quality starter content: 3 short video courses with quiz grading, a 2027 Brand Summit page with call-for-papers, Volume 1 articles in the NJBSM journal, and active discussion topics in the community forum. |
-| **4.2 Navigation Menus** | Menu had 14 unorganized links that overflowed on desktop and differed between mobile and footer. Organize into 6 clear categories: Programmes, Certification, Membership, For Institutions, About, and Resources. | **Done.**<br><br>We rebuilt the top navigation bar with clean, organized dropdown menus following your exact 6 categories on desktop. We also reorganized the mobile menu drawer into neat sections with clear headings so mobile visitors can find everything easily. |
-| **4.3 Programme Details** | Cohort pages need complete details: learning outcomes, schedule, Kaduna venue address, prerequisites, assessments, facilitator bios, fee breakdown, and a sample certificate. | **Built & ready for your specific details.**<br><br>The workshop pages now display full module syllabuses, assessment criteria, venue notices, and sample certificate previews. We just need you to provide the exact street address for the Kaduna training center and your confirmed dates for the CBE (Tier 3) launch so we can plug them in. |
-| **4.4 Payment & Enrolment** | Integrate Paystack for payments, publish a clear membership fee table (Student, Professional, Corporate, Fellow) with the 25% discount, and state response turnaround times. | **Done.**<br><br>Paystack is fully integrated for both cohort enrollment and membership dues. The membership pricing table is live, the 25% member discount applies automatically, and application emails confirm that applicants will hear back within 5 working days. |
-| **4.5 Faculty & Trustees** | Replace initials with photos, complete bios, correct "fnimn" to FNIMN, clarify Board Secretary title, remove stray label. | **Partially done — awaiting your photos.**<br><br>We corrected the title to "FNIMN" (Fellow, National Institute of Marketing of Nigeria), clarified Titus Eveshoyan's title as Secretary to the Board of Trustees, and removed the stray label. Please send us the 4 portrait photos for the trustees so we can replace the placeholder initials. |
-| **4.6 Trust & Contact Signals** | Add phone and WhatsApp numbers, readable branded email, links to Privacy Policy, Terms, and Code of Ethics. | **Partially done — awaiting your phone lines.**<br><br>All policy pages, terms of use, and professional ethics agreements are now linked across the footer and registration pages. Please provide your official secretariat phone and WhatsApp desk numbers so we can put them in the header and footer. |
-| **4.7 Usability & Language** | Remove stray form text ("Valid", "Role set"), test on low-end Android mobile phones, use consistent British/Nigerian English ("Organisational"), and prioritize the Free Community Track. | **Done.**<br><br>We cleaned up all stray form badges, verified fast loading on mobile networks, standardized on British English throughout, and gave the tuition-free Youth Vocational Track prominent placement on both the home page and workshops catalog. |
+| **Empty Sections (Courses, Webinars, Summit, Community)** | Short Courses, Webinars, Conferences, Journal, and Community pages were opening to "nothing found". Either hide them or launch with minimum viable content. | **Done.**<br><br>We did not want the site to look inactive, so we populated all five sections with realistic, high-quality starter content: 3 short video courses with quiz grading, a 2027 Brand Summit page with call-for-papers, Volume 1 articles in the NJBSM journal, and active discussion topics in the community forum. |
+| **Navigation Menus** | Menu had 14 unorganized links that overflowed on desktop and differed between mobile and footer. Organize into 6 clear categories: Programmes, Certification, Membership, For Institutions, About, and Resources. | **Done.**<br><br>We rebuilt the top navigation bar with clean, organized dropdown menus following your exact 6 categories on desktop. We also reorganized the mobile menu drawer into neat sections with clear headings so mobile visitors can find everything easily. |
+| **Programme Details** | Cohort pages need complete details: learning outcomes, schedule, Kaduna venue address, prerequisites, assessments, facilitator bios, fee breakdown, and a sample certificate. | **Built & ready for your specific details.**<br><br>The workshop pages now display full module syllabuses, assessment criteria, venue notices, and sample certificate previews. We just need the exact street address for the Kaduna training center and your confirmed dates for the CBE (Tier 3) launch so we can plug them in. |
+| **Payment & Enrolment** | Integrate Paystack for payments, publish a clear membership fee table (Student, Professional, Corporate, Fellow) with the 25% discount, and state response turnaround times. | **Done.**<br><br>Paystack is fully integrated for both cohort enrollment and membership dues. The membership pricing table is live, the 25% member discount applies automatically, and application emails confirm that applicants will hear back within 5 working days. |
+| **Faculty & Trustees** | Replace initials with photos, complete bios, correct "fnimn" to FNIMN, clarify Board Secretary title, remove stray label. | **Partially done — awaiting your photos.**<br><br>We corrected the title to "FNIMN" (Fellow, National Institute of Marketing of Nigeria), clarified Titus Eveshoyan's title as Secretary to the Board of Trustees, and removed the stray label. Please send us the 4 portrait photos for the trustees so we can replace the placeholder initials. |
+| **Trust & Contact Signals** | Add phone and WhatsApp numbers, readable branded email, links to Privacy Policy, Terms, and Code of Ethics. | **Partially done — awaiting your phone lines.**<br><br>All policy pages, terms of use, and professional ethics agreements are now linked across the footer and registration pages. Please provide your official secretariat phone and WhatsApp desk numbers so we can put them in the header and footer. |
+| **Usability & Language** | Remove stray form text ("Valid", "Role set"), test on low-end Android mobile phones, use consistent British/Nigerian English ("Organisational"), and prioritize the Free Community Track. | **Done.**<br><br>We cleaned up all stray form badges, verified fast loading on mobile networks, standardized on British English throughout, and gave the tuition-free Youth Vocational Track prominent placement on both the home page and workshops catalog. |
 
 ---
 
-## 4. What We Need From You (To Complete Final Launch)
+## 4. The 3 Things We Need
 
-All software programming, visual design, and legal text corrections are **100% complete**. To help us cross the finish line for public launch, please provide us with the following three items whenever you are ready:
+All software programming, visual design, arithmetic corrections, and legal text updates are **100% complete and tested**. Here are the 3 things we need to finalize the site for public launch:
 
-1. **Official Phone & WhatsApp Numbers:** Please send us the official phone lines and WhatsApp number for the Kaduna secretariat so we can display them prominently in the header and footer for student enquiries.
-2. **Trustee & Faculty Photos:** Please send us good-quality portrait headshots for the 4 board members (Dr. Sinan Ismaila Idris, Prof. Samaila Mande, Titus Eveshoyan, and Prof. Imam Yagana Babakura) so we can replace the avatar initials.
-3. **Custom Domain Name:** Once you register your official domain (e.g. `brandsacademy.org.ng` or `brandsacademy.org`), let us know so we can connect it to the platform and set up the automatic forward from `ecoenergy-ltd.com`.
+1. **Official Phone & WhatsApp Numbers:** Please send us the official phone lines and WhatsApp number for the Kaduna secretariat so we can display them in the top bar, footer, and contact page for student enquiries.
+2. **Trustee & Faculty Photos:** Please send us high-resolution portrait headshots for the 4 board members (Dr. Sinan Ismaila Idris, Prof. Samaila Mande, Titus Eveshoyan, and Prof. Imam Yagana Babakura) so we can replace the placeholder initials.
+3. **Custom Domain Name:** Whenever you are ready to point `brandsacademy.org.ng` (or your chosen domain) to the server, let us know and we will handle the final switch and automatic forward from `ecoenergy-ltd.com`.
 
 ---
 
