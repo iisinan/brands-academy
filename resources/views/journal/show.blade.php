@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', $article->title . ' | NJBSM')
+@section('page_title', $article->title)
 @section('meta_description', Str::limit(strip_tags($article->abstract), 160))
 @section('og_type', 'article')
 

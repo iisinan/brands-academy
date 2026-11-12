@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Webinars & Virtual Masterclasses - Brands Academy')
+@section('page_title', 'Webinars & Live Sessions')
 
 @section('content')
 

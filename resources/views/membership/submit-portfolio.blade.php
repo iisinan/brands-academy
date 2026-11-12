@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.member')
 
 @section('title', 'Submit Portfolio Deliverables - Brands Academy')
+@section('page_title', 'Submit Portfolio Deliverables')
 
 @push('styles')
 <style>

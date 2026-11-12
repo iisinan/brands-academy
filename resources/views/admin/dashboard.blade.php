@@ -15,7 +15,7 @@
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span>Executive Operations & Governance</span>
                     <span class="text-slate-400">&bull;</span>
-                    <span class="text-slate-300 font-mono">CAC IT No. 7344471</span>
+                    <span class="text-slate-300 font-mono">CAC/IT/No. 7344471</span>
                 </div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold font-serif-title tracking-tight text-white">
                     Brands Academy Nigeria Control Center

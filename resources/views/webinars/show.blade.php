@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', $webinar->title . ' - Webinar')
+@section('page_title', $webinar->title)
 @section('meta_description', Str::limit(strip_tags($webinar->summary ?: $webinar->description), 160))
 @section('og_type', 'article')
 

@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
     <title>@yield('title', 'Member Dashboard') | Brands Academy Nigeria Foundation</title>
-    <meta name="description" content="Official Member Portal & Governance Registry for Brands Academy Nigeria Foundation (CAC IT No. 7344471).">
+    <meta name="description" content="Official Member Portal & Governance Registry for Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).">
 
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=3">
@@ -669,14 +669,14 @@
             </div>
 
             <!-- Page Content Body -->
-            <main class="flex-1 pb-24 lg:pb-16">
+            <main class="flex-1 pb-24 md:pb-16">
                 @yield('content')
             </main>
 
             <!-- Member Portal Footer -->
-            <footer class="px-4 sm:px-6 lg:px-8 py-4 pb-20 lg:pb-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
+            <footer class="px-4 sm:px-6 lg:px-8 py-4 pb-20 md:pb-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
                 <div>
-                    <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee &bull; CAC IT No. 7344471
+                    <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee &bull; CAC/IT/No. 7344471
                 </div>
                 <div class="flex items-center gap-4 text-[11px]">
                     <a href="{{ route('home') }}" target="_blank" class="hover:text-amber-600 transition-colors">Public Site</a>
@@ -691,7 +691,7 @@
     </div>
 
     <!-- Member Mobile Bottom Navigation Bar -->
-    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 safe-pb shadow-lg">
         <div class="grid grid-cols-5 h-16 items-center px-1">
             <!-- 1. Overview -->
             <button type="button" @click="switchTab('overview')" class="flex flex-col items-center justify-center py-1 transition-colors cursor-pointer" :class="activeTab === 'overview' ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-white'">
@@ -772,7 +772,9 @@
                         return;
                     }
                     this.activeTab = tabName;
-                    this.sidebarOpen = false;
+                    if (window.innerWidth < 768) {
+                        this.sidebarOpen = false;
+                    }
                     try {
                         if (window.history && window.history.replaceState) {
                             window.history.replaceState(null, '', '#' + tabName);

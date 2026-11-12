@@ -355,7 +355,7 @@
     <div class="px-3 pt-2 text-[11px] text-slate-400 space-y-2">
         <div class="flex items-center justify-between text-slate-500">
             <span>Incorporated Trustee</span>
-            <span class="font-bold text-slate-700">CAC IT No. 7344471</span>
+            <span class="font-bold text-slate-700">CAC/IT/No. 7344471</span>
         </div>
         <div class="flex items-center justify-between text-slate-500">
             <span>Support</span>

@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', "{$thread->title} | Brands Academy Community")
+@section('page_title', $thread->title)
 
 @section('content')
 <!-- Header Bar -->

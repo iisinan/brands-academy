@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Submit Manuscript | Nigerian Journal of Brand Strategy & Management (NJBSM)')
+@section('page_title', 'Submit Manuscript - NJBSM')
 
 @section('content')
 <div class="bg-slate-900 text-white py-12 border-b border-slate-800">

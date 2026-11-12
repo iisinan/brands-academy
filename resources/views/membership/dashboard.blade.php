@@ -497,7 +497,38 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
             @forelse($openWorkshops as $workshop)
                 @php
                     $window = $workshop->application_window_status;
-                    $userApplication = $applications->firstWhere('workshop_id', $workshop->id);
+                    $userApplication = $applications->first(function ($app) use ($workshop) {
+                        if ($app->workshop_id == $workshop->id) return true;
+                        if ($app->workshop && $workshop->slug && $app->workshop->slug === $workshop->slug) return true;
+                        if ($app->workshop && $workshop->track_type && $app->workshop->track_type === $workshop->track_type) return true;
+                        if ($app->workshop && $workshop->title && strtolower(trim($app->workshop->title)) === strtolower(trim($workshop->title))) return true;
+                        return false;
+                    });
+                    if (! $userApplication && auth()->check()) {
+                        $userApplication = \App\Models\WorkshopApplication::where(function ($q) use ($workshop) {
+                                $q->where('workshop_id', $workshop->id);
+                                if ($workshop->track_type) {
+                                    $q->orWhereHas('workshop', fn ($wq) => $wq->where('track_type', $workshop->track_type));
+                                }
+                            })
+                            ->where(function ($q) use ($member, $user) {
+                                if ($user) {
+                                    $q->where('user_id', $user->id)
+                                      ->orWhere('applicant_email', $user->email);
+                                }
+                                if ($member) {
+                                    $q->orWhere('member_id', $member->id);
+                                    if ($member->email) {
+                                        $q->orWhere('applicant_email', $member->email);
+                                    }
+                                }
+                            })
+                            ->latest()
+                            ->first();
+                    }
+                    if (! $userApplication && $applications->count() === 1 && $openWorkshops->count() === 1) {
+                        $userApplication = $applications->first();
+                    }
                 @endphp
                 <div x-show="matchesCohortFilter(@js($workshop->title), @js($workshop->track_label))"
                      x-transition:enter="transition ease-out duration-150"

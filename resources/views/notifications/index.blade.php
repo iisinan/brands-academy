@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Notifications & Activity Center | Brands Academy')
+@section('page_title', 'Notifications & Activity Center')
 
 @section('content')
 <div class="min-h-screen bg-slate-50 py-10">

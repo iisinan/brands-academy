@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Community & Knowledge Board | Brands Academy Nigeria Foundation')
+@section('page_title', 'Community & Knowledge Board')
 
 @section('content')
 <div class="bg-slate-950 text-white py-16 sm:py-20 border-b border-slate-800 relative overflow-hidden">

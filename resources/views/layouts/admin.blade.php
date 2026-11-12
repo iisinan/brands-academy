@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
     <title>@yield('title', 'Administration Portal') | Brands Academy Nigeria Foundation</title>
-    <meta name="description" content="Operational Administration & Governance Portal for Brands Academy Nigeria Foundation (CAC IT No. 7344471).">
+    <meta name="description" content="Operational Administration & Governance Portal for Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).">
     
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=3">

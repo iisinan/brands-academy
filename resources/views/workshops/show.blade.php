@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', $workshop->title . ' - Brands Academy')
+@section('page_title', $workshop->title)
 
 @push('styles')
 <style>

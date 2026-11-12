@@ -251,7 +251,7 @@
                     <td>
                         <div class="institution-title">Brands Academy Nigeria Foundation</div>
                         <div class="main-title">Official CPD Academic Transcript</div>
-                        <div class="subtitle">Continuing Professional Development (CPD) Units Registry &bull; CAC IT Reg. No. 7344471</div>
+                        <div class="subtitle">Continuing Professional Development (CPD) Units Registry &bull; CAC/IT/No. 7344471</div>
                     </td>
                     <td class="meta-right">
                         <div class="crest-seal">BA</div>

@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Nigerian Journal of Brand Strategy & Management (NJBSM) | Brands Academy')
+@section('page_title', 'Nigerian Journal of Brand Strategy & Management (NJBSM)')
 
 @section('content')
 <div class="bg-slate-900 text-white py-16 border-b border-slate-800">

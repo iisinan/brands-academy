@@ -187,17 +187,33 @@ class MembershipController extends Controller
 
         if ($member) {
             WorkshopApplication::whereNull('member_id')
-                ->where(function ($q) use ($user): void {
+                ->where(function ($q) use ($user, $member): void {
                     $q->where('user_id', $user->id)
                         ->orWhere('applicant_email', $user->email);
+                    if ($member->email) {
+                        $q->orWhere('applicant_email', $member->email);
+                    }
                 })
                 ->update(['member_id' => $member->id]);
+
+            WorkshopApplication::whereNull('user_id')
+                ->where(function ($q) use ($user, $member): void {
+                    $q->where('member_id', $member->id)
+                        ->orWhere('applicant_email', $user->email);
+                    if ($member->email) {
+                        $q->orWhere('applicant_email', $member->email);
+                    }
+                })
+                ->update(['user_id' => $user->id]);
         }
 
         $applications = WorkshopApplication::query()
             ->where(function ($q) use ($user, $member): void {
                 if ($member) {
                     $q->where('member_id', $member->id);
+                    if ($member->email) {
+                        $q->orWhere('applicant_email', $member->email);
+                    }
                 }
                 if ($user) {
                     $q->orWhere('user_id', $user->id)

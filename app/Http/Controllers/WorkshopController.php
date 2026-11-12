@@ -63,10 +63,24 @@ class WorkshopController extends Controller
         $existingApplication = null;
 
         if (Auth::check()) {
-            $existingApplication = WorkshopApplication::where('workshop_id', $workshop->id)
-                ->where(function ($q): void {
-                    $q->where('user_id', Auth::id())
-                        ->orWhere('applicant_email', Auth::user()->email);
+            $user = Auth::user();
+            $member = $user?->member;
+
+            $existingApplication = WorkshopApplication::where(function ($q) use ($workshop) {
+                $q->where('workshop_id', $workshop->id);
+                if ($workshop->track_type) {
+                    $q->orWhereHas('workshop', fn ($wq) => $wq->where('track_type', $workshop->track_type));
+                }
+            })
+                ->where(function ($q) use ($user, $member): void {
+                    $q->where('user_id', $user->id)
+                        ->orWhere('applicant_email', $user->email);
+                    if ($member) {
+                        $q->orWhere('member_id', $member->id);
+                        if ($member->email) {
+                            $q->orWhere('applicant_email', $member->email);
+                        }
+                    }
                 })
                 ->first();
 
@@ -117,14 +131,23 @@ class WorkshopController extends Controller
         ]);
 
         // Prevent duplicate application
-        $existsQuery = WorkshopApplication::where('workshop_id', $workshop->id)
+        $existsQuery = WorkshopApplication::where(function ($q) use ($workshop) {
+            $q->where('workshop_id', $workshop->id);
+            if ($workshop->track_type) {
+                $q->orWhereHas('workshop', fn ($wq) => $wq->where('track_type', $workshop->track_type));
+            }
+        })
             ->where(function ($q) use ($validated, $user, $member): void {
                 $q->where('applicant_email', $validated['applicant_email']);
                 if ($user) {
-                    $q->orWhere('user_id', $user->id);
+                    $q->orWhere('user_id', $user->id)
+                        ->orWhere('applicant_email', $user->email);
                 }
                 if ($member) {
                     $q->orWhere('member_id', $member->id);
+                    if ($member->email) {
+                        $q->orWhere('applicant_email', $member->email);
+                    }
                 }
             });
 

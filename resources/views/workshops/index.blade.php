@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Workshops & Certification Cohorts - Application Periods')
+@section('page_title', 'Workshops & Certification Cohorts')
 
 @section('content')
 
@@ -65,12 +66,22 @@
                 $window = $workshop->application_window_status;
                 $userApp = null;
                 if (auth()->check()) {
-                    $userApp = \App\Models\WorkshopApplication::where('workshop_id', $workshop->id)
-                        ->where(function ($q) {
-                            $q->where('user_id', auth()->id())
-                                ->orWhere('applicant_email', auth()->user()->email);
-                            if (auth()->user()->member) {
-                                $q->orWhere('member_id', auth()->user()->member->id);
+                    $u = auth()->user();
+                    $m = $u->member;
+                    $userApp = \App\Models\WorkshopApplication::where(function ($q) use ($workshop) {
+                            $q->where('workshop_id', $workshop->id);
+                            if ($workshop->track_type) {
+                                $q->orWhereHas('workshop', fn ($wq) => $wq->where('track_type', $workshop->track_type));
+                            }
+                        })
+                        ->where(function ($q) use ($u, $m) {
+                            $q->where('user_id', $u->id)
+                                ->orWhere('applicant_email', $u->email);
+                            if ($m) {
+                                $q->orWhere('member_id', $m->id);
+                                if ($m->email) {
+                                    $q->orWhere('applicant_email', $m->email);
+                                }
                             }
                         })->first();
                 }

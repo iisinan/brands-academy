@@ -836,6 +836,86 @@ class PortalFeatureTest extends TestCase
     }
 
     /**
+     * Test member dashboard shows Already Applied instead of Apply Now on cohort cards when an application exists.
+     */
+    public function test_member_dashboard_shows_already_applied_and_not_apply_when_application_exists(): void
+    {
+        $user = User::create([
+            'name' => 'Sani Salihu',
+            'email' => 'sani.salihu@example.com',
+            'password' => Hash::make('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2026-I0R03',
+            'first_name' => 'Sani',
+            'last_name' => 'Salihu',
+            'email' => 'sani.salihu@example.com',
+            'phone' => '+234 803 000 1122',
+            'category' => 'professional',
+            'institution_or_company' => 'Bayero University Kano',
+            'designation' => 'Research Fellow',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'payment_status' => 'paid',
+            'joined_at' => now()->toDateString(),
+            'qr_code_token' => 'sani-salihu-qr-token',
+        ]);
+
+        $workshop = Workshop::create([
+            'title' => 'Certified Brand Associate (CBA) — Cohort 2026-1',
+            'slug' => 'certified-brand-associate-cba-cohort-2026-1',
+            'track_type' => 'cba',
+            'tagline' => 'Foundational certification in branding concepts, terminology and brand strategy.',
+            'description' => 'A comprehensive 6-week foundational programme.',
+            'delivery_mode' => 'hybrid',
+            'fee_type' => 'subsidized',
+            'fee_amount' => 15000.00,
+            'capacity' => 50,
+            'application_starts_at' => now()->subDays(5),
+            'application_deadline' => now()->addDays(20),
+            'starts_at' => now()->addDays(25),
+            'ends_at' => now()->addDays(67),
+            'status' => 'published',
+        ]);
+
+        \App\Models\WorkshopApplication::create([
+            'workshop_id' => $workshop->id,
+            'member_id' => $member->id,
+            'user_id' => $user->id,
+            'applicant_name' => 'Sani Salihu',
+            'applicant_email' => 'sani.salihu@example.com',
+            'applicant_phone' => '+234 803 000 1122',
+            'applicant_organization' => 'Bayero University Kano',
+            'statement_of_purpose' => 'Advancing professional branding mastery and certification.',
+            'scholarship_requested' => false,
+            'status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($user)->get('/member/dashboard');
+        $response->assertStatus(200);
+        $response->assertSee('Sani Salihu');
+        $response->assertSee('1 Submitted');
+        $response->assertSee('Already Applied');
+        $response->assertSee('Application Submitted');
+        $response->assertDontSee('Apply Now &rarr;');
+
+        // Verify workshops list view also shows applied
+        $workshopsResponse = $this->actingAs($user)->get(route('workshops.index'));
+        $workshopsResponse->assertStatus(200);
+        $workshopsResponse->assertSee('Applied');
+
+        // Verify workshop detail view reflects existing application
+        $showResponse = $this->actingAs($user)->get(route('workshops.show', $workshop->slug));
+        $showResponse->assertStatus(200);
+        $showResponse->assertSee('Application Under Review');
+    }
+
+    /**
      * Test member can update profile records.
      */
     public function test_member_can_update_profile_records(): void
@@ -1783,5 +1863,84 @@ class PortalFeatureTest extends TestCase
         $memberResponse->assertStatus(200);
         $memberResponse->assertSee('BANF-MBR-2024-TEST-BC');
         $memberResponse->assertSee('data:image/png;base64,');
+    }
+
+    /**
+     * Test the dedicated 3-Tier Certification Framework page renders with CBA, CBS, and CBE tracks.
+     */
+    public function test_certifications_page_renders_with_3_tiers_and_comparison_matrix(): void
+    {
+        $response = $this->get(route('certifications'));
+
+        $response->assertStatus(200);
+        $response->assertSee('The 3-Tier Professional Certification Pathway');
+        $response->assertSee('Certified Brand Associate (CBA)');
+        $response->assertSee('Certified Brand Strategist (CBS)');
+        $response->assertSee('Certified Brand Executive (CBE)');
+        $response->assertSee('Certification Framework Matrix');
+        $response->assertSee('CAC/IT/No. 7344471');
+    }
+
+    /**
+     * Test prospective candidate can submit expression of interest for CBE 2027 inaugural cohort.
+     */
+    public function test_can_submit_expression_of_interest_for_cbe_2027_cohort(): void
+    {
+        Mail::fake();
+
+        $payload = [
+            'tier' => 'CBE',
+            'full_name' => 'Dr. Ibrahim Waziri',
+            'email' => 'waziri@enterprise.ng',
+            'phone' => '+2348039876543',
+            'organization' => 'Apex Financial Holdings',
+            'job_title' => 'Group Managing Director',
+            'experience_years' => '15+ years',
+            'notes' => 'Looking to enroll board members in the 2027 executive retreat.',
+        ];
+
+        $response = $this->post(route('certifications.interest'), $payload);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('institutional_inquiries', [
+            'organization_name' => 'Apex Financial Holdings',
+            'contact_person' => 'Dr. Ibrahim Waziri',
+            'email' => 'waziri@enterprise.ng',
+            'target_timeline' => '2027 Cohort',
+        ]);
+    }
+
+    /**
+     * Test workshops listing page can filter by certification track.
+     */
+    public function test_workshops_page_filters_by_certification_track(): void
+    {
+        Workshop::create([
+            'title' => 'Test CBA Cohort',
+            'slug' => 'test-cba-track-cohort',
+            'track_type' => 'cba',
+            'description' => 'A foundational training workshop covering brand terminology and architecture.',
+            'delivery_mode' => 'online',
+            'venue' => 'Virtual',
+            'fee_type' => 'free',
+            'fee_amount' => 0,
+            'capacity' => 30,
+            'application_starts_at' => now()->subDay(),
+            'application_deadline' => now()->addDays(10),
+            'starts_at' => now()->addDays(15),
+            'ends_at' => now()->addDays(45),
+            'status' => 'published',
+        ]);
+
+        $cbaResponse = $this->get(route('workshops.index', ['track' => 'cba']));
+        $cbaResponse->assertStatus(200);
+        $cbaResponse->assertSee('Test CBA Cohort');
+
+        $cbeResponse = $this->get(route('workshops.index', ['track' => 'cbe']));
+        $cbeResponse->assertStatus(200);
+        $cbeResponse->assertSee('Certified Brand Executive (CBE) — Inaugural Cohort');
+        $cbeResponse->assertSee('Launching 2027');
     }
 }

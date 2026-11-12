@@ -609,7 +609,7 @@
                         A not-for-profit, non-political educational foundation incorporated under the laws of the Federal Republic of Nigeria. Advancing branding, marketing, communications and professional education across Nigeria and West Africa.
                     </p>
                     <div class="pt-2 text-xs space-y-1 text-slate-400">
-                        <div><strong class="text-slate-300">CAC IT Registration:</strong> CAC/IT/No. 7344471</div>
+                        <div><strong class="text-slate-300">CAC Registration:</strong> CAC/IT/No. 7344471</div>
                         <div><strong class="text-slate-300">Incorporation Date:</strong> 12 February 2024</div>
                         <div><strong class="text-slate-300">Governing Body:</strong> Companies and Allied Matters Act 2020 (Part F, Incorporated Trustees)</div>
                     </div>
