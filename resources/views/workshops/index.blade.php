@@ -59,6 +59,47 @@
         </a>
     </div>
 
+    <!-- Free Community Track & Scholarship Explainer Banner -->
+    <div class="mb-10 p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-950 text-white border border-emerald-800/60 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-2.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    Non-Profit Public Benefit Mission &bull; CAMA 2020 Part F
+                </div>
+                <h3 class="text-xl font-bold font-serif-title text-white mb-2">
+                    Tuition-Free Community &amp; Youth Vocational Scholarships
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+                    In fulfillment of our statutory non-profit constitution, the Foundation allocates 100% tuition-free seats in our vocational cohorts for unemployed youth, early-career apprentices, and applicants from marginalised communities across Nigeria.
+                </p>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-400 font-bold">&check;</span>
+                        <span><strong>Who Qualifies:</strong> Youth (under 30), undergraduates, job-seekers</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-400 font-bold">&check;</span>
+                        <span><strong>Coverage:</strong> 100% Tuition, Live Mentorship &amp; Assessment</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-400 font-bold">&check;</span>
+                        <span><strong>Turnaround:</strong> Decisions within 5 working days of window close</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2.5">
+                <a href="{{ route('workshops.index', ['track' => 'cba']) }}" class="px-5 py-3 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all text-center shadow-md">
+                    Apply for Free Vocational Track &rarr;
+                </a>
+                <a href="{{ route('about') }}#manifesto" class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors text-center border border-slate-700">
+                    Read Foundation Charter
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @forelse($workshops as $workshop)

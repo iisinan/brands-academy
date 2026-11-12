@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In - Brands Academy Institutional Portal')
+@section('title', 'Sign In - Brands Academy Nigeria Foundation')
 
 @push('styles')
 <style>

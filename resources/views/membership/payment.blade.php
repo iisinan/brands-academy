@@ -190,24 +190,132 @@
             </div>
         </div>
 
-        <!-- Payment Action Form -->
-        <div class="pt-8 space-y-4">
-            <form action="{{ route('membership.payment.initialize') }}" method="POST">
-                @csrf
-                <button 
-                    type="submit"
-                    class="w-full py-4 sm:py-5 px-6 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.01]"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                    </svg>
-                    <span>Pay ₦{{ number_format($feeConfig['amount']) }} Securely Online &rarr;</span>
-                </button>
-            </form>
+        <!-- Payment Channels Selection & Actions -->
+        <div class="pt-8" x-data="{ method: 'online' }">
+            @if ($pendingPayment && $pendingPayment->status === 'under_review')
+                <!-- Transfer Under Review Banner -->
+                <div class="bg-amber-50 border border-amber-300 rounded-2xl p-5 mb-8 text-amber-950">
+                    <div class="flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold text-sm shrink-0">⏳</span>
+                        <div>
+                            <h4 class="font-bold text-sm">Direct Bank Transfer Under Secretariat Review</h4>
+                            <p class="text-xs text-amber-900/80 mt-1 leading-relaxed">
+                                We received your transfer receipt (Ref: <strong class="font-mono text-amber-950">{{ $pendingPayment->reference }}</strong>). The Kaduna secretariat is verifying the deposit. Verification normally takes within 1 to 24 business hours. Once verified, your membership ID will be minted and full portal privileges unlocked.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
-            <p class="text-[11px] text-slate-400 text-center leading-relaxed">
-                You will be securely redirected to complete your payment. Once approved, your member credentials and dashboard access will unlock immediately.
-            </p>
+            <!-- Tabs: Online vs Bank Transfer -->
+            <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200 mb-6">
+                <button type="button" 
+                        @click="method = 'online'"
+                        class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        :class="method === 'online' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                    <span>Option 1: Pay Online (Instant Activation)</span>
+                </button>
+                <button type="button" 
+                        @click="method = 'transfer'"
+                        class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        :class="method === 'transfer' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+                    <span>Option 2: Direct Bank Transfer (Fallback)</span>
+                </button>
+            </div>
+
+            <!-- Tab 1: Pay Online -->
+            <div x-show="method === 'online'" class="space-y-4">
+                <form action="{{ route('membership.payment.initialize') }}" method="POST">
+                    @csrf
+                    <button 
+                        type="submit"
+                        class="w-full py-4 sm:py-5 px-6 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white shadow-xl shadow-amber-500/25 transition-all flex items-center justify-center gap-3 cursor-pointer hover:scale-[1.01]"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                        </svg>
+                        <span>Pay ₦{{ number_format($feeConfig['amount']) }} Securely Online &rarr;</span>
+                    </button>
+                </form>
+
+                <p class="text-[11px] text-slate-400 text-center leading-relaxed">
+                    Debit &amp; Credit Cards (Visa, Mastercard, Verve), Bank Transfer, USSD Codes. Instant automated activation upon successful confirmation.
+                </p>
+            </div>
+
+            <!-- Tab 2: Bank Transfer Fallback Form -->
+            <div x-show="method === 'transfer'" x-cloak class="space-y-6">
+                <!-- Foundation Bank Details Box -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-800">Foundation Bank Account Details</span>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-amber-100 text-amber-800">Kaduna Secretariat</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span class="text-slate-500 block">Bank Name</span>
+                            <span class="font-bold text-slate-900 text-sm block mt-0.5">{{ $bankDetails['bank_name'] ?? 'Zenith Bank Plc' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Account Name</span>
+                            <span class="font-bold text-slate-900 text-sm block mt-0.5">{{ $bankDetails['account_name'] ?? 'Brands Academy Nigeria Foundation' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Account Number</span>
+                            <span class="font-mono font-extrabold text-slate-900 text-base block mt-0.5 tracking-wider">{{ $bankDetails['account_number'] ?? '1012345678' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">Payment Narrative / Ref</span>
+                            <span class="font-mono font-bold text-amber-700 text-sm block mt-0.5">{{ $pendingPayment->reference }}</span>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-200">
+                        Please include your reference <strong class="font-mono text-slate-700">{{ $pendingPayment->reference }}</strong> in your bank transfer narration so the secretariat can locate your payment quickly.
+                    </p>
+                </div>
+
+                <!-- Proof of Payment Upload Form -->
+                <form action="{{ route('membership.payment.bank-transfer') }}" method="POST" enctype="multipart/form-data" class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-xs">
+                    @csrf
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-1">Submit Proof of Transfer</h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Sender Full Name *</label>
+                            <input type="text" name="sender_name" required value="{{ old('sender_name', $member->full_name) }}" placeholder="Name on your bank account" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Sending Bank *</label>
+                            <input type="text" name="sender_bank" required value="{{ old('sender_bank') }}" placeholder="e.g. GTBank, Access Bank, Zenith" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Bank Session / Reference ID</label>
+                            <input type="text" name="transfer_reference" value="{{ old('transfer_reference') }}" placeholder="e.g. 000013240822..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Transfer Date</label>
+                            <input type="date" name="transfer_date" value="{{ old('transfer_date', date('Y-m-d')) }}" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Upload Receipt / Transfer Screenshot (JPEG, PNG, or PDF, max 5MB) *</label>
+                        <input type="file" name="payment_proof" accept="image/jpeg,image/png,image/jpg,application/pdf" required class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-amber-400 hover:file:bg-slate-800 cursor-pointer">
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 px-5 rounded-xl font-bold text-xs bg-slate-900 hover:bg-slate-800 text-amber-400 shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        <span>Submit Transfer Receipt for Verification &rarr;</span>
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- Signout Link -->

@@ -53,6 +53,30 @@ class HomeController extends Controller
     }
 
     /**
+     * Show the Code of Ethics & Professional Charter.
+     */
+    public function ethics(): View
+    {
+        return view('legal.ethics');
+    }
+
+    /**
+     * Show the Privacy Policy (NDPA 2023).
+     */
+    public function privacy(): View
+    {
+        return view('legal.privacy');
+    }
+
+    /**
+     * Show the Terms of Use & Refund Policy.
+     */
+    public function terms(): View
+    {
+        return view('legal.terms');
+    }
+
+    /**
      * Show the 3-Tier Professional Certification Framework page (CBA, CBS, CBE).
      */
     public function certifications(): View

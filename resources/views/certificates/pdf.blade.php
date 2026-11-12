@@ -261,6 +261,24 @@
             border-collapse: separate;
             border-spacing: 0;
         }
+
+        .specimen-watermark {
+            position: absolute;
+            top: 230pt;
+            left: 200pt;
+            width: 390pt;
+            text-align: center;
+            font-size: 58pt;
+            font-weight: 900;
+            color: rgba(220, 38, 38, 0.14);
+            letter-spacing: 14pt;
+            text-transform: uppercase;
+            border: 4pt dashed rgba(220, 38, 38, 0.18);
+            padding: 8pt 20pt;
+            border-radius: 10pt;
+            transform: rotate(-18deg);
+            z-index: 99;
+        }
     </style>
 </head>
 <body>
@@ -268,6 +286,9 @@
     <div class="outer-border">
         <div class="mid-border">
             <div class="inner-border">
+                @if(!empty($isSpecimen) || (isset($certificate) && (str_contains(strtolower($certificate->recipient_name), 'chidi okafor') || str_contains(strtolower($certificate->certificate_number), 'sample') || str_contains(strtolower($certificate->certificate_number), 'specimen'))))
+                    <div class="specimen-watermark">SPECIMEN</div>
+                @endif
                 <!-- Sovereign Corner Accents -->
                 <div class="corner corner-tl"></div>
                 <div class="corner corner-tr"></div>

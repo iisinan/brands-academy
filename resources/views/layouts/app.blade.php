@@ -278,7 +278,7 @@
 
                     <!-- 5. About Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty', 'legal.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
                             <span>About</span>
                             <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
@@ -289,7 +289,7 @@
                              x-transition:leave="transition ease-in duration-100"
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 translate-y-1"
-                             class="absolute left-0 mt-1 w-60 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
+                             class="absolute left-0 mt-1 w-64 rounded-2xl bg-white shadow-xl border border-slate-200/90 p-2 z-50">
                             <a href="{{ route('about') }}" class="flex items-start gap-2.5 p-2 rounded-xl transition-colors group {{ request()->routeIs('about') ? 'bg-amber-500/10 border-l-2 border-amber-500' : 'hover:bg-amber-50/60' }}">
                                 <div class="w-7 h-7 rounded-lg {{ request()->routeIs('about') ? 'bg-amber-600 text-white' : 'bg-amber-100 text-amber-800' }} flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">A</div>
                                 <div>
@@ -309,6 +309,13 @@
                                 <div>
                                     <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">The Manifesto &amp; Values</div>
                                     <div class="text-[11px] text-slate-500 leading-tight">5 core educational principles</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('legal.ethics') }}" class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-amber-50/60 transition-colors group {{ request()->routeIs('legal.*') ? 'bg-amber-500/10 border-l-2 border-amber-500' : '' }}">
+                                <div class="w-7 h-7 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">§</div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-amber-800">Governance &amp; Charters</div>
+                                    <div class="text-[11px] text-slate-500 leading-tight">Ethics, privacy &amp; terms</div>
                                 </div>
                             </a>
                         </div>
@@ -497,6 +504,9 @@
                     <a href="{{ route('faculty') }}" class="block px-3 py-2 rounded-xl text-xs font-semibold {{ request()->routeIs('faculty') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
                         Faculty &amp; Board of Trustees
                     </a>
+                    <a href="{{ route('legal.ethics') }}" class="block px-3 py-2 rounded-xl text-xs font-semibold {{ request()->routeIs('legal.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                        Code of Ethics &amp; Governance Charters
+                    </a>
                 </div>
             </div>
 
@@ -658,7 +668,14 @@
             <!-- Bottom bar -->
             <div class="mt-12 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
                 <p>&copy; {{ date('Y') }} Brands Academy Nigeria Foundation. All rights reserved.</p>
-                <p>Governed by Board of Trustees: Prof. Samaila Mande (Chairman), Prof. Imam Yagana Babakura, Dr. Okoli Emmanuel Chibuzo, Titus Eveshoyan (Secretary).</p>
+                <div class="flex flex-wrap items-center gap-4 text-slate-400 text-xs">
+                    <a href="{{ route('legal.ethics') }}" class="hover:text-amber-400 transition-colors">Code of Ethics</a>
+                    <span>&bull;</span>
+                    <a href="{{ route('legal.privacy') }}" class="hover:text-amber-400 transition-colors">Privacy Policy</a>
+                    <span>&bull;</span>
+                    <a href="{{ route('legal.terms') }}" class="hover:text-amber-400 transition-colors">Terms &amp; Refunds</a>
+                </div>
+                <p>Governed by Board of Trustees: Prof. Samaila Mande (Chairman), Prof. Imam Yagana Babakura, Dr. Okoli Emmanuel Chibuzo &bull; Titus Eveshoyan (Secretary to the Board)</p>
             </div>
         </div>
     </footer>

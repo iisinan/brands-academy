@@ -21,7 +21,7 @@
             Academic Record or Page Not Found
         </h2>
         <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-8 max-w-md mx-auto">
-            The page or document you requested may have been archived, renamed, or is temporarily unavailable within the institutional portal.
+            The page or document you requested may have been archived, renamed, or is temporarily unavailable on the Foundation platform.
         </p>
 
         <!-- Search Bar -->

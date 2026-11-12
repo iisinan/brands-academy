@@ -883,7 +883,7 @@ class PortalFeatureTest extends TestCase
             'status' => 'published',
         ]);
 
-        \App\Models\WorkshopApplication::create([
+        WorkshopApplication::create([
             'workshop_id' => $workshop->id,
             'member_id' => $member->id,
             'user_id' => $user->id,
@@ -1943,5 +1943,47 @@ class PortalFeatureTest extends TestCase
         $cbeResponse->assertStatus(200);
         $cbeResponse->assertSee('Certified Brand Executive (CBE) — Inaugural Cohort');
         $cbeResponse->assertSee('Launching 2027');
+    }
+
+    /**
+     * Test Code of Ethics and Professional Charter page renders with the seven canons.
+     */
+    public function test_code_of_ethics_renders_with_seven_canons(): void
+    {
+        $response = $this->get(route('legal.ethics'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Code of Ethics &amp; Professional Conduct', false);
+        $response->assertSee('The Seven Canons of Professional Practice');
+        $response->assertSee('Truthfulness &amp; Integrity in Brand Communications', false);
+        $response->assertSee('CAC/IT/No. 7344471');
+    }
+
+    /**
+     * Test Privacy Policy page renders with statutory NDPA 2023 compliance.
+     */
+    public function test_privacy_policy_renders_with_ndpa_compliance(): void
+    {
+        $response = $this->get(route('legal.privacy'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Privacy Policy &amp; Data Protection Notice', false);
+        $response->assertSee('Nigeria Data Protection Act 2023 (NDPA)');
+        $response->assertSee('Your Data Subject Rights');
+        $response->assertSee('privacy@brandsacademy.org');
+    }
+
+    /**
+     * Test Terms of Use and Refund Policy page renders with 100% refund guarantee.
+     */
+    public function test_terms_of_service_renders_with_refund_policy(): void
+    {
+        $response = $this->get(route('legal.terms'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Terms of Use &amp; Refund Policy', false);
+        $response->assertSee('Tuition Refund &amp; Deferral Policy', false);
+        $response->assertSee('100% Full Refund');
+        $response->assertSee('Admissions &amp; Enrolment Turnaround', false);
     }
 }

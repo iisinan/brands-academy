@@ -197,11 +197,10 @@
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                                     Full Name <span class="text-rose-500">*</span>
                                 </label>
-                                <span x-show="isFieldVerified('name')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                <span x-show="isFieldVerified('name')" x-cloak class="anim-check-pop inline-flex items-center text-emerald-600" title="Valid">
                                     <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                         <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                     </span>
-                                    <span>Verified</span>
                                 </span>
                             </div>
                             <input type="text" name="name" x-model="name" @input="touch('name')" @blur="formatName()" required
@@ -219,11 +218,10 @@
                                     </label>
                                     
                                     <!-- Valid Email Badge -->
-                                    <span x-show="isFieldVerified('email')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                    <span x-show="isFieldVerified('email')" x-cloak class="anim-check-pop inline-flex items-center text-emerald-600" title="Valid">
                                         <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                             <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         </span>
-                                        <span>Valid Email</span>
                                     </span>
 
                                     <!-- Typo Detected Badge -->
@@ -463,11 +461,10 @@
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                                         <span x-text="country === 'Nigeria' ? 'State of Residence *' : 'State / Province / Region *'"></span>
                                     </label>
-                                    <span x-show="isFieldVerified('state')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                                    <span x-show="isFieldVerified('state')" x-cloak class="anim-check-pop inline-flex items-center text-emerald-600" title="Selected">
                                         <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                             <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         </span>
-                                        <span x-text="country === 'Nigeria' ? 'State Set' : 'Region Set'"></span>
                                     </span>
                                 </div>
 
@@ -629,8 +626,8 @@
                         <span>Register for Ongoing Membership</span>
                         <svg class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
-                    <p class="text-center text-[11px] text-slate-500 mt-3">
-                        By registering, you agree to uphold Brands Academy Nigeria Foundation's non-profit code of ethics and professional charter.
+                    <p class="text-center text-[11px] text-slate-500 mt-3 leading-relaxed">
+                        By registering, you agree to uphold Brands Academy Nigeria Foundation's non-profit <a href="{{ route('legal.ethics') }}" target="_blank" class="underline text-slate-700 hover:text-amber-600 font-semibold">Code of Ethics &amp; Professional Charter</a>, <a href="{{ route('legal.terms') }}" target="_blank" class="underline text-slate-700 hover:text-amber-600 font-semibold">Terms of Use</a>, and <a href="{{ route('legal.privacy') }}" target="_blank" class="underline text-slate-700 hover:text-amber-600 font-semibold">Privacy Policy</a> (NDPA 2023).
                     </p>
                 </div>
             </form>
@@ -752,7 +749,7 @@
                     </li>
                     <li class="flex items-start gap-2.5">
                         <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        <span><strong>1-Click Cohort Application:</strong> Apply to open training cohorts without refilling basic information.</span>
+                        <span><strong>Instant Cohort Applications:</strong> Apply to any open cohort with your member login without refilling personal details.</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>

@@ -341,7 +341,7 @@
                     </div>
                     <div class="flex items-start gap-2.5">
                         <span class="text-amber-400 font-bold mt-0.5">&bull;</span>
-                        <span><strong>M&amp;A Brand Valuation &amp; Portfolio Rationalization:</strong> Managing brand architecture during mergers, acquisitions, and cross-border rollouts.</span>
+                        <span><strong>M&amp;A Brand Valuation &amp; Portfolio Rationalisation:</strong> Managing brand architecture during mergers, acquisitions, and cross-border rollouts.</span>
                     </div>
                     <div class="flex items-start gap-2.5">
                         <span class="text-amber-400 font-bold mt-0.5">&bull;</span>
@@ -373,7 +373,7 @@
                 Certification Framework Matrix
             </h2>
             <p class="text-slate-600 text-xs sm:text-sm mt-2">
-                Evaluate which certification level matches your professional standing, career aspirations, and organizational role.
+                Evaluate which certification level matches your professional standing, career aspirations, and organisational role.
             </p>
         </div>
 

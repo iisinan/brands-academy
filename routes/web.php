@@ -34,6 +34,9 @@ Route::post('/certifications/interest', [HomeController::class, 'registerInteres
 Route::get('/partnerships', [PartnershipController::class, 'index'])->name('partnerships');
 Route::post('/partnerships', [PartnershipController::class, 'store'])->name('partnerships.store');
 Route::get('/faculty', [PartnershipController::class, 'faculty'])->name('faculty');
+Route::get('/governance/code-of-ethics', [HomeController::class, 'ethics'])->name('legal.ethics');
+Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('legal.privacy');
+Route::get('/terms-of-service', [HomeController::class, 'terms'])->name('legal.terms');
 
 // Legal Services: Brand IP, CAC & Trademark Desk
 Route::get('/services/brand-ip-and-cac', [LegalServiceController::class, 'index'])->name('services.index');

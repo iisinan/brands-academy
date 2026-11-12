@@ -158,6 +158,162 @@
                 </div>
             </div>
 
+            <!-- Learning Outcomes -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 mb-3">
+                    Competency Benchmarks
+                </div>
+                <h2 class="text-xl font-bold text-slate-900 mb-4 font-serif-title">What You Will Achieve (Learning Outcomes)</h2>
+                <div class="grid grid-cols-1 gap-3 text-xs sm:text-sm text-slate-700">
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span><strong>Strategic Brand Architecture:</strong> Master the design of masterbrand, sub-brand, and endorsed architecture models suited for emerging African markets.</span>
+                    </div>
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span><strong>Consumer Archetypes &amp; Positioning:</strong> Conduct qualitative perception audits, build data-driven audience personas, and articulate sharp value propositions.</span>
+                    </div>
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span><strong>Brand Guidelines Authoring:</strong> Author comprehensive visual identity manuals, typography hierarchies, and tone-of-voice playbooks for corporate and public entities.</span>
+                    </div>
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span><strong>Legal &amp; IP Protection Alignment:</strong> Coordinate brand trademark classifications (Nice Agreement) with CAC and statutory registries to protect visual assets.</span>
+                    </div>
+                    <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span><strong>Capstone Portfolio Defense:</strong> Defend an applied commercial or institutional brand transformation project before a panel of Foundation Fellows.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule, Hours & Venue -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+                <h2 class="text-xl font-bold text-slate-900 mb-4 font-serif-title">Schedule &amp; Delivery Logistics</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm mb-6">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                        <span class="text-slate-400 font-bold uppercase text-[10px] block">Live Masterclasses</span>
+                        <div class="font-bold text-slate-900">Saturdays: 10:00 AM – 1:00 PM WAT</div>
+                        <div class="text-slate-500 text-xs">Interactive lecture, guest practitioner case analysis, and breakout exercises.</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                        <span class="text-slate-400 font-bold uppercase text-[10px] block">Mid-Week Clinic &amp; Office Hours</span>
+                        <div class="font-bold text-slate-900">Wednesdays: 6:00 PM – 7:30 PM WAT</div>
+                        <div class="text-slate-500 text-xs">1-on-1 mentor guidance &amp; portfolio critique (recorded on the LMS).</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                        <span class="text-slate-400 font-bold uppercase text-[10px] block">Total Contact Hours</span>
+                        <div class="font-bold text-amber-700">36 Guided Contact Hours</div>
+                        <div class="text-slate-500 text-xs">Spread across intensive cohort duration with continuous assessment.</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                        <span class="text-slate-400 font-bold uppercase text-[10px] block">Training Hub &amp; Online</span>
+                        <div class="font-bold text-slate-900">{{ $workshop->venue ?? 'Virtual Cohort Studio & Kaduna Learning Hub' }}</div>
+                        <div class="text-slate-500 text-xs">Live video studio + LMS access for self-paced revision.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment & Grading Benchmark -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+                <h2 class="text-xl font-bold text-slate-900 mb-4 font-serif-title">Assessment &amp; Certification Criteria</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-700 mb-4">
+                    <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200 text-center">
+                        <span class="text-2xl font-black text-blue-900 block mb-1">70%</span>
+                        <span class="font-bold text-blue-950 block">Pass Standard</span>
+                        <span class="text-[11px] text-blue-800">Cumulative score across coursework &amp; capstone.</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 text-center">
+                        <span class="text-2xl font-black text-amber-900 block mb-1">85%+</span>
+                        <span class="font-bold text-amber-950 block">With Distinction</span>
+                        <span class="text-[11px] text-amber-800">Honors notation on certificate &amp; register.</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 text-center">
+                        <span class="text-2xl font-black text-emerald-900 block mb-1">100%</span>
+                        <span class="font-bold text-emerald-950 block">Verifiable</span>
+                        <span class="text-[11px] text-emerald-800">Permanent registry listing with secure QR token.</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Evaluations are governed by the Foundation's Board of Trustees under the Companies and Allied Matters Act 2020 (Part F). Candidates who complete with Distinction are prioritized for Foundation Fellowship and peer mentorship roles.
+                </p>
+            </div>
+
+            <!-- Tuition Inclusions & Guarantee -->
+            <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-sm">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Admissions Commitment</span>
+                </div>
+                <h3 class="text-lg font-bold font-serif-title text-white mb-3">Tuition Inclusions &amp; Guarantee</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300 mb-6">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Full digital syllabus, decks &amp; strategy frameworks</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>12 months unlimited access to LMS cohort recordings</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Verifiable Certificate of Achievement + Barcode</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Listing on BANF Register of Certified Practitioners</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Flexible 2-installment payment option available</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Admissions decision within 5 working days of deadline</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-slate-800/80 rounded-xl text-xs text-slate-300 border border-slate-700">
+                    <strong class="text-white">Refund &amp; Deferral Policy:</strong> Full refund granted up to 7 calendar days before the cohort commencement date. A one-time deferral to the subsequent cohort is accommodated upon written request to admissions@brandsacademy.org.
+                </div>
+            </div>
+
+            <!-- Programme Frequently Asked Questions -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs" x-data="{ openFaq: null }">
+                <h2 class="text-xl font-bold text-slate-900 mb-4 font-serif-title">Programme FAQs</h2>
+                <div class="space-y-3">
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <button type="button" @click="openFaq = (openFaq === 1 ? null : 1)" class="w-full p-4 text-left font-bold text-xs sm:text-sm text-slate-900 bg-slate-50 hover:bg-slate-100 flex items-center justify-between transition-colors">
+                            <span>What are the entry prerequisites for this programme?</span>
+                            <span class="text-slate-400 font-bold" x-text="openFaq === 1 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 1" x-cloak class="p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                            For CBA (Tier 1), candidates should hold a degree or diploma, or have at least 1 year of practical marketing, content, or design exposure. For CBS (Tier 2), candidates must hold the CBA designation or present at least 4 years of verifiable brand management experience.
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <button type="button" @click="openFaq = (openFaq === 2 ? null : 2)" class="w-full p-4 text-left font-bold text-xs sm:text-sm text-slate-900 bg-slate-50 hover:bg-slate-100 flex items-center justify-between transition-colors">
+                            <span>What happens if I miss a scheduled live Saturday masterclass?</span>
+                            <span class="text-slate-400 font-bold" x-text="openFaq === 2 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 2" x-cloak class="p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                            Every live session is recorded in HD and published to your student LMS dashboard within 12 hours. You can review the video, access downloadable slide decks, and ask questions during the Wednesday peer clinic.
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <button type="button" @click="openFaq = (openFaq === 3 ? null : 3)" class="w-full p-4 text-left font-bold text-xs sm:text-sm text-slate-900 bg-slate-50 hover:bg-slate-100 flex items-center justify-between transition-colors">
+                            <span>How is my certificate verified by employers or clients?</span>
+                            <span class="text-slate-400 font-bold" x-text="openFaq === 3 ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="openFaq === 3" x-cloak class="p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                            All certificates carry a unique Certificate Number, Code-128 linear barcode, and Verifiable QR Code linked to the Foundation's official verification engine at brandsacademy.org/verify. Scanning it renders your official credential record instantly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Right 5 cols: Window Status & Application Form Box -->
@@ -216,7 +372,7 @@
                                             <span class="text-xl font-extrabold text-slate-900 font-mono">NGN {{ number_format($workshop->fee_amount) }}</span>
                                         </div>
                                         <div class="text-[11px] text-amber-800 mt-0.5 font-medium">
-                                            Registered members pay <strong>NGN {{ number_format($workshop->member_fee_amount) }}</strong> (25% discount)
+                                            Registered members pay <strong>NGN {{ number_format($workshop->member_fee_amount) }}</strong> (Members save NGN {{ number_format($workshop->member_discount_savings) }} &bull; 25% off)
                                         </div>
                                     </div>
                                 @endif

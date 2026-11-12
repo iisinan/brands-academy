@@ -35,52 +35,165 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Trustee 1 -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow">
-            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
-                SM
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
+                    SM
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Prof. Samaila Mande</h3>
+                <div class="text-[11px] font-bold text-amber-700 mt-1 uppercase tracking-wide">PhD, FNIMN, FIMC, CMC</div>
+                <div class="text-xs font-semibold text-slate-700 mt-0.5">Chairman, Board of Trustees</div>
+                <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+                    Senior Professor of Marketing &amp; Advertising, Dean of Postgraduate Studies. Over 25 years directing brand governance, academic accreditation, and executive leadership.
+                </p>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">Prof. Samaila Mande</h3>
-            <div class="text-xs font-bold text-amber-700 mt-1">Chairman, Board of Trustees</div>
-            <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                Senior academic and brand governance fellow directing the foundation's strategic educational policy.
-            </p>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-medium">
+                Fellow, National Institute of Marketing of Nigeria
+            </div>
         </div>
 
         <!-- Trustee 2 -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow">
-            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
-                YB
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
+                    YB
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Prof. Imam Yagana Babakura</h3>
+                <div class="text-[11px] font-bold text-amber-700 mt-1 uppercase tracking-wide">B.Sc, M.Sc, PhD (Marketing)</div>
+                <div class="text-xs font-semibold text-slate-700 mt-0.5">Trustee &amp; Academic Director</div>
+                <p class="text-xs text-slate-500 mt-1 font-semibold">University of Maiduguri</p>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    Faculty of Management Sciences. Over 20 years guiding marketing syllabus rigor, brand equity research, and student assessment benchmarks.
+                </p>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">Prof. Imam Yagana Babakura</h3>
-            <div class="text-xs font-bold text-amber-700 mt-1">Trustee & Academic Director</div>
-            <p class="text-xs text-slate-500 mt-1 font-semibold">University of Maiduguri</p>
-            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                Dept. of Marketing, Faculty of Management Sciences. Guiding academic syllabus rigor and accreditation.
-            </p>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-medium">
+                Academic Curriculum &amp; Research Committee
+            </div>
         </div>
 
         <!-- Trustee 3 -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow">
-            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
-                EC
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
+                    EC
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Dr. Okoli Emmanuel Chibuzo</h3>
+                <div class="text-[11px] font-bold text-amber-700 mt-1 uppercase tracking-wide">PhD, arpa, MNIMN</div>
+                <div class="text-xs font-semibold text-slate-700 mt-0.5">Trustee &amp; Strategic Advisory</div>
+                <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+                    Corporate strategy consultant and brand practitioner. Focuses on institutional partnerships, public relations governance, and commercial viability.
+                </p>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">Dr. Okoli Emmanuel Chibuzo</h3>
-            <div class="text-xs font-bold text-amber-700 mt-1">Trustee</div>
-            <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                Strategy consultant focusing on institutional partnerships, public relations, and curriculum alignment.
-            </p>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-medium">
+                Advertising &amp; Strategic Communications
+            </div>
         </div>
 
         <!-- Trustee 4 -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow">
-            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
-                TE
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 text-center shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-950 to-blue-950 text-amber-400 font-bold text-2xl flex items-center justify-center mx-auto mb-4 font-serif-title shadow-md">
+                    TE
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">Titus Eveshoyan</h3>
+                <div class="text-[11px] font-bold text-amber-700 mt-1 uppercase tracking-wide">B.Sc, MNIMN</div>
+                <div class="text-xs font-semibold text-slate-700 mt-0.5">Secretary to the Board &amp; Registrar</div>
+                <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+                    Head of Foundation Secretariat in Kaduna. Directs statutory compliance, youth vocational scholarship allocations, and operational logistics.
+                </p>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">Titus Eveshoyan</h3>
-            <div class="text-xs font-bold text-amber-700 mt-1">Secretary to the Board</div>
-            <p class="text-xs text-slate-500 mt-3 leading-relaxed">
-                Leading the Foundation secretariat, legal compliance, and community outreach operations in Kaduna State.
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-medium">
+                Secretariat &amp; Regional Operations, Kaduna
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Teaching Faculty & Cohort Facilitators Section -->
+<section class="bg-slate-50 py-16 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Teaching Faculty</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-950 font-serif-title mb-3">
+                Cohort Facilitators &amp; Course Leaders
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                The experienced brand directors, design architects, and intellectual property practitioners who lead live Saturday masterclasses and mentor cohort learners.
             </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Facilitator 1 -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-700 font-bold text-xl flex items-center justify-center mx-auto mb-4 font-serif-title border border-amber-500/20">
+                        SM
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 text-center">Prof. Samaila Mande</h3>
+                    <div class="text-[11px] font-bold text-amber-700 text-center mt-0.5">Lead Facilitator &bull; Strategy</div>
+                    <div class="text-[11px] text-slate-500 text-center mt-1 font-medium">CBA &amp; CBS Cohorts</div>
+                    <p class="text-xs text-slate-600 mt-3 leading-relaxed text-center">
+                        Directs Module 1 &amp; Module 5: Brand Positioning Frameworks, Strategic Governance, and Executive Defense.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center">
+                    <span class="inline-block px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">25+ Yrs Experience</span>
+                </div>
+            </div>
+
+            <!-- Facilitator 2 -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <div class="w-16 h-16 rounded-2xl bg-blue-500/10 text-blue-700 font-bold text-xl flex items-center justify-center mx-auto mb-4 font-serif-title border border-blue-500/20">
+                        DH
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 text-center">Arc. Dahiru Hassan</h3>
+                    <div class="text-[11px] font-bold text-blue-700 text-center mt-0.5">Lead Brand Architect</div>
+                    <div class="text-[11px] text-slate-500 text-center mt-1 font-medium">Design Systems &amp; Visual Identity</div>
+                    <p class="text-xs text-slate-600 mt-3 leading-relaxed text-center">
+                        Directs Module 3: Visual Identity Systems, Typography, Design Standards Manuals, and Spatial Brand Architecture.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center">
+                    <span class="inline-block px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">14+ Yrs Creative Dir.</span>
+                </div>
+            </div>
+
+            <!-- Facilitator 3 -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-700 font-bold text-xl flex items-center justify-center mx-auto mb-4 font-serif-title border border-emerald-500/20">
+                        ZA
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 text-center">Barr. Zainab Al-Hassan</h3>
+                    <div class="text-[11px] font-bold text-emerald-700 text-center mt-0.5">Senior Facilitator &bull; IP Law</div>
+                    <div class="text-[11px] text-slate-500 text-center mt-1 font-medium">Trademark &amp; Regulatory Protection</div>
+                    <p class="text-xs text-slate-600 mt-3 leading-relaxed text-center">
+                        Directs Module 4: Trademarks Registry Filings, Copyright Safeguards, Licensing Agreements, and Regulatory Defense.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center">
+                    <span class="inline-block px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">LL.M, IP Attorney</span>
+                </div>
+            </div>
+
+            <!-- Facilitator 4 -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 text-purple-700 font-bold text-xl flex items-center justify-center mx-auto mb-4 font-serif-title border border-purple-500/20">
+                        CN
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 text-center">Chidi Nwosu</h3>
+                    <div class="text-[11px] font-bold text-purple-700 text-center mt-0.5">Senior Facilitator &bull; Insights</div>
+                    <div class="text-[11px] text-slate-500 text-center mt-1 font-medium">Market Research &amp; Analytics</div>
+                    <p class="text-xs text-slate-600 mt-3 leading-relaxed text-center">
+                        Directs Module 2: Quantitative Consumer Research, Brand Equity Valuation, Persona Mapping, and Campaign ROI.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center">
+                    <span class="inline-block px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">MBA, FMCG Brand Lead</span>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -109,7 +222,7 @@
                     </div>
                     <div class="p-4 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 flex items-start gap-3">
                         <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0 mt-0.5">&check;</span>
-                        <span><strong>Community Priority:</strong> Dedicated mentorship allocation for youth in marginalized communities.</span>
+                        <span><strong>Community Priority:</strong> Dedicated mentorship allocation for youth in marginalised communities.</span>
                     </div>
                 </div>
             </div>

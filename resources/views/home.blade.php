@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <div class="text-xs font-bold text-white">Prof. Samaila Mande</div>
-                            <div class="text-[11px] text-slate-400">Chairman of Trustees, fnimn</div>
+                            <div class="text-[11px] text-slate-400">Chairman of Trustees, PhD, FNIMN</div>
                         </div>
                     </div>
                     <div class="flex items-start gap-2.5">
@@ -172,7 +172,7 @@
                             <form action="{{ route('verify.certificate') }}" method="GET" class="space-y-2">
                                 <label for="hero-token-input" class="block text-[11px] font-semibold text-slate-300 flex items-center justify-between">
                                     <span>Verify Any Issued Credential</span>
-                                    <span class="text-[10px] text-amber-400 font-mono">1-Click Live Test</span>
+                                    <span class="text-[10px] text-amber-400 font-mono">Instant Test Verification</span>
                                 </label>
                                 <div class="flex gap-2">
                                     <input 
@@ -217,12 +217,12 @@
                 <div class="text-[11px] text-slate-400 mt-0.5">Federal Incorporated Trustees</div>
             </div>
             <div class="border-l-2 border-amber-500/50 pl-3">
-                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Postgraduate Dean Chair</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Academic Board Oversight</div>
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Academic Faculty Oversight</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Distinguished University Fellows</div>
             </div>
             <div class="border-l-2 border-amber-500/50 pl-3">
                 <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">3 Certified Pathways</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">CBA &bull; CBS &bull; CBE Accreditations</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">CBA &bull; CBS &bull; CBE Certifications</div>
             </div>
             <div class="border-l-2 border-amber-500/50 pl-3">
                 <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Official Register</div>
@@ -297,7 +297,7 @@
 
 <!-- Live Cohorts Section -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <div class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Application Periods</div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-950 font-serif-title">
@@ -306,6 +306,22 @@
         </div>
         <a href="{{ route('workshops.index') }}" class="text-sm font-bold text-slate-700 hover:text-amber-600 flex items-center gap-1 transition-colors">
             View All Cohorts &rarr;
+        </a>
+    </div>
+
+    <!-- Community & Youth Vocational Track Highlight -->
+    <div class="mb-8 p-5 sm:p-6 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm shrink-0">🎓</span>
+            <div>
+                <h3 class="text-xs sm:text-sm font-bold text-emerald-950 uppercase tracking-wide">Tuition-Free Youth Vocational Scholarships</h3>
+                <p class="text-xs text-emerald-800/90 mt-0.5 leading-relaxed">
+                    Under our non-profit educational charter, up to 30% of cohort seats are 100% tuition-free for unemployed youth, undergraduates, and early-career creatives. Decisions communicated within 5 working days.
+                </p>
+            </div>
+        </div>
+        <a href="{{ route('workshops.index', ['track' => 'cba']) }}" class="shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-xs whitespace-nowrap text-center">
+            View Free Track &rarr;
         </a>
     </div>
 
@@ -452,7 +468,7 @@
                     </p>
                 </div>
                 <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                    <span class="text-[11px] text-slate-500">1-Click RSVP &amp; .ICS</span>
+                    <span class="text-[11px] text-slate-500">RSVP &amp; Add to Calendar (.ICS)</span>
                     <a href="{{ route('webinars.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                         Upcoming Sessions &rarr;
                     </a>
@@ -708,7 +724,7 @@
                 License the Foundation Curriculum or Commission an Executive Retreat
             </h2>
             <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-                From federal ministries to top African universities, Brands Academy Nigeria Foundation licenses professional brand management syllabi, certifies communications teams, and establishes institutional branding chairs.
+                Partnering with Nigerian universities, corporate organisations, and public institutions, Brands Academy Nigeria Foundation licenses professional brand management syllabi, certifies communications teams, and delivers custom executive training.
             </p>
 
             <div class="flex flex-wrap items-center gap-4">
