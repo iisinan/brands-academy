@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#090d16">
+    <meta name="theme-color" content="#f8fbff">
     <title>@yield('title', 'Brands Academy Nigeria Foundation')</title>
     <meta name="description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and West Africa. Incorporated Trustee CAC/IT/No. 7344471.')">
     

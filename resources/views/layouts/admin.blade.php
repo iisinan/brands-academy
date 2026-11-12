@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#f8fbff">
     <title>@yield('title', 'Administration Portal') | Brands Academy Nigeria Foundation</title>
     <meta name="description" content="Operational Administration & Governance Portal for Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).">
     
@@ -36,10 +36,10 @@
             width: 4px;
         }
         .admin-sidebar::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(226, 232, 240, 0.5);
         }
         .admin-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.2);
+            background: rgba(148, 163, 184, 0.45);
             border-radius: 4px;
         }
         .admin-sidebar::-webkit-scrollbar-thumb:hover {
