@@ -142,7 +142,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span>Cryptographic QR Certificate of Completion</span>
+                            <span>Official QR Certificate of Completion</span>
                         </div>
                     </div>
                 </div>
@@ -373,7 +373,7 @@
                     <h3 class="text-sm font-bold text-slate-900">Certificate of Completion</h3>
                 </div>
                 <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                    Upon completing all video modules, study readings, and scoring 80%+ on the end-of-course timed quiz, you receive a verifiable digital credential with a cryptographic QR code.
+                    Upon completing all video modules, study readings, and scoring 80%+ on the end-of-course timed quiz, you receive a verifiable digital credential with an official verification QR code.
                 </p>
                 <div class="text-[11px] text-slate-400">Verifiable by employers and institutions worldwide via <span class="font-mono text-slate-600">brandsacademy.org.ng/verify</span></div>
             </div>

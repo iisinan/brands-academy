@@ -82,7 +82,7 @@
             <!-- Accreditation Notice -->
             <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200 text-xs text-slate-600 leading-relaxed">
                 <span class="font-bold text-slate-900 block mb-1">Non-Profit Public Benefit Status</span>
-                As an Incorporated Trustee under CAMA CAP C20 LFN 2004 (RC / IT No. 7344471), all institutional partnership proceeds are committed strictly to the expansion of educational access and community empowerment.
+                As an Incorporated Trustee under the Companies and Allied Matters Act 2020, Part F (CAC/IT/No. 7344471), all institutional partnership proceeds are committed strictly to the expansion of educational access and community empowerment.
             </div>
         </div>
 

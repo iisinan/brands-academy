@@ -209,7 +209,7 @@ class ConferenceAndJournalTest extends TestCase
     {
         $response = $this->get(route('journal.index'));
         $response->assertStatus(200);
-        $response->assertSee('Journal of Brand Strategy & Management');
+        $response->assertSee('Nigerian Journal of Brand Strategy', false);
         $response->assertSee('Strategic Brand Equity Dynamics in Emerging Markets');
         $response->assertSee('Vol. 1(1)');
     }

@@ -51,7 +51,7 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Cohort Title *</label>
-                <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Certified Brand Associate (CBA) — Cohort 2025-A" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Certified Brand Associate (CBA) — Cohort 2026-1" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

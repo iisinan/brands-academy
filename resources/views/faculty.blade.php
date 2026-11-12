@@ -29,7 +29,7 @@
             The Board of Trustees
         </h2>
         <p class="text-xs sm:text-sm text-slate-600">
-            Duly registered with the Corporate Affairs Commission (RC/IT No. 7344471) and ratified under CAMA CAP C20 LFN 2004.
+            Duly registered with the Corporate Affairs Commission (CAC/IT/No. 7344471) under the Companies and Allied Matters Act 2020 (Part F, Incorporated Trustees).
         </p>
     </div>
 

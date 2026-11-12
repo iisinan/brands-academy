@@ -32,7 +32,7 @@
             </div>
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
                 <span class="text-xs text-slate-500 block uppercase font-bold">CAC Registration Number</span>
-                <span class="font-bold text-slate-900 font-mono">RC / IT No. 7344471</span>
+                <span class="font-bold text-slate-900 font-mono">CAC/IT/No. 7344471</span>
             </div>
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
                 <span class="text-xs text-slate-500 block uppercase font-bold">Date of Incorporation</span>
@@ -40,14 +40,14 @@
             </div>
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
                 <span class="text-xs text-slate-500 block uppercase font-bold">Entity Type</span>
-                <span class="font-bold text-slate-900">Incorporated Trustee (CAMA CAP C20 LFN 2004)</span>
+                <span class="font-bold text-slate-900">Incorporated Trustee (Companies and Allied Matters Act 2020, Part F)</span>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Manifesto & Philosophy -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20" id="manifesto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         <div class="lg:col-span-5">
             <div class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-2">Our Core Belief</div>
@@ -65,7 +65,7 @@
         <!-- 5 Core Values -->
         <div class="lg:col-span-7">
             <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Guiding Principles</div>
-            <h3 class="text-2xl font-extrabold text-slate-900 font-serif-title mb-6">Our 5 Core Values</h3>
+            <h3 class="text-2xl font-extrabold text-slate-950 font-serif-title mb-6">Our 5 Core Values</h3>
             <div class="space-y-4">
                 <div class="p-5 rounded-xl border border-slate-200 bg-white shadow-xs">
                     <h4 class="font-bold text-slate-900 text-base mb-1 text-amber-700">1. Integrity</h4>
@@ -99,7 +99,7 @@
             <div class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Governance</div>
             <h2 class="text-3xl font-extrabold text-slate-950 font-serif-title mb-4">Board of Trustees</h2>
             <p class="text-sm text-slate-600">
-                Appointed at the Annual General Meeting of 1 October 2023 and ratified upon incorporation with the Corporate Affairs Commission on 12 February 2024.
+                Trustees nominated at the founding meeting of 1 October 2023 and confirmed upon incorporation on 12 February 2024.
             </p>
         </div>
 

@@ -160,12 +160,12 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     <button type="button" @click="switchTab('certificates')" class="bg-slate-800/60 hover:bg-slate-800 rounded-2xl p-4 border border-slate-700/60 text-left transition-colors cursor-pointer group">
                         <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Earned Credentials</span>
                         <span class="text-base sm:text-lg font-extrabold text-emerald-400 mt-1 block group-hover:underline">{{ $certificates->count() }} Issued &rarr;</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5 block">Cryptographically Signed</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 block">Officially Verified</span>
                     </button>
                     <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60">
                         <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Registered Since</span>
                         <span class="text-base sm:text-lg font-extrabold text-slate-200 mt-1 block">{{ \Carbon\Carbon::parse($member->joined_at)->format('M d, Y') }}</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5 block font-mono">RC 7344471</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 block font-mono">CAC/IT/No. 7344471</span>
                     </div>
                 </div>
             </div>
@@ -675,7 +675,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                 <div class="flex items-center gap-2 mb-1">
                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                         <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        Verifiable Credentials Registry &bull; CAC IT No. 7344471
+                        Verifiable Credentials Registry &bull; CAC/IT/No. 7344471
                     </span>
                 </div>
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">My Earned Certificates</h2>
@@ -703,7 +703,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                             </span>
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                Good Standing &bull; CAC IT No. 7344471
+                                Good Standing &bull; CAC/IT/No. 7344471
                             </span>
                         </div>
                         <h3 class="text-lg sm:text-xl font-bold font-serif-title text-white">
@@ -793,7 +793,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                             </span>
                             <h3 class="text-lg sm:text-xl font-bold text-slate-900 font-serif-title">Your Verifiable Certification Portfolio</h3>
                             <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
-                                Verifiable Certificates of Achievement with cryptographic tokens and live QR validation are automatically minted upon cohort graduation and portfolio review.
+                                Verifiable Certificates of Achievement with secure digital tokens and live QR validation are automatically issued upon cohort graduation and portfolio review.
                             </p>
                         </div>
                     </div>
@@ -972,10 +972,10 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-800 border border-amber-500/30">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Cryptographic Credential Active
+                            Official Credential Active
                         </span>
                         <span class="text-slate-400 text-xs hidden sm:inline">&bull;</span>
-                        <span class="text-slate-500 text-xs hidden sm:inline">CAC IT No. 7344471</span>
+                        <span class="text-slate-500 text-xs hidden sm:inline">CAC/IT/No. 7344471</span>
                     </div>
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif-title">Digital Member ID &amp; Verification Card</h2>
                     <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Your official institutional identification badge with tamper-evident live QR verification code.</p>
@@ -1005,7 +1005,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                                 <x-brand-logo class="w-10 h-10 shrink-0 drop-shadow-md" />
                                 <div>
                                     <h3 class="text-xs font-extrabold uppercase tracking-widest text-white font-serif-title">Brands Academy</h3>
-                                    <p class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Nigeria Foundation &bull; CAC IT No. 7344471</p>
+                                    <p class="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Nigeria Foundation &bull; CAC/IT/No. 7344471</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
@@ -1097,8 +1097,8 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
                             <!-- Statutory Notice & Legal Authority -->
                             <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed text-center">
-                                <p class="text-amber-300 font-bold mb-1">Incorporated Trustee &bull; CAC IT No. 7344471</p>
-                                <p class="text-[10px] text-slate-400">This pass is the official property of Brands Academy Nigeria Foundation. Governed under CAMA CAP C20 LFN 2004. Authorised for professional identification and central verification registry queries.</p>
+                                <p class="text-amber-300 font-bold mb-1">Incorporated Trustee &bull; CAC/IT/No. 7344471</p>
+                                <p class="text-[10px] text-slate-400">This pass is the official property of Brands Academy Nigeria Foundation. Governed under Companies and Allied Matters Act 2020 (Part F). Authorised for professional identification and central verification registry queries.</p>
                             </div>
 
                             <!-- Emergency / Central Registry Contact & Trustee Signature -->
@@ -1194,9 +1194,9 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-600 text-[11px] space-y-1.5 leading-relaxed">
                         <div class="font-bold text-slate-900 flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                            <span>Cryptographic Central Registry Notice</span>
+                            <span>Official Central Registry Notice</span>
                         </div>
-                        <p>This digital membership card is registered under CAC IT No. 7344471. Scanning the dynamic QR code immediately queries the live registry to verify active membership standing.</p>
+                        <p>This digital membership card is registered under CAC/IT/No. 7344471. Scanning the dynamic QR code immediately queries the live registry to verify active membership standing.</p>
                     </div>
                 </div>
 
@@ -1482,7 +1482,7 @@ class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
                     </div>
                     <div>
                         <h3 class="text-lg font-bold text-white font-serif-title">Foundation Digital Credential</h3>
-                        <p class="text-xs text-amber-400">Brands Academy Nigeria Foundation &bull; CAC IT No. 7344471</p>
+                        <p class="text-xs text-amber-400">Brands Academy Nigeria Foundation &bull; CAC/IT/No. 7344471</p>
                     </div>
                 </div>
 

@@ -46,7 +46,7 @@
                                 <tr>
                                     <td align="center" style="background-color: rgba(217, 119, 6, 0.14); border: 1px solid rgba(217, 119, 6, 0.4); border-radius: 20px; padding: 4px 14px;">
                                         <span style="color: #cbd5e1; font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;">
-                                            Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Executive Credential Registry
+                                            Incorporated Trustee &bull; CAC/IT/No. 7344471 &bull; Executive Credential Registry
                                         </span>
                                     </td>
                                 </tr>
@@ -195,7 +195,7 @@
                     <tr>
                         <td align="center" style="background-color: #f8fafc; padding: 24px 20px; font-size: 11px; color: #94a3b8; line-height: 1.6; border-top: 1px solid #e2e8f0; text-align: center;">
                             <p style="margin: 0 0 6px 0; font-weight: 600; color: #64748b;">
-                                Brands Academy Nigeria Foundation (Incorporated Trustee &bull; RC / IT No. 7344471)
+                                Brands Academy Nigeria Foundation (Incorporated Trustee &bull; CAC/IT/No. 7344471)
                             </p>
                             <p style="margin: 0 0 8px 0;">
                                 No. 27C, Ilorin Crescent, Ali-Akilu West, Marafa, Kaduna State, Nigeria.

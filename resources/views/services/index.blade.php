@@ -188,6 +188,26 @@
                 <p class="text-xs text-slate-500">Official government certificate and certified status report issued.</p>
             </div>
         </div>
+
+        <!-- Regulatory & Legal Desk Disclaimer -->
+        <div class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs text-xs text-slate-600 space-y-3">
+            <div class="flex items-center gap-2 font-bold text-slate-900 text-sm">
+                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Legal Desk Notice &amp; Regulatory Disclaimers</span>
+            </div>
+            <p>
+                <strong>1. Institutional Status:</strong> Brands Academy Nigeria Foundation (CAC/IT/No. 7344471) is an incorporated educational foundation, not a law firm. Filings are processed through accredited Corporate Affairs Commission (CAC) and Federal Ministry of Industry, Trade and Investment (FMITI) certified legal practitioners.
+            </p>
+            <p>
+                <strong>2. Fee Transparency:</strong> Statutory government fees (CAC availability, registration duties, stamp duties, trademark filing and publication fees) are itemized separately from legal counsel and administrative facilitation fees.
+            </p>
+            <p>
+                <strong>3. Regulatory Discretion:</strong> All name reservations, corporate incorporations, and trademark acceptances remain subject to official availability, prior registered conflicts, and statutory discretion of the respective registries.
+            </p>
+            <p>
+                <strong>4. Data Protection:</strong> All personal, corporate, and identification records are processed in strict compliance with the <strong>Nigeria Data Protection Act (NDPA) 2023</strong>.
+            </p>
+        </div>
     </div>
 </div>
 

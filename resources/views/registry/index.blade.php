@@ -9,7 +9,7 @@
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Official Statutory Register of Certified Practitioners
+                BANF Register of Certified Brand Practitioners
             </div>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black font-serif-title tracking-tight text-white mb-4">
                 National Register of Brand Builders &amp; Fellows
@@ -24,7 +24,7 @@
                 </div>
                 <div class="hidden sm:flex items-center gap-2">
                     <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11a7.978 7.978 0 003.046 6.277m1.8-13.136a8.002 8.002 0 0110.308 0"></path></svg>
-                    <span>Cryptographic QR Verification</span>
+                    <span>Official Credential Verification</span>
                 </div>
             </div>
         </div>
@@ -87,10 +87,17 @@
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold {{ $m->category === 'fellow' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-blue-50 text-blue-700 border border-blue-200' }}">
                             {{ $m->category === 'fellow' ? 'Fellow of Brands Academy (FBA)' : ucwords($m->category) . ' Member' }}
                         </span>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
-                            <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Verified
-                        </span>
+                        @if($m->certificates->count() > 0)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
+                                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Certified
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                Active Member
+                            </span>
+                        @endif
                     </div>
 
                     <!-- Profile Info -->

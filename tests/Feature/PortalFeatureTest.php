@@ -1155,7 +1155,7 @@ class PortalFeatureTest extends TestCase
         $response->assertSee('Members Management', false);
         $response->assertSee('Institutional Requests', false);
         $response->assertSee('Finance &amp; Payments', false);
-        $response->assertSee('RC 7344471');
+        $response->assertSee('CAC/IT/No. 7344471');
     }
 
     /**

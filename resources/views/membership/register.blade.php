@@ -287,7 +287,6 @@
                                             <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
                                                 <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                             </span>
-                                            <span>Valid</span>
                                         </span>
                                     </div>
                                 </div>
@@ -401,10 +400,6 @@
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Designation / Role</label>
-                                    <span x-show="designation.trim().length > 1" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                        <span>Role set</span>
-                                    </span>
                                 </div>
                                 <input type="text" name="designation" x-model="designation"
                                     placeholder="e.g. Creative Lead, Student, Strategist"
@@ -420,12 +415,6 @@
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                                         Country <span class="text-rose-500">*</span>
                                     </label>
-                                    <span x-show="isFieldVerified('country')" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center">
-                                            <svg class="w-2.5 h-2.5 anim-check-stroke text-emerald-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                        </span>
-                                        <span>Country Set</span>
-                                    </span>
                                 </div>
                                 <select name="country" x-model="country" @change="onCountryChange()" required
                                     class="w-full px-4 py-3 rounded-xl border text-sm text-slate-900 field-interactive bg-white focus:outline-none"
@@ -602,7 +591,7 @@
                                         </span>
                                         <span>Passwords Match</span>
                                     </span>
-                                    <span x-show="passwordConfirmation && password !== passwordConfirmation" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-bold text-rose-600">
+                                    <span x-show="password.length > 0 && passwordConfirmation.length > 0 && password !== passwordConfirmation" x-cloak class="anim-check-pop inline-flex items-center gap-1 text-[11px] font-bold text-rose-600">
                                         <span class="w-3.5 h-3.5 rounded-full bg-rose-100 flex items-center justify-center text-[10px]">✕</span>
                                         <span>Mismatch</span>
                                     </span>
@@ -687,7 +676,7 @@
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                 Active Member
                             </span>
-                            <span class="block text-[8px] text-slate-400 mt-0.5">RC/IT 7344471</span>
+                            <span class="block text-[8px] text-slate-400 mt-0.5">CAC/IT/No. 7344471</span>
                         </div>
                     </div>
 
@@ -783,7 +772,7 @@
                     Non-Profit Commitment
                 </div>
                 <p>
-                    Brands Academy Nigeria Foundation (CAC IT No. 7344471) is governed under CAMA CAP C20 LFN 2004. Income and property are held strictly in trust to advance public-benefit educational objects.
+                    Brands Academy Nigeria Foundation (CAC/IT/No. 7344471) is governed under the Companies and Allied Matters Act 2020 (Part F, Incorporated Trustees). Income and property are held strictly in trust to advance public-benefit educational objects.
                 </p>
             </div>
 

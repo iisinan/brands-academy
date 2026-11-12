@@ -2,13 +2,13 @@
 
 @if(isset($certificate) && $certificate)
     @section('title', 'Verified Credential: ' . $certificate->recipient_name . ' — ' . $certificate->course_title)
-    @section('meta_description', 'Official verifiable credential #' . $certificate->certificate_number . ' awarded to ' . $certificate->recipient_name . ' for completing ' . $certificate->course_title . ' by Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+    @section('meta_description', 'Official verifiable credential #' . $certificate->certificate_number . ' awarded to ' . $certificate->recipient_name . ' for completing ' . $certificate->course_title . ' by Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).')
 @elseif(isset($member) && $member)
     @section('title', 'Verified Member: ' . $member->full_name . ' (' . $member->member_number . ')')
-    @section('meta_description', 'Official active member credential for ' . $member->full_name . ' (' . $member->category_label . ') with Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+    @section('meta_description', 'Official active member credential for ' . $member->full_name . ' (' . $member->category_label . ') with Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).')
 @else
     @section('title', 'Verify Credential — Brands Academy Nigeria Foundation')
-    @section('meta_description', 'Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (CAC IT No. 7344471).')
+    @section('meta_description', 'Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).')
 @endif
 
 @push('styles')
@@ -66,7 +66,7 @@
                     Verify Digital Credentials
                 </h1>
                 <p class="text-slate-300 text-xs sm:text-sm leading-relaxed font-light mb-8 max-w-xl mx-auto">
-                    Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (Incorporated Trustee CAC IT No. 7344471).
+                    Verify the authenticity of any Certificate of Achievement or Member ID issued by Brands Academy Nigeria Foundation (Incorporated Trustee CAC/IT/No. 7344471).
                 </p>
 
                 <!-- Search Form -->
@@ -168,7 +168,7 @@
                                     </div>
                                 @endif
                                 <div>
-                                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Cryptographic Token</span>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Verification Token</span>
                                     <span class="font-mono text-xs font-bold text-slate-800 break-all">{{ $certificate->verification_token }}</span>
                                     <span class="block text-[10px] text-emerald-600 font-semibold mt-0.5">&bull; Official Central Registry Record</span>
                                 </div>
@@ -184,8 +184,8 @@
 
                     <div class="p-4 rounded-2xl bg-slate-900 text-slate-300 text-xs space-y-1">
                         <div class="font-bold text-amber-400 uppercase tracking-wider text-[10px]">Ratifying Authority & Seal</div>
-                        <div class="font-semibold text-white">Brands Academy Nigeria Foundation &bull; Incorporated Trustee (CAMA CAP C20 LFN 2004)</div>
-                        <div class="text-slate-400">RC / IT No. 7344471 &bull; Federal Republic of Nigeria &bull; Board of Trustees Accredited</div>
+                        <div class="font-semibold text-white">Brands Academy Nigeria Foundation &bull; Incorporated Trustee (Companies and Allied Matters Act 2020, Part F)</div>
+                        <div class="text-slate-400">CAC/IT/No. 7344471 &bull; Federal Republic of Nigeria &bull; Board of Trustees Accredited</div>
                     </div>
 
                     <!-- Professional Credential Actions -->
@@ -358,7 +358,7 @@
                 </p>
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600">
                     <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <span>Cryptographically verified against the CAC IT 7344471 Registry</span>
+                    <span>Verify any certificate or member ID issued by the Foundation against our official records.</span>
                 </div>
             </div>
         @endif
@@ -386,7 +386,7 @@
                     return 'Official Member ID';
                 }
                 if (q.length === 36 && q.includes('-')) {
-                    return 'Cryptographic QR Verification Token';
+                    return 'Digital Verification Token';
                 }
                 return '';
             },

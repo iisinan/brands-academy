@@ -206,7 +206,7 @@
 
             <div class="text-center sm:text-right">
                 <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 inline-block text-center">
-                    <span class="text-[10px] font-bold text-emerald-700 block">Cryptographic QR Verification</span>
+                    <span class="text-[10px] font-bold text-emerald-700 block">Official QR Verification</span>
                     <span class="font-mono text-[9px] text-slate-500 block truncate max-w-[150px]">{{ route('registry.show', $member->member_number) }}</span>
                 </div>
             </div>

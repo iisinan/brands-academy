@@ -98,7 +98,7 @@
                 <x-brand-logo class="w-12 h-12 drop-shadow-sm" />
                 <div>
                     <h2 class="text-base font-extrabold text-slate-900 uppercase tracking-wider">Brands Academy Nigeria Foundation</h2>
-                    <p class="text-[11px] text-amber-600 font-bold uppercase tracking-widest">Incorporated Trustee &bull; RC / IT No. 7344471</p>
+                    <p class="text-[11px] text-amber-600 font-bold uppercase tracking-widest">Incorporated Trustee &bull; CAC/IT/No. 7344471</p>
                 </div>
             </div>
             

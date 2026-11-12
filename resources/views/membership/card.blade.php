@@ -206,9 +206,9 @@
 
             <!-- Statutory Legal Authority & Notice -->
             <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed text-center">
-                <p class="text-amber-300 font-bold mb-1">Incorporated Trustee &bull; CAC IT No. 7344471</p>
+                <p class="text-amber-300 font-bold mb-1">Incorporated Trustee &bull; CAC/IT/No. 7344471</p>
                 <p class="text-[10px] text-slate-400 leading-relaxed">
-                    This official digital credential is issued under the authority of Brands Academy Nigeria Foundation. Governed under CAMA CAP C20 LFN 2004. Authorised for professional identification and central verification queries.
+                    This official digital credential is issued under the authority of Brands Academy Nigeria Foundation. Governed under Companies and Allied Matters Act 2020 (Part F). Authorised for professional identification and central verification queries.
                 </p>
             </div>
 
@@ -226,7 +226,7 @@
         </div>
 
         <div class="text-center text-[8px] text-slate-400 mt-4 uppercase tracking-widest relative z-10">
-            Official Credential &bull; Federal Republic of Nigeria &bull; CAMA CAP C20 LFN 2004
+            Official Credential &bull; Federal Republic of Nigeria &bull; CAMA 2020 (Part F)
         </div>
     </div>
 

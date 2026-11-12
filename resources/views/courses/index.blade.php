@@ -17,7 +17,7 @@
                     Executive Short Courses & Micro-Credentials
                 </h1>
                 <p class="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed font-light">
-                    Accelerate your mastery with specialized brand strategy, design identity, and legal IP courses. Learn through live video interactive sessions, downloadable workbooks, timed quizzes, and auto-minted verifiable certificates.
+                    Accelerate your mastery with specialized brand strategy, design identity, and legal IP courses. Learn through live video interactive sessions, downloadable workbooks, timed quizzes, and verifiable certificates of completion.
                 </p>
             </div>
             @auth

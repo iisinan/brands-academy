@@ -65,7 +65,7 @@
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Credential Awarded</span>
                     <h2 class="text-base sm:text-lg font-bold">You have earned your Certificate of Completion!</h2>
-                    <p class="text-xs text-slate-300 mt-0.5">Your official verifiable digital certificate with cryptographic QR code is active.</p>
+                    <p class="text-xs text-slate-300 mt-0.5">Your official verifiable digital certificate with live QR verification is active.</p>
                 </div>
             </div>
             <a href="{{ route('verify.certificate', $enrollment->certificate->verification_token) }}" target="_blank" class="shrink-0 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md transition-all">

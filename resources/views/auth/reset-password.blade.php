@@ -219,7 +219,7 @@
         </div>
 
         <div class="mt-4 text-center text-[10px] text-slate-400">
-            CAC IT No. 7344471 &bull; Governed under CAMA CAP C20 LFN 2004
+            CAC/IT/No. 7344471 &bull; Governed under CAMA 2020 (Part F)
         </div>
 
     </div>

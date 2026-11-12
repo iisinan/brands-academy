@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Submit Manuscript | Journal of Brand Strategy & Management')
+@section('title', 'Submit Manuscript | Nigerian Journal of Brand Strategy & Management (NJBSM)')
 
 @section('content')
 <div class="bg-slate-900 text-white py-12 border-b border-slate-800">
@@ -91,7 +91,7 @@
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
             <p class="text-[11px] text-slate-400">Accepted articles are assigned DOIs and indexed under CC-BY 4.0.</p>
             <button type="submit" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold text-xs shadow-xs transition-colors">
-                Submit Manuscript to JBSM &rarr;
+                Submit Manuscript to NJBSM &rarr;
             </button>
         </div>
     </form>

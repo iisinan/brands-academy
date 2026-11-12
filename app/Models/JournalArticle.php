@@ -106,7 +106,7 @@ class JournalArticle extends Model
         $pages = ($this->page_start && $this->page_end) ? ", {$this->page_start}-{$this->page_end}" : '';
         $doi = $this->doi ? " https://doi.org/{$this->doi}" : '';
 
-        return "{$authors} ({$year}). {$this->title}. Journal of Brand Strategy & Management, {$vol}({$iss}){$pages}.{$doi}";
+        return "{$authors} ({$year}). {$this->title}. Nigerian Journal of Brand Strategy & Management (NJBSM), {$vol}({$iss}){$pages}.{$doi}";
     }
 
     public function generateHarvardCitation(): string
@@ -117,7 +117,7 @@ class JournalArticle extends Model
         $iss = $this->issue ? $this->issue->issue_number : '1';
         $pages = ($this->page_start && $this->page_end) ? ", pp.{$this->page_start}-{$this->page_end}" : '';
 
-        return "{$authors}, {$year}. {$this->title}. Journal of Brand Strategy & Management, {$vol}({$iss}){$pages}.";
+        return "{$authors}, {$year}. {$this->title}. Nigerian Journal of Brand Strategy & Management (NJBSM), {$vol}({$iss}){$pages}.";
     }
 
     public function generateBibtexCitation(): string
@@ -132,7 +132,7 @@ class JournalArticle extends Model
         return "@article{{$key},\n"
             ."  title = {{$this->title}},\n"
             ."  author = {{$authors}},\n"
-            ."  journal = {Journal of Brand Strategy & Management},\n"
+            ."  journal = {Nigerian Journal of Brand Strategy & Management (NJBSM)},\n"
             ."  volume = {{$vol}},\n"
             ."  number = {{$iss}},\n"
             ."  year = {{$year}}\n"

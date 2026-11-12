@@ -46,7 +46,7 @@
                                 <tr>
                                     <td align="center" style="background-color: rgba(217, 119, 6, 0.14); border: 1px solid rgba(217, 119, 6, 0.4); border-radius: 20px; padding: 4px 14px;">
                                         <span style="color: #cbd5e1; font-size: 10.5px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;">
-                                            Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Office of the Registrar
+                                            Incorporated Trustee &bull; CAC/IT/No. 7344471 &bull; Office of the Registrar
                                         </span>
                                     </td>
                                 </tr>
@@ -110,7 +110,7 @@
                                 <li style="margin-bottom: 6px;"><strong>Apply for Open Cohorts:</strong> Enrol in Certified Brand Architect (CBA), Strategist (CBS), and Executive Masterclasses.</li>
                                 <li style="margin-bottom: 6px;"><strong>Submit Portfolio Deliverables:</strong> Upload your practical project decks for direct faculty assessment.</li>
                                 <li style="margin-bottom: 6px;"><strong>Digital Membership Card:</strong> Access your scannable digital credential card anytime.</li>
-                                <li><strong>Download Official Certificates:</strong> Access your verified certificates featuring tamper-proof cryptographic QR validation.</li>
+                                <li><strong>Download Official Certificates:</strong> Access your verified certificates featuring tamper-evident QR validation.</li>
                             </ul>
 
                             <!-- Actions -->
@@ -151,7 +151,7 @@
                     <tr>
                         <td align="center" style="background-color: #f8fafc; padding: 24px 20px; font-size: 11px; color: #94a3b8; line-height: 1.6; border-top: 1px solid #e2e8f0; text-align: center;">
                             <p style="margin: 0 0 6px 0; font-weight: 600; color: #64748b;">
-                                Brands Academy Nigeria Foundation (Incorporated Trustee &bull; RC / IT No. 7344471)
+                                Brands Academy Nigeria Foundation (Incorporated Trustee &bull; CAC/IT/No. 7344471)
                             </p>
                             <p style="margin: 0 0 8px 0;">
                                 No. 27C, Ilorin Crescent, Ali-Akilu West, Marafa, Kaduna State, Nigeria.

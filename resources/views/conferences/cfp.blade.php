@@ -69,7 +69,7 @@
 
         <div class="p-4 rounded-xl border border-dashed border-slate-300 bg-slate-50">
             <label class="block text-xs font-bold text-slate-800 mb-1">Full Manuscript (Optional, PDF only)</label>
-            <p class="text-[11px] text-slate-500 mb-2">Accepted papers will be considered for fast-track publication in the Journal of Brand Strategy & Management (JBSM).</p>
+            <p class="text-[11px] text-slate-500 mb-2">Accepted papers will be considered for fast-track publication in the Nigerian Journal of Brand Strategy & Management (NJBSM).</p>
             <input type="file" name="manuscript_pdf" accept=".pdf" class="text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
         </div>
 

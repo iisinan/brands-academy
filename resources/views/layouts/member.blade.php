@@ -103,7 +103,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         Member Portal Active
                     </span>
-                    <span class="text-slate-400 font-mono">RC 7344471</span>
+                    <span class="text-slate-400 font-mono">CAC/IT/No. 7344471</span>
                 </div>
             </div>
 

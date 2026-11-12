@@ -129,17 +129,17 @@
                 </div>
             </div>
 
-            <!-- Published Research & Manuscripts in JBSM -->
+            <!-- Published Research & Manuscripts in NJBSM -->
             @if($publishedArticles->isNotEmpty())
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                    <h2 class="text-lg font-bold font-serif-title text-slate-900 mb-2">Peer-Reviewed Publications in JBSM</h2>
-                    <p class="text-xs text-slate-500 mb-6">Original research papers published in the Journal of Brand Science &amp; Management.</p>
+                    <h2 class="text-lg font-bold font-serif-title text-slate-900 mb-2">Peer-Reviewed Publications in NJBSM</h2>
+                    <p class="text-xs text-slate-500 mb-6">Original research papers published in the Nigerian Journal of Brand Strategy &amp; Management (NJBSM).</p>
 
                     <div class="space-y-4">
                         @foreach($publishedArticles as $art)
                             <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 space-y-2">
                                 <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded font-mono">
-                                    {{ $art->issue ? "Vol. {$art->issue->volume->volume_number}, Issue {$art->issue->issue_number}" : 'JBSM' }}
+                                    {{ $art->issue ? "Vol. {$art->issue->volume->volume_number}, Issue {$art->issue->issue_number}" : 'NJBSM' }}
                                 </span>
                                 <h4 class="text-sm font-bold text-slate-900">
                                     <a href="{{ route('journal.show', $art->slug) }}" class="hover:text-blue-600 transition-colors">
@@ -191,7 +191,7 @@
                 </div>
                 <h3 class="text-base font-bold text-slate-900">Statutory Verification</h3>
                 <p class="text-xs text-slate-500 mt-1 mb-4">
-                    This official dossier is cryptographically validated against the National Registry Database.
+                    This official dossier is verified against the National Registry Database.
                 </p>
 
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-left space-y-2 text-xs mb-4">

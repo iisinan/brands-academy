@@ -301,7 +301,7 @@
 
                     <div class="institution-title">Brands Academy</div>
                     <div class="institution-subtitle">Nigeria Foundation</div>
-                    <div class="legal-subtext">Incorporated Trustee &bull; RC / IT No. 7344471 &bull; Federal Republic of Nigeria</div>
+                    <div class="legal-subtext">Incorporated Trustee &bull; CAC/IT/No. 7344471 &bull; Federal Republic of Nigeria</div>
 
                     <div class="ornamental-filigree" style="width: 160pt; height: 1.2pt; margin-bottom: 8pt;"></div>
 
@@ -360,7 +360,7 @@
                                         </tr>
                                     </table>
                                     <div style="font-size: 6pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2pt;">
-                                        Cryptographically Verifiable Credential
+                                        Officially Verifiable Credential
                                     </div>
                                 </div>
                             </td>

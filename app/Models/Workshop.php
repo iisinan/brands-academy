@@ -129,29 +129,39 @@ class Workshop extends Model
         $now = Carbon::now();
 
         if ($this->isOpenForApplications()) {
-            $diff = $now->diffForHumans($this->application_deadline, [
-                'syntax' => Carbon::DIFF_RELATIVE_TO_NOW,
-                'parts' => 2,
-            ]);
+            $days = (int) $now->diffInDays($this->application_deadline, false);
+            if ($days > 1) {
+                $detail = "Closes in {$days} days (".$this->application_deadline->format('d M Y').')';
+            } elseif ($days === 1) {
+                $detail = 'Closes tomorrow ('.$this->application_deadline->format('d M Y').')';
+            } else {
+                $hours = max(1, (int) $now->diffInHours($this->application_deadline, false));
+                $detail = "Closes in {$hours} hours (".$this->application_deadline->format('d M Y').')';
+            }
 
             return [
                 'state' => 'open',
                 'label' => 'Applications Open',
-                'detail' => 'Closes '.$diff,
+                'detail' => $detail,
                 'badge_class' => 'bg-emerald-100 text-emerald-800 border-emerald-300',
             ];
         }
 
         if ($this->isUpcoming()) {
-            $diff = $now->diffForHumans($this->application_starts_at, [
-                'syntax' => Carbon::DIFF_RELATIVE_TO_NOW,
-                'parts' => 2,
-            ]);
+            $days = (int) $now->diffInDays($this->application_starts_at, false);
+            if ($days > 1) {
+                $detail = "Opens in {$days} days (".$this->application_starts_at->format('d M Y').')';
+            } elseif ($days === 1) {
+                $detail = 'Opens tomorrow ('.$this->application_starts_at->format('d M Y').')';
+            } else {
+                $hours = max(1, (int) $now->diffInHours($this->application_starts_at, false));
+                $detail = "Opens in {$hours} hours (".$this->application_starts_at->format('d M Y').')';
+            }
 
             return [
                 'state' => 'upcoming',
                 'label' => 'Opening Soon',
-                'detail' => 'Opens '.$diff,
+                'detail' => $detail,
                 'badge_class' => 'bg-amber-100 text-amber-800 border-amber-300',
             ];
         }
@@ -159,7 +169,7 @@ class Workshop extends Model
         return [
             'state' => 'closed',
             'label' => 'Applications Closed',
-            'detail' => 'Review in progress',
+            'detail' => 'Closed on '.$this->application_deadline->format('d M Y'),
             'badge_class' => 'bg-slate-100 text-slate-700 border-slate-300',
         ];
     }

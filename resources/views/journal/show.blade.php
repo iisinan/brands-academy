@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $article->title . ' | JBSM')
+@section('title', $article->title . ' | NJBSM')
 @section('meta_description', Str::limit(strip_tags($article->abstract), 160))
 @section('og_type', 'article')
 
@@ -9,7 +9,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <a href="{{ route('journal.index') }}" class="text-xs text-amber-400 hover:underline flex items-center gap-1 mb-4 font-medium">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            Journal of Brand Strategy &amp; Management Archive
+            Nigerian Journal of Brand Strategy &amp; Management Archive
         </a>
 
         <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 mb-3">

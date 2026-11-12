@@ -18,17 +18,17 @@
                 <!-- Official Accreditation Kicker -->
                 <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900/90 text-amber-300 border border-amber-500/30 shadow-xs mb-6 backdrop-blur-sm">
                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-xs">🏛</span>
-                    <span class="tracking-wide">Federal Republic of Nigeria &bull; Incorporated Trustees CAC / IT No. 7344471</span>
+                    <span class="tracking-wide">Federal Republic of Nigeria &bull; Incorporated Trustees CAC/IT/No. 7344471</span>
                 </div>
 
                 <!-- Primary Headline -->
                 <h1 class="text-3xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-white leading-[1.15] font-serif-title mb-6">
-                    The National Standard for <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">Brand Governance, Strategy</span> & Professional Leadership.
+                    Building Nigeria's Next Generation of <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200">Brand Professionals</span>: Practical, Certified Training in Brand Strategy, Governance and Leadership.
                 </h1>
 
                 <!-- Body Narrative -->
                 <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal mb-8 max-w-2xl">
-                    Brands Academy Nigeria Foundation is a chartered educational foundation bridging academic theory and executive industry practice. Governed by distinguished academics and marketing fellows, the academy provides continuous professional membership, scheduled certification cohorts, and the nation’s tamper-proof registry of verified credentials.
+                    Brands Academy Nigeria Foundation (BANF) is an incorporated educational foundation bridging academic rigour and executive industry practice across Nigeria and West Africa. Governed by distinguished academics and marketing fellows, the Foundation provides continuous professional membership, scheduled certification cohorts, and an official register of certified practitioners.
                 </p>
 
                 <!-- Board & Credibility Strip -->
@@ -47,7 +47,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-white">3 Chartered Tiers</div>
+                            <div class="text-xs font-bold text-white">3 Professional Tiers</div>
                             <div class="text-[11px] text-slate-400">CBA &bull; CBS &bull; CBE Pathway</div>
                         </div>
                     </div>
@@ -56,8 +56,8 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-white">Cryptographic QR</div>
-                            <div class="text-[11px] text-slate-400">Instant Vector Verification</div>
+                            <div class="text-xs font-bold text-white">Official Registry</div>
+                            <div class="text-[11px] text-slate-400">Verify Certified Credentials</div>
                         </div>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                                     <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     Publicly Auditable
                                 </span>
-                                <span>Secured under CAMA 2004 Charter</span>
+                                <span>Secured under CAMA 2020 (Part F)</span>
                             </div>
                         </div>
 
@@ -213,7 +213,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
             <div class="border-l-2 border-amber-500/50 pl-3">
-                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">CAC IT No. 7344471</div>
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">CAC/IT/No. 7344471</div>
                 <div class="text-[11px] text-slate-400 mt-0.5">Federal Incorporated Trustees</div>
             </div>
             <div class="border-l-2 border-amber-500/50 pl-3">
@@ -225,8 +225,8 @@
                 <div class="text-[11px] text-slate-400 mt-0.5">CBA &bull; CBS &bull; CBE Accreditations</div>
             </div>
             <div class="border-l-2 border-amber-500/50 pl-3">
-                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Cryptographic Ledger</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Tamper-Proof Verification Registry</div>
+                <div class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Official Register</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Certified Practitioners Directory</div>
             </div>
         </div>
     </div>
@@ -240,7 +240,7 @@
             The Two Foundation Pillars
         </h2>
         <p class="text-sm text-slate-600 mt-2">
-            Structured in strict accordance with the Foundation’s charter to provide continuous membership while maintaining rigorous, time-bound certification cohorts.
+            Structured in strict accordance with the Foundation’s constitution to provide continuous membership while maintaining rigorous, time-bound certification cohorts.
         </p>
     </div>
 
@@ -259,7 +259,7 @@
             </div>
             <h3 class="text-xl font-bold text-slate-950 mb-2">Evergreen Professional Membership</h3>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Open 365 days a year for students, practitioners, educators, and institutions. Registration generates your official <strong class="text-slate-900">BANF-MBR-YYYY-XXXX</strong> credential, digital ID card with cryptographic QR code, and access to the national practitioner registry.
+                Open 365 days a year for students, practitioners, educators, and institutions. Registration generates your official <strong class="text-slate-900">BANF-MBR-YYYY-XXXX</strong> credential, verifiable digital ID card with QR code, and access to the national practitioner register.
             </p>
             <div class="flex items-center justify-between pt-4 border-t border-slate-100">
                 <span class="text-xs font-semibold text-slate-500">Student &bull; Professional &bull; Fellow</span>
@@ -282,7 +282,7 @@
             </div>
             <h3 class="text-xl font-bold text-slate-950 mb-2">Masterclasses & Certification Cohorts</h3>
             <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Structured certification programmes that open exclusively during designated application windows. Enrolled candidates undergo rigorous syllabus defense and capstone portfolio evaluation, concluding with automated vector certificate issuance.
+                Structured certification programmes that open exclusively during designated application windows. Enrolled candidates undergo rigorous syllabus defense and capstone portfolio evaluation, concluding with official certificate issuance.
             </p>
             <div class="flex items-center justify-between pt-4 border-t border-slate-100">
                 <span class="text-xs font-semibold text-slate-500">Includes Tuition-Free Community Tracks</span>
@@ -488,7 +488,7 @@
                     <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Flagship Events</span>
                     <h3 class="text-lg font-bold text-white mt-1 mb-2">Brand Summits &amp; Conferences</h3>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                        Nigeria's premier annual brand leadership summit. Secure tiered passes, download cryptographic digital delegate badges, and submit papers.
+                        Nigeria's premier annual brand leadership summit. Secure tiered passes, download verified digital delegate badges, and submit papers.
                     </p>
                 </div>
                 <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
@@ -499,16 +499,16 @@
                 </div>
             </div>
 
-            <!-- 5. Academic Journal (JBSM) -->
+            <!-- 5. Academic Journal (NJBSM) -->
             <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-wider text-rose-400">Peer-Reviewed Research</span>
-                    <h3 class="text-lg font-bold text-white mt-1 mb-2">JBSM Academic Journal</h3>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">NJBSM Academic Journal</h3>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                        Journal of Brand Science &amp; Management. Open-access empirical research, digital DOI archives, and instant APA 7th / Harvard / BibTeX citations.
+                        Nigerian Journal of Brand Strategy &amp; Management. Open-access empirical research, digital DOI archives, and instant APA 7th / Harvard / BibTeX citations.
                     </p>
                 </div>
                 <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
@@ -585,7 +585,7 @@
                     <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Academic &amp; Professional Ledger</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Official Academic Register</span>
                     <h3 class="text-lg font-bold text-white mt-1 mb-2">Official CPD Transcripts</h3>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
                         Accumulate validated credit hours across 5 academic pillars. Generate certified, tamper-proof PDF transcripts for licensing and board tenure review.

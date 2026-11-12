@@ -94,9 +94,9 @@ class DatabaseSeeder extends Seeder
         // 3. Create Realistic Workshops with Window Logic
         // Workshop 1: OPEN FOR APPLICATIONS (Foundations of Branding - CBA)
         $workshopOpen = Workshop::firstOrCreate(
-            ['slug' => 'certified-brand-associate-cba-cohort-24b'],
+            ['slug' => 'certified-brand-associate-cba-cohort-2026-1'],
             [
-                'title' => 'Certified Brand Associate (CBA) — Cohort 2024-B',
+                'title' => 'Certified Brand Associate (CBA) — Cohort 2026-1',
                 'track_type' => 'cba',
                 'tagline' => 'Foundational certification in branding concepts, terminology and brand strategy.',
                 'description' => 'A 6-week intensive foundational certification programme designed to close the gap between academic theory and industry-ready branding practice. Learners are paired with experienced practitioners and evaluated through applied assignments.',
@@ -124,9 +124,9 @@ class DatabaseSeeder extends Seeder
 
         // Workshop 2: UPCOMING (Opening Soon - Certified Brand Strategist CBS)
         $workshopUpcoming = Workshop::firstOrCreate(
-            ['slug' => 'certified-brand-strategist-cbs-cohort-25a'],
+            ['slug' => 'certified-brand-strategist-cbs-cohort-2026-1'],
             [
-                'title' => 'Certified Brand Strategist (CBS) — Cohort 2025-A',
+                'title' => 'Certified Brand Strategist (CBS) — Cohort 2026-1',
                 'track_type' => 'cbs',
                 'tagline' => 'Intermediate professional track for practicing marketers and brand managers.',
                 'description' => 'An advanced practitioner programme focusing on applied brand positioning, competitive differentiation, multi-channel rollout, and corporate communications.',

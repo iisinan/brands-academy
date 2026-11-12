@@ -100,7 +100,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         Admin Control Center
                     </span>
-                    <span class="text-slate-400 font-mono">RC 7344471</span>
+                    <span class="text-slate-400 font-mono">CAC/IT/No. 7344471</span>
                 </div>
             </div>
 
@@ -594,7 +594,7 @@
             <!-- Admin Footer -->
             <footer class="px-4 sm:px-6 lg:px-8 py-4 pb-20 lg:pb-4 bg-white border-t border-slate-200 text-slate-400 text-xs flex flex-col sm:flex-row items-center justify-between gap-2">
                 <div>
-                    <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee (CAMA CAP C20 LFN 2004) &bull; RC / IT No. 7344471
+                    <strong>Brands Academy Nigeria Foundation</strong> &bull; Incorporated Trustee (CAMA 2020, Part F) &bull; CAC/IT/No. 7344471
                 </div>
                 <div class="flex items-center gap-4 text-[11px]">
                     <a href="{{ route('home') }}" class="hover:text-amber-600 transition-colors">Public Site</a>

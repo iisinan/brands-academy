@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Journal of Brand Strategy & Management (JBSM) | Brands Academy')
+@section('title', 'Nigerian Journal of Brand Strategy & Management (NJBSM) | Brands Academy')
 
 @section('content')
 <div class="bg-slate-900 text-white py-16 border-b border-slate-800">
@@ -11,10 +11,10 @@
                 Peer-Reviewed Open-Access Academic Journal &bull; ISSN Applied
             </div>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif-title font-extrabold tracking-tight text-white mb-4">
-                Journal of Brand Strategy &amp; Management
+                Nigerian Journal of Brand Strategy &amp; Management (NJBSM)
             </h1>
             <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light mb-8">
-                An international, double-blind peer-reviewed quarterly journal publishing empirical and conceptual contributions in corporate identity, brand valuation, market signaling, and intellectual property governance in emerging economies.
+                An international, double-blind peer-reviewed quarterly journal published by Brands Academy Nigeria Foundation. Publishing empirical and conceptual contributions in corporate identity, brand valuation, market signaling, and intellectual property governance in emerging African economies.
             </p>
             <div class="flex flex-wrap items-center gap-4">
                 <a href="{{ route('journal.submit') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition-all">
@@ -32,6 +32,48 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Call for Papers: Inaugural Issue Section -->
+    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/40 rounded-3xl p-6 sm:p-10 mb-12 border border-amber-500/30 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-4">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Call for Papers &bull; Inaugural Issues (Volume 1, 2026)
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-serif-title font-bold text-white mb-3">
+                Call for Papers: African Brand Governance, Intangibles &amp; Market Equity
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light mb-6">
+                The editorial board invites original empirical, conceptual, and case-study manuscripts exploring brand valuation, trademark strategy, corporate identity resilience, and intellectual property economics across emerging African markets.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs mb-6">
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-amber-400 font-bold block mb-1">Double-Blind Review</span>
+                    <span class="text-slate-400 text-[11px]">Rigorous review by international fellows within 4–6 weeks.</span>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-amber-400 font-bold block mb-1">Open Access (CC-BY 4.0)</span>
+                    <span class="text-slate-400 text-[11px]">Free global dissemination without author publication charges (APC).</span>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-amber-400 font-bold block mb-1">DOI &amp; Indexing Pipeline</span>
+                    <span class="text-slate-400 text-[11px]">Persistent CrossRef DOIs, Google Scholar, and academic indexing.</span>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="{{ route('journal.submit') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-md">
+                    <span>Submit Manuscript Online</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                <a href="mailto:thebrandsacademy@gmail.com?subject=NJBSM%20Author%20Inquiry" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-colors">
+                    <span>Contact Editorial Office</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Current Issue Banner -->
     @if($latestIssue)
