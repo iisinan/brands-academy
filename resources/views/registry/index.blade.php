@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Certified Brand Practitioners Register | Brands Academy Nigeria Foundation')
+@section('page_title', 'Certified Brand Practitioners Register')
 
 @section('content')
 <!-- Hero -->

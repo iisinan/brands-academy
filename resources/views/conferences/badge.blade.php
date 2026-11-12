@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Delegate Pass - ' . $delegate->full_name . ' | Brands Academy')
+@section('page_title', 'Digital Delegate Summit Pass')
 
 @section('content')
 <div class="bg-slate-900 text-white py-12 border-b border-slate-800">

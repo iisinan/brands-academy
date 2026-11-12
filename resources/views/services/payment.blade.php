@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', 'Payment & Summary - ' . $filing->tracking_code . ' | Brands Academy')
+@section('page_title', 'Statutory Payment & Case Summary')
 
 @section('content')
 <div class="bg-slate-900 text-white py-10 border-b border-slate-800">

@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', $course->title . ' - Brands Academy Short Course')
+@section('page_title', $course->title)
 @section('meta_description', Str::limit(strip_tags($course->short_description ?: $course->description), 160))
 @section('og_type', 'article')
 

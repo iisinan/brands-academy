@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', '3-Tier Professional Certification Framework (CBA, CBS, CBE) - Brands Academy')
+@section('page_title', 'Professional Certification Framework')
 
 @section('content')
 

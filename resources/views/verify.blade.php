@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
+
+@section('page_title', 'Credential & Member Verification')
 
 @if(isset($certificate) && $certificate)
     @section('title', 'Verified Credential: ' . $certificate->recipient_name . ' — ' . $certificate->course_title)

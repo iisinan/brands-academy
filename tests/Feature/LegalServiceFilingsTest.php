@@ -63,6 +63,41 @@ class LegalServiceFilingsTest extends TestCase
         $response->assertSee('Option 1 (Primary Choice)');
     }
 
+    public function test_filing_wizard_renders_with_member_sidebar_when_authenticated_member(): void
+    {
+        $user = User::create([
+            'name' => 'Sani Salihu',
+            'email' => 'sani.filing@example.com',
+            'password' => bcrypt('secret1234'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        Member::create([
+            'user_id' => $user->id,
+            'member_number' => 'BANF-MBR-2026-FILING',
+            'first_name' => 'Sani',
+            'last_name' => 'Salihu',
+            'email' => 'sani.filing@example.com',
+            'phone' => '+234 803 000 9988',
+            'category' => 'professional',
+            'institution_or_company' => 'Bayero University Kano',
+            'designation' => 'Research Fellow',
+            'state' => 'Kaduna',
+            'country' => 'Nigeria',
+            'status' => 'active',
+            'payment_status' => 'paid',
+            'joined_at' => now()->toDateString(),
+            'qr_code_token' => 'sani-filing-qr-token',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('services.wizard', ['type' => 'cac_business_name']));
+        $response->assertStatus(200);
+        $response->assertSee('Member Portal Active');
+        $response->assertSee('Client Filing Intake Desk');
+        $response->assertSee('CAC &amp; IP Filings', false);
+    }
+
     public function test_client_can_submit_intake_wizard_with_documents(): void
     {
         $ninFile = UploadedFile::fake()->create('nin_slip.pdf', 500, 'application/pdf');

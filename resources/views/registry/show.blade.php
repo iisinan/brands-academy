@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends(auth()->check() && auth()->user()->member ? 'layouts.member' : 'layouts.app')
 
 @section('title', $member->full_name . ' (' . $member->member_number . ') - Certified Practitioner Dossier | Brands Academy')
+@section('page_title', $member->full_name . ' - Practitioner Dossier')
 @section('meta_description', 'Official verified register dossier for ' . $member->full_name . ' (' . $member->member_number . '), ' . ($member->category === 'fellow' ? 'Fellow' : 'Member') . ' of Brands Academy Nigeria Foundation.')
 @section('og_type', 'profile')
 

@@ -280,12 +280,12 @@
 
                     <!-- CAC & Brand IP Filings -->
                     <a href="{{ route('member.filings.index') }}"
-                       class="w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all text-left cursor-pointer group {{ request()->routeIs('member.filings.*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                       class="w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all text-left cursor-pointer group {{ (request()->routeIs('member.filings.*') || request()->routeIs('services.*')) ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <span class="flex items-center gap-3">
-                            <svg class="w-4 h-4 {{ request()->routeIs('member.filings.*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <svg class="w-4 h-4 {{ (request()->routeIs('member.filings.*') || request()->routeIs('services.*')) ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             <span>CAC &amp; IP Filings</span>
                         </span>
-                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold {{ request()->routeIs('member.filings.*') ? 'bg-slate-950 text-amber-400' : 'bg-emerald-500/20 text-emerald-300' }}">
+                        <span class="px-1.5 py-0.2 rounded text-[9px] font-bold {{ (request()->routeIs('member.filings.*') || request()->routeIs('services.*')) ? 'bg-slate-950 text-amber-400' : 'bg-emerald-500/20 text-emerald-300' }}">
                             25% Off
                         </span>
                     </a>
