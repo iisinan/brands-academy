@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-100">
+<html lang="en" class="h-full bg-[#f0f2f1]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f8fbff">
+    <meta name="theme-color" content="#3b5d4f">
     <title>@yield('title', 'Member Dashboard') | Brands Academy Nigeria Foundation</title>
     <meta name="description" content="Official Member Portal & Governance Registry for Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).">
 
@@ -43,12 +43,12 @@
             border-radius: 4px;
         }
         .member-sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(245, 158, 11, 0.4);
+            background: rgba(235, 196, 67, 0.55);
         }
     </style>
     @stack('styles')
 </head>
-<body class="min-h-full bg-slate-100 text-slate-800 antialiased selection:bg-amber-500 selection:text-white"
+<body class="min-h-full bg-[#f0f2f1] text-[#141615] antialiased selection:bg-[#ebc443] selection:text-[#141615]"
       x-data="memberLayoutComponent({{ request()->routeIs('member.dashboard') ? 'true' : 'false' }})">
 
     @php
@@ -74,11 +74,11 @@
     <div class="flex min-h-screen">
 
         <!-- ======================= PERMANENT FIXED LEFT SIDEBAR ======================= -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out md:translate-x-0 select-none shadow-2xl"
+        <aside class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 max-w-[85vw] bg-[#3b5d4f] text-[#d6e0dc] flex flex-col border-r border-white/15 transform transition-transform duration-300 ease-in-out md:translate-x-0 select-none shadow-2xl"
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
 
             <!-- Pinned Top Section: Brand Header & Member Credential Card (Never scrolls) -->
-            <div class="shrink-0 p-4 border-b border-slate-800/80 bg-slate-950">
+            <div class="shrink-0 p-4 border-b border-white/15 bg-[#2f4a3f]">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('member.dashboard') }}" class="flex items-center gap-2.5 group min-w-0">
                         <x-brand-logo class="w-9 h-9 shrink-0 drop-shadow-md group-hover:scale-105 transition-transform" />
@@ -109,7 +109,7 @@
 
                 <!-- Member Identity Card in Sidebar (Pinned & High-Contrast) -->
                 @if($currentMember)
-                    <div class="mt-2.5 p-3 rounded-2xl bg-gradient-to-br from-slate-900/90 via-slate-900 to-slate-950 border border-slate-800 relative overflow-hidden shadow-sm">
+                    <div class="mt-2.5 p-3 rounded-2xl bg-[#243a31] border border-white/15 relative overflow-hidden shadow-sm">
                         <div class="flex items-center gap-2.5">
                             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-extrabold text-sm flex items-center justify-center shadow-md font-serif-title shrink-0 ring-1 ring-amber-400/40">
                                 {{ substr($currentMember->first_name ?? (auth()->user()?->name ?? 'M'), 0, 1) }}{{ substr($currentMember->last_name ?? '', 0, 1) }}

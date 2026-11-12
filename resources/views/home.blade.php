@@ -5,7 +5,9 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-b from-slate-950 via-[#0a0f1d] to-slate-950 text-white overflow-hidden py-16 lg:py-24 border-b border-slate-800/80">
+<section class="relative bg-[#3b5d4f] text-white overflow-hidden py-16 lg:py-24 border-b border-white/10">
+    <!-- Subtle Furni Architectural Dot Grid Accent -->
+    <div class="hidden lg:block absolute top-10 right-10 w-64 h-44 furni-dots-light pointer-events-none opacity-80" aria-hidden="true"></div>
     <!-- Subtle Architectural Grid Background -->
     <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
 
@@ -64,12 +66,12 @@
 
                 <!-- Primary CTA Row -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3.5 w-full">
-                    <a href="{{ route('membership.register') }}" class="w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 group">
+                    <a href="{{ route('membership.register') }}" class="w-full sm:w-auto px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#ebc443] hover:bg-[#f1d46e] text-[#141615] shadow-md transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 group">
                         <span>Join Foundation Membership</span>
                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-slate-950 text-amber-400">24/7/365</span>
                         <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
-                    <a href="{{ route('workshops.index') }}" class="w-full sm:w-auto px-5 py-3.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700/80 transition-all flex items-center justify-center gap-2">
+                    <a href="{{ route('workshops.index') }}" class="w-full sm:w-auto px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-transparent hover:bg-white/10 text-white border-2 border-white/35 hover:border-white/70 transition-all flex items-center justify-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>View Training Cohorts ({{ $openWorkshops->count() }} Open)</span>
                     </a>
@@ -89,7 +91,7 @@
                     <div class="absolute -inset-1.5 bg-gradient-to-tr from-amber-500/20 via-amber-400/5 to-slate-800/40 rounded-3xl blur-xl opacity-70"></div>
 
                     <!-- Master Credential Showcase Container -->
-                    <div class="relative bg-slate-900/95 rounded-2xl border border-amber-500/30 p-5 shadow-2xl backdrop-blur-md">
+                    <div class="relative bg-[#2f4a3f] rounded-2xl border border-[#ebc443]/35 p-5 shadow-2xl backdrop-blur-md">
                         
                         <!-- Top Registry Status Bar -->
                         <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-800 text-[11px]">
@@ -181,11 +183,11 @@
                                         name="q" 
                                         value="BANF-CERT-2024-00108"
                                         placeholder="Enter Certificate # or Token" 
-                                        class="flex-1 bg-slate-950/80 text-white font-mono text-xs px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400 placeholder-slate-500"
+                                        class="flex-1 bg-[#243a31] text-white font-mono text-xs px-3 py-2 rounded-xl border border-white/20 focus:outline-none focus:border-[#ebc443] placeholder-[#b9cbc3]"
                                     >
                                     <button 
                                         type="submit" 
-                                        class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors whitespace-nowrap shadow-xs"
+                                        class="px-4 py-2 rounded-full text-xs font-bold bg-[#ebc443] hover:bg-[#f1d46e] text-[#141615] transition-colors whitespace-nowrap shadow-xs"
                                     >
                                         Verify Specimen
                                     </button>
@@ -209,7 +211,7 @@
 </section>
 
 <!-- Institutional Governance & Metrics Strip -->
-<section class="bg-slate-950 border-b border-slate-800 text-slate-300 py-6">
+<section class="bg-[#2f4a3f] border-b border-white/15 text-[#d6e0dc] py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
             <div class="border-l-2 border-amber-500/50 pl-3">
@@ -232,8 +234,9 @@
     </div>
 </section>
 
-<!-- The Two Pillars Architecture Section -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+<!-- Two Foundation Pillars Section with Subtle Warm Gold Dot Accent -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 relative">
+    <div class="hidden md:block absolute top-10 right-6 w-48 h-28 furni-dots-gold pointer-events-none opacity-65 -z-10" aria-hidden="true"></div>
     <div class="text-center max-w-2xl mx-auto mb-10">
         <div class="text-xs font-extrabold uppercase tracking-widest text-amber-600 mb-1">Institutional Operating Framework</div>
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-950 font-serif-title">
@@ -417,7 +420,8 @@
 </section>
 
 <!-- Integrated Foundation Ecosystem Section -->
-<section class="bg-slate-950 text-white py-20 border-t border-slate-800 relative overflow-hidden">
+<section class="bg-[#3b5d4f] text-white py-20 border-t border-white/15 relative overflow-hidden">
+    <div class="hidden lg:block absolute top-8 left-8 w-56 h-36 furni-dots-light pointer-events-none opacity-60" aria-hidden="true"></div>
     <div class="absolute inset-0 bg-radial-gradient from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-16">
@@ -712,7 +716,8 @@
 
 <!-- Institutional Accreditation & Licensing Banner -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 rounded-3xl p-8 sm:p-12 text-white border border-slate-800 shadow-xl relative overflow-hidden">
+    <div class="bg-[#3b5d4f] rounded-3xl p-8 sm:p-12 text-white border border-white/15 shadow-xl relative overflow-hidden">
+        <div class="hidden sm:block absolute bottom-4 right-8 w-44 h-28 furni-dots-light pointer-events-none opacity-70" aria-hidden="true"></div>
         <!-- Subtle Gold Accent Glow -->
         <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 

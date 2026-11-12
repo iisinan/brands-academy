@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en" class="h-full bg-[#f0f2f1]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f8fbff">
+    <meta name="theme-color" content="#3b5d4f">
     <title>@yield('title', 'Brands Academy Nigeria Foundation')</title>
     <meta name="description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and West Africa. Incorporated Trustee CAC/IT/No. 7344471.')">
     
@@ -68,10 +68,10 @@
     </style>
     @stack('styles')
 </head>
-<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
+<body class="min-h-full flex flex-col bg-[#f0f2f1] text-[#141615] antialiased selection:bg-[#ebc443] selection:text-[#141615]">
 
     <!-- Top Institutional Banner -->
-    <header class="bg-slate-950 text-slate-300 text-xs py-2 border-b border-slate-800/80">
+    <header class="bg-[#2f4a3f] text-[#dce5e1] text-xs py-2 border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4">
             <div class="flex items-center gap-2.5 min-w-0">
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0">
@@ -97,7 +97,7 @@
     </header>
 
     <!-- Main Navigation Bar -->
-    <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+    <nav class="sticky top-0 z-40 bg-[#3b5d4f]/95 backdrop-blur-md border-b border-white/15 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20 gap-2 xl:gap-4">
                 
@@ -105,10 +105,10 @@
                 <a href="{{ route('home') }}" class="flex items-center gap-2.5 xl:gap-3 shrink-0 group">
                     <x-brand-logo class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-xs group-hover:scale-105 transition-transform" />
                     <div class="leading-none">
-                        <div class="font-serif-title font-bold text-slate-950 tracking-tight text-sm sm:text-base xl:text-lg uppercase">
+                        <div class="font-serif-title font-bold text-white tracking-tight text-sm sm:text-base xl:text-lg uppercase">
                             Brands Academy
                         </div>
-                        <div class="text-[9px] xl:text-[10px] font-extrabold tracking-widest text-amber-600 uppercase mt-0.5">
+                        <div class="text-[9px] xl:text-[10px] font-extrabold tracking-widest text-[#ebc443] uppercase mt-0.5">
                             Nigeria Foundation
                         </div>
                     </div>
@@ -116,16 +116,16 @@
 
                 <!-- Desktop Navigation Links (6 Consolidated Groups) -->
                 <div class="hidden lg:flex items-center gap-0.5 xl:gap-1.5">
-                    <a href="{{ route('home') }}" class="px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('home') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                    <a href="{{ route('home') }}" class="px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('home') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                         Home
                     </a>
 
                     <!-- 1. Programmes Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('workshops.*', 'courses.*', 'webinars.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('workshops.*', 'courses.*', 'webinars.*') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>Programmes</span>
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -164,9 +164,9 @@
 
                     <!-- 2. Certification Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('registry.*', 'verify.*', 'certifications') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('registry.*', 'verify.*', 'certifications') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>Certification</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -202,9 +202,9 @@
 
                     <!-- 3. Membership Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('membership.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('membership.*') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>Membership</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -240,9 +240,9 @@
 
                     <!-- 4. For Institutions Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('partnerships', 'services.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('partnerships', 'services.*') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>For Institutions</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -278,9 +278,9 @@
 
                     <!-- 5. About Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty', 'legal.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('about', 'faculty', 'legal.*') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>About</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -323,9 +323,9 @@
 
                     <!-- 6. Resources Dropdown -->
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false" @keydown.escape.window="open = false">
-                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('journal.*', 'conferences.*', 'forum.*') ? 'text-amber-700 bg-amber-500/10 font-bold' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/70' }}">
+                        <button type="button" @click="open = !open" class="inline-flex items-center gap-1 px-2 xl:px-2.5 py-2 text-xs xl:text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('journal.*', 'conferences.*', 'forum.*') ? 'text-white font-bold border-b-2 border-[#ebc443]' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}">
                             <span>Resources</span>
-                            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="open ? 'rotate-180 text-amber-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3.5 h-3.5 text-white/60 transition-transform duration-150" :class="open ? 'rotate-180 text-[#ebc443]' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="open" x-cloak
                              x-transition:enter="transition ease-out duration-150"
@@ -366,50 +366,50 @@
                         @php
                             $navUnreadCount = auth()->user()->unreadNotifications()->count();
                         @endphp
-                        <a href="{{ route('notifications.index') }}" class="relative p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors" title="Notifications">
+                        <a href="{{ route('notifications.index') }}" class="relative p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10 transition-colors" title="Notifications">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                             @if($navUnreadCount > 0)
-                                <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-bold text-white font-mono animate-pulse">
+                                <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#ebc443] text-[9px] font-extrabold text-[#141615] font-mono animate-pulse">
                                     {{ $navUnreadCount > 9 ? '9+' : $navUnreadCount }}
                                 </span>
                             @endif
                         </a>
 
                         @if(auth()->user()?->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-amber-400 hover:bg-slate-800 transition-colors shadow-xs whitespace-nowrap">
+                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold bg-[#243a31] text-[#ebc443] hover:bg-[#1b2c25] border border-white/15 transition-colors shadow-xs whitespace-nowrap">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 <span class="hidden xl:inline">Admin Panel</span>
                                 <span class="xl:hidden">Admin</span>
                             </a>
-                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs whitespace-nowrap">
-                                <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-[#ebc443] hover:bg-[#f1d46e] text-[#141615] transition-colors shadow-xs whitespace-nowrap">
+                                <svg class="w-4 h-4 text-[#141615]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                                 <span class="hidden sm:inline">Member Dashboard</span>
                             </a>
                         @else
-                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors shadow-xs whitespace-nowrap">
-                                <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            <a href="{{ route('member.dashboard') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-[#ebc443] hover:bg-[#f1d46e] text-[#141615] transition-colors shadow-xs whitespace-nowrap">
+                                <svg class="w-4 h-4 text-[#141615]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                 <span>Member Dashboard</span>
                             </a>
                         @endif
 
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
-                            <button type="submit" class="p-2 text-slate-500 hover:text-rose-600 rounded-lg hover:bg-slate-100 transition-colors" title="Sign Out">
+                            <button type="submit" class="p-2 text-white/75 hover:text-[#ebc443] rounded-full hover:bg-white/10 transition-colors" title="Sign Out">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="hidden sm:inline-block px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100/70 rounded-xl transition-colors whitespace-nowrap">
+                        <a href="{{ route('login') }}" class="hidden sm:inline-block px-3.5 py-2 text-xs xl:text-sm font-semibold text-white/85 hover:text-white hover:bg-white/10 rounded-full transition-colors whitespace-nowrap">
                             Sign In
                         </a>
-                        <a href="{{ route('membership.register') }}" class="inline-flex items-center gap-1.5 xl:gap-2 px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-sm hover:shadow-md transition-all whitespace-nowrap group">
+                        <a href="{{ route('membership.register') }}" class="inline-flex items-center gap-1.5 xl:gap-2 px-4 xl:px-5 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-bold bg-[#ebc443] hover:bg-[#f1d46e] text-[#141615] shadow-sm hover:shadow-md transition-all whitespace-nowrap group">
                             <span>Join Foundation</span>
-                            <svg class="w-3.5 xl:w-4 h-3.5 xl:h-4 text-slate-950 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <svg class="w-3.5 xl:w-4 h-3.5 xl:h-4 text-[#141615] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     @endauth
 
                     <!-- Mobile Hamburger Toggle Button -->
-                    <button type="button" id="mobile-menu-button" class="lg:hidden p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500" aria-label="Toggle Navigation">
+                    <button type="button" id="mobile-menu-button" class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#ebc443]" aria-label="Toggle Navigation">
                         <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                         <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -598,7 +598,7 @@
     </main>
 
     <!-- Institutional Footer -->
-    <footer class="bg-slate-950 text-slate-400 mt-20 border-t border-slate-900">
+    <footer class="bg-[#2f4a3f] text-[#d6e0dc] mt-20 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
                 
@@ -666,7 +666,7 @@
             </div>
 
             <!-- Bottom bar -->
-            <div class="mt-12 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div class="mt-12 pt-8 border-t border-white/15 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#b9cbc3]">
                 <p>&copy; {{ date('Y') }} Brands Academy Nigeria Foundation. All rights reserved.</p>
                 <div class="flex flex-wrap items-center gap-4 text-slate-400 text-xs">
                     <a href="{{ route('legal.ethics') }}" class="hover:text-amber-400 transition-colors">Code of Ethics</a>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-100">
+<html lang="en" class="h-full bg-[#f0f2f1]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f8fbff">
+    <meta name="theme-color" content="#3b5d4f">
     <title>@yield('title', 'Administration Portal') | Brands Academy Nigeria Foundation</title>
     <meta name="description" content="Operational Administration & Governance Portal for Brands Academy Nigeria Foundation (CAC/IT/No. 7344471).">
     
@@ -43,12 +43,12 @@
             border-radius: 4px;
         }
         .admin-sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(245, 158, 11, 0.4);
+            background: rgba(235, 196, 67, 0.55);
         }
     </style>
     @stack('styles')
 </head>
-<body class="min-h-full bg-slate-100 text-slate-800 antialiased selection:bg-amber-500 selection:text-white"
+<body class="min-h-full bg-[#f0f2f1] text-[#141615] antialiased selection:bg-[#ebc443] selection:text-[#141615]"
       x-data="{ 
           mobileSidebarOpen: false, 
           userMenuOpen: false,
@@ -70,11 +70,11 @@
     <div class="flex min-h-screen">
         
         <!-- ======================= SIDEBAR ======================= -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 admin-sidebar overflow-y-auto"
+        <aside class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#3b5d4f] text-[#d6e0dc] flex flex-col border-r border-white/15 transform transition-transform duration-300 ease-in-out lg:translate-x-0 admin-sidebar overflow-y-auto"
                :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'">
             
             <!-- Sidebar Header / Brand Badge -->
-            <div class="p-5 border-b border-slate-800/80 bg-slate-950/90 sticky top-0 z-10 backdrop-blur-md">
+            <div class="p-5 border-b border-white/15 bg-[#2f4a3f]/95 sticky top-0 z-10 backdrop-blur-md">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
                         <x-brand-logo class="w-10 h-10 shrink-0 drop-shadow-md group-hover:scale-105 transition-transform" />

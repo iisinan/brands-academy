@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950">
+<html lang="en" class="h-full bg-[#2f4a3f]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f8fbff">
+    <meta name="theme-color" content="#3b5d4f">
     <title>Digital Member Credential - {{ $member->full_name }} | Brands Academy</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-serif-title { font-family: 'Playfair Display', serif; }
         .card-preview-glow {
-            box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(235, 196, 67, 0.25), 0 0 0 1px rgba(235, 196, 67, 0.25);
         }
         @media print {
             .no-print { display: none !important; }
@@ -34,7 +34,7 @@
         }
     </style>
 </head>
-<body class="min-h-full flex flex-col items-center justify-center p-4 sm:p-6 text-slate-800 relative selection:bg-amber-500 selection:text-white"
+<body class="min-h-full flex flex-col items-center justify-center p-4 sm:p-6 bg-[#2f4a3f] text-white relative selection:bg-[#ebc443] selection:text-[#141615]"
       x-data="{
           cardSide: 'front',
           copiedUrl: false,
@@ -64,8 +64,8 @@
     @endphp
 
     <!-- Ambient Glow in Background -->
-    <div class="absolute -top-32 -left-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-[#ebc443]/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-[#658275]/20 rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- Quick Action Bar (Hidden when printing) -->
     <div class="no-print mb-6 flex flex-wrap items-center justify-center gap-2.5 relative z-10 max-w-xl">

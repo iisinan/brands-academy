@@ -8,22 +8,48 @@
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* Vivid yet bright warm accent */
-    --color-amber-50: #fff8e6;
-    --color-amber-100: #ffefc2;
-    --color-amber-200: #ffe08a;
-    --color-amber-300: #ffcf52;
-    --color-amber-400: #ffbe2e;
-    --color-amber-500: #ffa91a;
-    --color-amber-600: #ec8b00;
-    --color-amber-700: #bd6a00;
-    --color-amber-800: #94530a;
-    --color-amber-900: #6f410d;
+    /* Primary Forest Sage palette (Furni #3b5d4f anchor) */
+    --color-forest-50: #f2f5f4;
+    --color-forest-100: #dce5e1;
+    --color-forest-200: #b9cbc3;
+    --color-forest-300: #8faaa0;
+    --color-forest-400: #658275;
+    --color-forest-500: #4d7061;
+    --color-forest-600: #3b5d4f;
+    --color-forest-700: #2f4a3f;
+    --color-forest-800: #243a31;
+    --color-forest-900: #1b2c25;
+    --color-forest-950: #111d18;
 
-    --color-orange-400: #ff9d52;
-    --color-orange-500: #ff8533;
-    --color-orange-600: #ec6a14;
-    --color-orange-700: #c2540e;
+    /* Warm Goldenrod accent (#ebc443 primary CTA, #efd99f pale gold dot) */
+    --color-amber-50: #fdf9eb;
+    --color-amber-100: #f9efc8;
+    --color-amber-200: #efd99f;
+    --color-amber-300: #f1d46e;
+    --color-amber-400: #ebc443;
+    --color-amber-500: #e5b828;
+    --color-amber-600: #c79814;
+    --color-amber-700: #936c0f;
+    --color-amber-800: #75530d;
+    --color-amber-900: #593f0b;
+
+    --color-orange-400: #ebc443;
+    --color-orange-500: #d9a826;
+    --color-orange-600: #b88912;
+    --color-orange-700: #8f670a;
+
+    /* Warm sage-mist neutrals (#f0f2f1 canvas & #141615 charcoal ink) */
+    --color-slate-50: #f7f9f8;
+    --color-slate-100: #f0f2f1;
+    --color-slate-200: #dce2df;
+    --color-slate-300: #c5ceca;
+    --color-slate-400: #8b9691;
+    --color-slate-500: #636d68;
+    --color-slate-600: #4f5854;
+    --color-slate-700: #39403c;
+    --color-slate-800: #262b29;
+    --color-slate-900: #1d201f;
+    --color-slate-950: #141615;
 }
 
 /* ========================================================
@@ -78,66 +104,126 @@ html, body {
 
 
 /* ========================================================
-   LIGHT & BRIGHT THEME LAYER
-   Remaps every near-black / navy surface to soft light tones,
-   flips text for contrast, and keeps coloured buttons readable.
-   (Unlayered on purpose so it wins over Tailwind utilities.)
+   FURNI FOREST SAGE, GOLDENROD & WARM MIST THEME LAYER
+   Signature Palette:
+   - Deep Forest Sage: #3b5d4f (primary), #2f4a3f (deep), #243a31 (hover/anchor)
+   - Warm Goldenrod:   #ebc443 (CTA/active), #efd99f (soft dot highlight)
+   - Sage Mist Canvas: #f0f2f1 (light body canvas), #ffffff (elevated cards)
+   - Charcoal Ink:     #141615 (headings & dark Explore pill), #4f5854 (body)
+   (Unlayered on purpose so semantic surface rules win cleanly.)
    ======================================================== */
 
-/* ---- 1. Dark surfaces -> soft light surfaces ---- */
+/* ---- Decorative Dot-Matrix Helpers (Reference Aesthetic) ---- */
+.bg-furni-forest {
+    background-color: #3b5d4f;
+    color: #ffffff;
+}
+
+.bg-furni-forest-deep {
+    background-color: #2f4a3f;
+    color: #ffffff;
+}
+
+.bg-furni-canvas {
+    background-color: #f0f2f1;
+    color: #141615;
+}
+
+.furni-dots-light {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.22) 3px, transparent 3px);
+    background-size: 22px 22px;
+}
+
+.furni-dots-gold {
+    background-image: radial-gradient(rgba(239, 217, 159, 0.92) 3.2px, transparent 3.2px);
+    background-size: 22px 22px;
+}
+
+.furni-dots-sage {
+    background-image: radial-gradient(rgba(59, 93, 79, 0.16) 3px, transparent 3px);
+    background-size: 22px 22px;
+}
+
+/* ---- 1. Dark Slate/Black Surfaces -> Deep Forest Sage (#3b5d4f / #2f4a3f) ---- */
 :is(
-    [class~="bg-slate-950"], [class~="bg-slate-900"], [class~="bg-slate-800"],
-    [class~="bg-gray-950"], [class~="bg-gray-900"], [class~="bg-gray-800"],
-    [class~="bg-zinc-950"], [class~="bg-zinc-900"], [class~="bg-zinc-800"],
+    [class~="bg-slate-950"], [class~="bg-gray-950"], [class~="bg-zinc-950"],
     [class~="bg-black"],
     [class*="from-slate-9"], [class*="via-slate-9"], [class*="to-slate-9"],
     [class*="from-slate-800"], [class*="via-slate-800"], [class*="to-slate-800"],
     [class*="from-black"], [class*="to-black"], [class*="via-[#0"]
 ) {
-    background-color: #e4f0fd;
-    color: #1e293b;
+    background-color: #3b5d4f;
+    color: #ffffff;
+}
+
+:is([class~="bg-slate-900"], [class~="bg-gray-900"], [class~="bg-zinc-900"]) {
+    background-color: #2f4a3f;
+    color: #ffffff;
+}
+
+:is([class~="bg-slate-800"], [class~="bg-gray-800"], [class~="bg-zinc-800"]) {
+    background-color: #243a31;
+    color: #ffffff;
+}
+
+:is([class^="bg-slate-950/"], [class*=" bg-slate-950/"]) {
+    background-color: rgba(59, 93, 79, 0.95);
+    color: #ffffff;
+}
+
+:is([class^="bg-slate-900/"], [class*=" bg-slate-900/"]) {
+    background-color: rgba(47, 74, 63, 0.94);
+    color: #ffffff;
 }
 
 :is(
-    [class^="bg-slate-950/"], [class*=" bg-slate-950/"],
-    [class^="bg-slate-900/"], [class*=" bg-slate-900/"],
     [class^="bg-slate-800/"], [class*=" bg-slate-800/"],
     [class^="bg-black/"], [class*=" bg-black/"]
 ) {
-    background-color: rgba(255, 255, 255, 0.88);
-    color: #1e293b;
+    background-color: rgba(36, 58, 49, 0.9);
+    color: #ffffff;
 }
 
 aside[class~="bg-slate-950"],
-header[class~="bg-slate-950"],
 nav[class~="bg-slate-950"] {
-    background-color: #ffffff;
+    background-color: #3b5d4f;
+    color: #ffffff;
 }
 
-/* Gradient stops */
-.from-slate-950, .from-slate-900, .from-slate-800, .from-black { --tw-gradient-from: #f2f8ff; }
-.via-slate-950, .via-slate-900, .via-slate-800, .via-black { --tw-gradient-via: #e4f0fd; }
-.to-slate-950, .to-slate-900, .to-slate-800, .to-black { --tw-gradient-to: #d3e6fb; }
-[class*="via-[#0a0f1d]"] { --tw-gradient-via: #e4f0fd; }
-.from-slate-950\/90, .from-slate-900\/90, .from-slate-950\/80, .from-slate-900\/80 { --tw-gradient-from: rgba(255, 255, 255, 0.92); }
+header[class~="bg-slate-950"],
+footer[class~="bg-slate-950"] {
+    background-color: #2f4a3f;
+    color: #d6e0dc;
+}
 
-/* Hover surfaces that used to turn dark */
+/* Forest Gradient Stops */
+.from-slate-950, .from-black { --tw-gradient-from: #3b5d4f; }
+.from-slate-900, .from-slate-800 { --tw-gradient-from: #2f4a3f; }
+.via-slate-950, .via-slate-900, .via-slate-800, .via-black, [class*="via-[#0a0f1d]"] { --tw-gradient-via: #355447; }
+.to-slate-950, .to-slate-900, .to-slate-800, .to-black { --tw-gradient-to: #2b453a; }
+.from-slate-950\/90, .from-slate-900\/90, .from-slate-950\/80, .from-slate-900\/80 {
+    --tw-gradient-from: rgba(59, 93, 79, 0.94);
+}
+
+/* Hover States on Forest Surfaces */
 .hover\:bg-slate-950:hover, .hover\:bg-slate-900:hover, .hover\:bg-slate-800:hover,
 .hover\:bg-gray-900:hover, .hover\:bg-gray-800:hover, .hover\:bg-black:hover {
-    background-color: #d3e6fb;
-    color: #0f172a;
+    background-color: #243a31;
+    color: #ffffff;
 }
 
-/* Borders that were dark-on-dark */
+/* Subtle Translucent Borders on Forest Surfaces */
 [class*="border-slate-700"], [class*="border-slate-800"], [class*="border-slate-900"],
 [class*="border-gray-700"], [class*="border-gray-800"], [class*="border-zinc-800"] {
-    border-color: #c3d9f0;
-}
-[class*="divide-slate-800"] > :not(:last-child), [class*="divide-slate-700"] > :not(:last-child) {
-    border-color: #c3d9f0;
+    border-color: rgba(255, 255, 255, 0.16);
 }
 
-/* ---- 2. Text contrast inside the (now light) surfaces ---- */
+[class*="divide-slate-800"] > :not(:last-child),
+[class*="divide-slate-700"] > :not(:last-child) {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ---- 2. Readable Crisp Contrast Inside Forest Sage Surfaces ---- */
 :is(
     [class~="bg-slate-950"], [class~="bg-slate-900"], [class~="bg-slate-800"],
     [class~="bg-gray-950"], [class~="bg-gray-900"], [class~="bg-gray-800"],
@@ -149,53 +235,70 @@ nav[class~="bg-slate-950"] {
     [class^="bg-black/"], [class*=" bg-black/"],
     [class*="from-slate-9"], [class*="via-slate-9"], [class*="to-slate-9"],
     [class*="from-slate-800"], [class*="via-slate-800"], [class*="to-slate-800"],
-    [class*="from-black"], [class*="to-black"], [class*="via-[#0"]
+    [class*="from-black"], [class*="to-black"], [class*="via-[#0"],
+    .bg-furni-forest, .bg-furni-forest-deep
 ) {
     & .text-white, &.text-white,
     & .hover\:text-white:hover, & .group:hover .group-hover\:text-white {
-        color: #1e293b;
+        color: #ffffff;
     }
-    & [class*="text-white/"], &[class*="text-white/"] { color: #475569; }
+    & [class*="text-white/"], &[class*="text-white/"] { color: rgba(255, 255, 255, 0.85); }
 
     & .text-slate-50, & .text-slate-100, & .text-slate-200,
-    & .text-gray-100, & .text-gray-200 { color: #334155; }
-    & .text-slate-300, & .text-gray-300 { color: #475569; }
-    & .text-slate-400, & .text-gray-400 { color: #526072; }
+    & .text-gray-100, & .text-gray-200 { color: #eef3f0; }
+    & .text-slate-300, & .text-gray-300 { color: #d6e0dc; }
+    & .text-slate-400, & .text-gray-400 { color: #b9cbc3; }
+    & .text-slate-500, & .text-gray-500 { color: #9fb5ac; }
 
-    & .text-amber-200, & .text-amber-300, & .text-amber-400, & .text-amber-500,
-    & .text-yellow-300, & .text-yellow-400, & .text-orange-300, & .text-orange-400 { color: #bd6a00; }
-    & .text-emerald-300, & .text-emerald-400, & .text-green-300, & .text-green-400 { color: #047857; }
-    & .text-rose-300, & .text-rose-400, & .text-red-300, & .text-red-400 { color: #be123c; }
-    & .text-blue-300, & .text-blue-400, & .text-sky-300, & .text-sky-400 { color: #1d4ed8; }
-    & .text-indigo-300, & .text-indigo-400, & .text-purple-300, & .text-purple-400,
-    & .text-violet-300, & .text-violet-400 { color: #6d28d9; }
-    & .text-teal-300, & .text-teal-400, & .text-cyan-300, & .text-cyan-400 { color: #0f766e; }
-
-    /* Glass-on-dark helpers */
-    & [class*="bg-white/"] { background-color: rgba(255, 255, 255, 0.75); }
-    & [class*="border-white/"] { border-color: rgba(15, 23, 42, 0.1); }
+    & .text-amber-200 { color: #efd99f; }
+    & .text-amber-300, & .text-amber-400, & .text-amber-500,
+    & .text-yellow-300, & .text-yellow-400 { color: #ebc443; }
+    & .text-emerald-300, & .text-emerald-400, & .text-green-300, & .text-green-400 { color: #86efac; }
+    & .text-rose-300, & .text-rose-400, & .text-red-300, & .text-red-400 { color: #fda4af; }
 }
 
-/* ---- 3. Soft amber buttons / chips need dark readable text ---- */
+/* ---- 2b. Preserve Dark Charcoal Ink on Light Cards Nested Inside Forest Containers ---- */
+:is(
+    .bg-white, .bg-slate-50, .bg-slate-100, .bg-slate-200,
+    .bg-emerald-50, .bg-amber-50, .bg-blue-50, .bg-indigo-50, .bg-rose-50,
+    [class*="from-[#FAF8F5]"], [class*="bg-[#faf"], [class*="bg-[#FAF"]
+) {
+    color: #141615;
+
+    & .text-slate-950, & .text-slate-900 { color: #141615; }
+    & .text-slate-800 { color: #1e201f; }
+    & .text-slate-700 { color: #39403c; }
+    & .text-slate-600 { color: #4f5854; }
+    & .text-slate-500 { color: #636d68; }
+    & .text-slate-400 { color: #8b9691; }
+    & .text-amber-500, & .text-amber-600 { color: #b88912; }
+    & .text-amber-700, & .text-amber-800, & .text-amber-900 { color: #936c0f; }
+    & .text-emerald-600, & .text-emerald-700, & .text-emerald-800 { color: #2f4a3f; }
+}
+
+/* ---- 3. Warm Goldenrod Buttons / Pills Use Crisp Charcoal Ink (#141615) ---- */
 :is(
     .bg-amber-300, .bg-amber-400, .bg-amber-500, .bg-amber-600,
     .bg-orange-400, .bg-orange-500, .bg-orange-600,
     [class*="from-amber-4"], [class*="from-amber-5"], [class*="from-orange-4"], [class*="from-orange-5"]
 ) {
-    &.text-white, & .text-white { color: #5a3a10; }
-    & .text-slate-950, &.text-slate-950 { color: #4a2f0b; }
+    color: #141615;
+    &.text-white, & .text-white,
+    & .text-slate-950, &.text-slate-950,
+    & .text-slate-900, &.text-slate-900 { color: #141615; }
 }
 
-/* ---- 4. Saturated brand / status buttons keep white text ---- */
+/* ---- 4. Saturated Badges & Explicit Dark Hex CTAs Keep Crisp White Text ---- */
 :is(
     .bg-emerald-500, .bg-emerald-600, .bg-emerald-700,
     .bg-rose-500, .bg-rose-600, .bg-red-500, .bg-red-600,
     .bg-blue-500, .bg-blue-600, .bg-blue-700,
     .bg-indigo-500, .bg-indigo-600, .bg-purple-600,
-    [class*="bg-[#"]
+    [class*="bg-[#3b5d4f]"], [class*="bg-[#2f4a3f]"], [class*="bg-[#243a31]"], [class*="bg-[#141615]"]
 ) {
+    color: #ffffff;
     &.text-white, & .text-white { color: #ffffff; }
 }
 
-/* Softer glow on amber shadows */
-[class*="shadow-amber"] { --tw-shadow-color: rgba(255, 169, 26, 0.35); }
+/* Soft Warm Goldenrod Shadow */
+[class*="shadow-amber"] { --tw-shadow-color: rgba(235, 196, 67, 0.30); }

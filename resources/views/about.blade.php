@@ -5,7 +5,8 @@
 @section('content')
 
 <!-- Header Banner -->
-<section class="bg-slate-900 text-white py-16 lg:py-20 border-b border-slate-800">
+<section class="relative bg-[#3b5d4f] text-white py-16 lg:py-20 border-b border-white/15 overflow-hidden">
+    <div class="hidden md:block absolute top-8 right-10 w-48 h-28 furni-dots-light pointer-events-none opacity-60" aria-hidden="true"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-4">
