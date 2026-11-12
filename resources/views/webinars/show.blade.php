@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $webinar->title . ' - Webinar')
+@section('meta_description', Str::limit(strip_tags($webinar->summary ?: $webinar->description), 160))
+@section('og_type', 'article')
 
 @section('content')
 

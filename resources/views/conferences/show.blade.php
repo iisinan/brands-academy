@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $conference->title . ' | Brands Academy')
+@section('meta_description', Str::limit(strip_tags($conference->description ?: $conference->theme), 160))
+@section('og_type', 'article')
 
 @section('content')
 <div class="bg-slate-900 text-white py-16 border-b border-slate-800">

@@ -399,6 +399,19 @@
                             <span>Users &amp; RBAC Roles</span>
                         </div>
                     </a>
+
+                    <a href="{{ route('notifications.index') }}"
+                       class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-all {{ request()->routeIs('notifications.*') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-4 h-4 {{ request()->routeIs('notifications.*') ? 'text-slate-950' : 'text-amber-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                            <span>Notification Feed</span>
+                        </div>
+                        @if(($adminUnreadCount ?? 0) > 0)
+                            <span class="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-rose-600 text-white font-mono">
+                                {{ $adminUnreadCount }}
+                            </span>
+                        @endif
+                    </a>
                 </div>
 
             </nav>
@@ -480,6 +493,19 @@
                     <a href="{{ route('home') }}" target="_blank" class="px-3 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5 border border-slate-200">
                         <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                         <span class="hidden md:inline">Landing Page</span>
+                    </a>
+
+                    <!-- Notifications Bell -->
+                    @php
+                        $adminUnreadCount = auth()->user()?->unreadNotifications()->count() ?? 0;
+                    @endphp
+                    <a href="{{ route('notifications.index') }}" class="relative p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors" title="Notifications">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        @if($adminUnreadCount > 0)
+                            <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-bold text-white font-mono animate-pulse">
+                                {{ $adminUnreadCount > 9 ? '9+' : $adminUnreadCount }}
+                            </span>
+                        @endif
                     </a>
 
                     <!-- User Profile Dropdown -->

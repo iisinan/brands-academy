@@ -539,6 +539,66 @@
                 </div>
             </div>
 
+            <!-- 7. Statutory CAC & Nice Class Calculator -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-teal-400">Regulatory Estimator</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Statutory Fee &amp; Nice Class Tool</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Instant computation for CAC incorporation, share capital duties, international Nice Classification (Classes 1&ndash;45), and 25% member cost reductions.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-teal-400">Classes 1&ndash;45 Directory</span>
+                    <a href="{{ route('services.calculator') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Launch Calculator &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 8. National Certified Practitioners Register -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">National Accredited Directory</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Certified Practitioners Register</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Public dossier of accredited Fellows (FBA), Brand Strategists, and Associates with jurisdiction filters, digital credentials, and good-standing badges.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">Public Verification</span>
+                    <a href="{{ route('registry.index') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Search Registry &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- 9. Continuing Professional Development (CPD) -->
+            <div class="bg-slate-900/90 rounded-2xl p-6 sm:p-7 border border-slate-800 hover:border-amber-400/60 transition-all group flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Academic &amp; Professional Ledger</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">Official CPD Transcripts</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+                        Accumulate validated credit hours across 5 academic pillars. Generate certified, tamper-proof PDF transcripts for licensing and board tenure review.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-500">PDF Attestation</span>
+                    <a href="{{ route('member.transcript') }}" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        View Transcripts &rarr;
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>

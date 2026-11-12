@@ -132,8 +132,28 @@
                 </div>
             </div>
         @empty
-            <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center">
-                <p class="text-sm text-slate-500">No published articles matching the criteria.</p>
+            <div class="bg-white rounded-3xl border border-dashed border-slate-300 p-12 text-center shadow-2xs">
+                <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 mb-1">No Academic Articles Found</h3>
+                <p class="text-xs text-slate-500 max-w-md mx-auto mb-6 leading-relaxed">
+                    @if($search || $selectedIssue)
+                        No peer-reviewed papers matched your query <span class="font-semibold text-slate-800">"{{ $search ?: 'Selected Volume' }}"</span>. Try searching with broader keywords or browse all volumes.
+                    @else
+                        No published articles are currently available in this journal archive view.
+                    @endif
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    @if($search || $selectedIssue)
+                        <a href="{{ route('journal.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors">
+                            <span>Reset Search &amp; Filters</span>
+                        </a>
+                    @endif
+                    <a href="{{ route('journal.submit') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-xs transition-all">
+                        <span>Submit New Manuscript &rarr;</span>
+                    </a>
+                </div>
             </div>
         @endforelse
     </div>

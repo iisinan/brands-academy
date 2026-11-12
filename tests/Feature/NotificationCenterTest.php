@@ -232,4 +232,27 @@ class NotificationCenterTest extends TestCase
         $this->assertEquals('Contribution Endorsed as Accepted Answer', $peerNotification->data['title']);
         $this->assertStringContainsString('was accepted by the author', $peerNotification->data['message']);
     }
+
+    public function test_admin_dashboard_displays_notification_bell_and_sidebar_badge(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::Admin,
+            'name' => 'Admin Officer',
+            'email_verified_at' => now(),
+        ]);
+
+        $admin->notify(new EcosystemActivityNotification(
+            title: 'New Service Filing Submitted',
+            message: 'A new CAC filing was received for review.',
+            actionUrl: '/admin/filings',
+            category: 'filing',
+            badgeText: 'BANF-FL-TEST'
+        ));
+
+        $response = $this->actingAs($admin)->get(route('admin.dashboard'));
+
+        $response->assertOk();
+        $response->assertSee('Notification Feed');
+        $response->assertSee(route('notifications.index'));
+    }
 }

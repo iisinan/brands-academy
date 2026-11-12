@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $article->title . ' | JBSM')
+@section('meta_description', Str::limit(strip_tags($article->abstract), 160))
+@section('og_type', 'article')
 
 @section('content')
 <div class="bg-slate-900 text-white py-12 border-b border-slate-800">

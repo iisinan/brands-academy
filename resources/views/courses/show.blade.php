@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $course->title . ' - Brands Academy Short Course')
+@section('meta_description', Str::limit(strip_tags($course->short_description ?: $course->description), 160))
+@section('og_type', 'article')
 
 @section('content')
 

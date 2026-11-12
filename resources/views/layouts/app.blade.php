@@ -11,14 +11,41 @@
     <meta name="description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
     
     <!-- OpenGraph & Social Metadata -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:site_name" content="Brands Academy Nigeria Foundation">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', 'Brands Academy Nigeria Foundation | Institutional Portal')">
     <meta property="og:description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo/bran-logo-3d.png'))">
+    
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta property="og:image" content="{{ asset('images/logo/bran-logo-3d.png') }}?v=3">
+    <meta name="twitter:title" content="@yield('title', 'Brands Academy Nigeria Foundation | Institutional Portal')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Advancing branding, marketing and professional education across Nigeria and beyond. Incorporated Trustee CAC IT No. 7344471.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo/bran-logo-3d.png'))">
+    
+    <!-- Canonical & Favicons -->
+    <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=3">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'EducationalOrganization',
+        'name' => 'Brands Academy Nigeria Foundation',
+        'alternateName' => 'BANF',
+        'url' => url('/'),
+        'logo' => asset('images/logo/bran-logo-3d.png'),
+        'description' => 'Not-for-profit educational foundation incorporated under CAMA CAP C20 LFN 2004. RC/IT No. 7344471. Advancing branding, marketing and professional education across Nigeria and West Africa.',
+        'email' => 'thebrandsacademy@gmail.com',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'addressCountry' => 'NG',
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -304,7 +331,7 @@
             </div>
         @endif
 
-        @if($errors->any())
+        @if(isset($errors) && $errors->any())
             <div class="rounded-xl bg-rose-50 border border-rose-200 p-4 mb-4 text-rose-900 shadow-xs">
                 <div class="flex items-center gap-2 font-semibold text-sm mb-1 text-rose-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>

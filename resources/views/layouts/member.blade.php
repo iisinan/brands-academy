@@ -741,6 +741,11 @@
 
                 switchTab(tabName) {
                     if (!validTabs.includes(tabName)) return;
+                    const dashboardPath = '{{ parse_url(route("member.dashboard"), PHP_URL_PATH) }}';
+                    if (window.location.pathname !== dashboardPath) {
+                        window.location.href = '{{ route("member.dashboard") }}#' + tabName;
+                        return;
+                    }
                     this.activeTab = tabName;
                     this.sidebarOpen = false;
                     try {

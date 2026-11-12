@@ -279,5 +279,14 @@ class DatabaseSeeder extends Seeder
                 'admin_notes' => 'MOU draft shared with Academic Planning Committee on 15 Oct.',
             ]
         );
+
+        // 8. Seed Comprehensive Campus Ecosystem
+        $this->call([
+            LmsAndWebinarSeeder::class,
+            ConferenceAndJournalSeeder::class,
+            CommunityForumSeeder::class,
+            LegalServiceSeeder::class,
+            EcosystemExtensionsSeeder::class,
+        ]);
     }
 }
